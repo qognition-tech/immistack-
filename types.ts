@@ -17,12 +17,11 @@ export type Page =
   | 'FEATURE_STAFF_PORTAL'
   | 'FEATURE_ADMIN_PORTAL'
   | 'FEATURE_AI'
-  | 'FEATURE_TRUST'
   | 'FEATURE_BILLING'
   | 'FEATURE_TASKS'
   | 'FEATURE_FORMS'
-  | 'FEATURE_COMMISSION'
-  | 'FEATURE_MULTIOFFICE';
+  | 'FEATURE_MULTIOFFICE'
+  | 'AFFILIATE';
 
 export type Persona = 'Individual' | 'Professional';
 
@@ -36,6 +35,10 @@ export interface WaitlistFormData {
   source?: string;
   /** Optional referral code/source for the waitlist referral program. */
   referralSource?: string;
+  /** Affiliate's website or social profile (Affiliate Program form). */
+  website?: string;
+  /** Affiliate's audience / promotion channel (Affiliate Program form). */
+  audience?: string;
 }
 
 export interface Feature {

@@ -17,11 +17,9 @@ import { FeaturePortal } from './pages/FeaturePortal';
 import { FeatureStaffPortal } from './pages/FeatureStaffPortal';
 import { FeatureAdminPortal } from './pages/FeatureAdminPortal';
 import { FeatureAI } from './pages/FeatureAI';
-import { FeatureTrust } from './pages/FeatureTrust';
 import { FeatureBilling } from './pages/FeatureBilling';
 import { FeatureTasks } from './pages/FeatureTasks';
 import { FeatureForms } from './pages/FeatureForms';
-import { FeatureCommission } from './pages/FeatureCommission';
 import { FeatureMultiOffice } from './pages/FeatureMultiOffice';
 import { Pricing } from './pages/Pricing';
 import { About } from './pages/About';
@@ -31,6 +29,7 @@ import { IndustryEducation } from './pages/IndustryEducation';
 import { IndustryCorporate } from './pages/IndustryCorporate';
 import { Resources } from './pages/Resources';
 import { ResourceArticle } from './pages/ResourceArticle';
+import { Affiliate } from './pages/Affiliate';
 import { NotFound } from './pages/NotFound';
 
 const PAGE_COMPONENTS: Record<Page, React.ComponentType<any>> = {
@@ -50,12 +49,11 @@ const PAGE_COMPONENTS: Record<Page, React.ComponentType<any>> = {
   FEATURE_STAFF_PORTAL: FeatureStaffPortal,
   FEATURE_ADMIN_PORTAL: FeatureAdminPortal,
   FEATURE_AI: FeatureAI,
-  FEATURE_TRUST: FeatureTrust,
   FEATURE_BILLING: FeatureBilling,
   FEATURE_TASKS: FeatureTasks,
   FEATURE_FORMS: FeatureForms,
-  FEATURE_COMMISSION: FeatureCommission,
   FEATURE_MULTIOFFICE: FeatureMultiOffice,
+  AFFILIATE: Affiliate,
 };
 
 const PRICING_FAQ: FaqItem[] = [

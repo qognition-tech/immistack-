@@ -1,6 +1,5 @@
 import React from 'react';
 import { FileText, Video, Mic, ArrowRight } from 'lucide-react';
-import { LeadMagnet } from '../components/LeadMagnet';
 import { Page } from '../types';
 
 export const Resources: React.FC<{onNavigate: (page: Page) => void}> = ({onNavigate}) => {
@@ -48,7 +47,6 @@ export const Resources: React.FC<{onNavigate: (page: Page) => void}> = ({onNavig
          </div>
       </div>
 
-      <LeadMagnet />
     </div>
   );
 };

@@ -112,28 +112,12 @@ export const PAGES: PageMeta[] = [
     keyword: 'immigration form automation',
   },
   {
-    page: 'FEATURE_TRUST',
-    path: '/trust-accounting',
-    title: 'Trust Accounting for Immigration Firms | Immistack',
-    description:
-      'Manage client funds with compliant, audit-ready trust accounting built into your immigration practice management platform.',
-    keyword: 'immigration trust accounting',
-  },
-  {
     page: 'FEATURE_BILLING',
     path: '/billings-and-invoicing',
     title: 'Billing & Invoicing for Migration Agents | Immistack',
     description:
       'Create invoices, take payments and track receivables without leaving your case files. Billing built for immigration and migration practices.',
     keyword: 'migration agent billing software',
-  },
-  {
-    page: 'FEATURE_COMMISSION',
-    path: '/commission-tracking',
-    title: 'Commission Tracking for Education Agents | Immistack',
-    description:
-      'Track institution commissions, splits and payouts automatically. Built for education agents and migration networks managing referral revenue.',
-    keyword: 'education agent commission tracking',
   },
   {
     page: 'FEATURE_MULTIOFFICE',
@@ -190,6 +174,14 @@ export const PAGES: PageMeta[] = [
     description:
       'Coordinate visas, compliance and relocations for your workforce with Immistack’s global mobility platform built for corporate HR teams.',
     keyword: 'global mobility platform',
+  },
+  {
+    page: 'AFFILIATE',
+    path: '/affiliate',
+    title: 'Affiliate Program | Earn 30% Recurring – Immistack',
+    description:
+      'Join the Immistack Affiliate Program and earn 30% recurring commission for every immigration firm you refer. Free to join, monthly payouts.',
+    keyword: 'immigration software affiliate program',
   },
 ];
 

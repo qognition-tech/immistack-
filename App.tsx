@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
-import { ExitIntentPopup } from './components/ExitIntentPopup';
 import { WaitlistProvider } from './context/WaitlistContext';
 import { OrganizationSchema } from './components/Schema';
 import { Shield, MapPin, Mail } from 'lucide-react';
@@ -106,9 +105,7 @@ const App: React.FC = () => {
               <div>
                 <h5 className="font-bold text-navy mb-5 tracking-wide">Advanced Modules</h5>
                 <ul className="space-y-3 text-gray-500">
-                  <li><FooterLink page="FEATURE_TRUST" className="hover:text-goldDark transition-colors">Trust Accounting</FooterLink></li>
                   <li><FooterLink page="FEATURE_BILLING" className="hover:text-goldDark transition-colors">Billing &amp; Invoicing</FooterLink></li>
-                  <li><FooterLink page="FEATURE_COMMISSION" className="hover:text-goldDark transition-colors">Commission Tracking</FooterLink></li>
                   <li><FooterLink page="FEATURE_MULTIOFFICE" className="hover:text-goldDark transition-colors">Multi-Office</FooterLink></li>
                   <li><FooterLink page="FEATURE_STAFF_PORTAL" className="hover:text-goldDark transition-colors">Staff Portal</FooterLink></li>
                   <li><FooterLink page="FEATURE_ADMIN_PORTAL" className="hover:text-goldDark transition-colors">Admin Portal</FooterLink></li>
@@ -118,6 +115,7 @@ const App: React.FC = () => {
 
             <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex gap-6">
+                <FooterLink page="AFFILIATE" className="text-gray-400 hover:text-goldDark">Affiliate Program</FooterLink>
                 <span className="text-gray-400">Privacy Policy</span>
                 <span className="text-gray-400">Terms of Service</span>
                 <a href="/sitemap.xml" className="text-gray-400 hover:text-navy">Sitemap</a>
@@ -132,7 +130,6 @@ const App: React.FC = () => {
         </footer>
 
         {/* Exit-intent + weekly countdown promo */}
-        <ExitIntentPopup />
       </div>
     </WaitlistProvider>
   );

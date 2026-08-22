@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Globe, Users, ArrowRight, Bot, Smartphone, CreditCard, Landmark, ListTodo, FileText, PieChart, Briefcase, Shield, Settings, ToggleRight, BarChart3, Lock } from 'lucide-react';
+import { Layout, Globe, Users, ArrowRight, Bot, Smartphone, CreditCard, ListTodo, FileText, Briefcase, Shield, Settings, ToggleRight, BarChart3, Lock } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Page } from '../types';
 
@@ -94,28 +94,12 @@ export const Features: React.FC<FeaturesProps> = ({ onOpenWaitlist, onNavigate }
         <h3 className="text-2xl font-bold text-navy mb-8 border-l-4 border-techBlue pl-4">Finance & Admin Modules</h3>
         <div className="grid md:grid-cols-3 gap-6 mb-24">
             <div 
-                onClick={() => onNavigate('FEATURE_TRUST')}
-                className="bg-white p-6 rounded-lg border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group"
-            >
-                <Landmark className="h-8 w-8 text-navy mb-3 group-hover:scale-110 transition-transform" />
-                <h4 className="font-bold text-navy mb-2 group-hover:text-techBlue">Trust Accounting</h4>
-                <p className="text-sm text-gray-500">Fully compliant ledgers with audit trails.</p>
-            </div>
-            <div 
                 onClick={() => onNavigate('FEATURE_BILLING')}
                 className="bg-white p-6 rounded-lg border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group"
             >
                 <CreditCard className="h-8 w-8 text-navy mb-3 group-hover:scale-110 transition-transform" />
                 <h4 className="font-bold text-navy mb-2 group-hover:text-techBlue">Billing & Invoicing</h4>
-                <p className="text-sm text-gray-500">Stripe integration with automated installments.</p>
-            </div>
-            <div 
-                onClick={() => onNavigate('FEATURE_COMMISSION')}
-                className="bg-white p-6 rounded-lg border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group"
-            >
-                <PieChart className="h-8 w-8 text-navy mb-3 group-hover:scale-110 transition-transform" />
-                <h4 className="font-bold text-navy mb-2 group-hover:text-techBlue">Commission Tracking</h4>
-                <p className="text-sm text-gray-500">Track payouts from universities and partners.</p>
+                <p className="text-sm text-gray-500">Invoices, staged payment plans and a receivables ledger that never mixes money in with money out.</p>
             </div>
             <div 
                 onClick={() => onNavigate('FEATURE_MULTIOFFICE')}

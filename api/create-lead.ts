@@ -23,6 +23,10 @@ interface WaitlistFormData {
   source?: string;
   /** Inbound referral code from the waitlist referral program. */
   referralSource?: string;
+  /** Affiliate's website or social profile (Affiliate Program form). */
+  website?: string;
+  /** Affiliate's audience / promotion channel (Affiliate Program form). */
+  audience?: string;
 }
 
 class ZohoCRMService {
@@ -81,6 +85,9 @@ class ZohoCRMService {
       `Firm Size: ${formData.firmSize}`,
       `Capture Source: ${captureSource}`,
     ];
+    if (formData.audience) {
+      descriptionParts.push(`Audience / Channel: ${formData.audience}`);
+    }
     if (formData.referralSource) {
       descriptionParts.push(`Referred By: ${formData.referralSource}`);
     }
@@ -92,6 +99,8 @@ class ZohoCRMService {
         Email: formData.email,
         // Industry is a standard Zoho Leads picklist field, handy for segmentation.
         Industry: persona === 'Individual' ? 'Individual / Applicant' : 'Immigration Professional',
+        // Optional standard Zoho field; affiliates submit a website/social profile.
+        ...(formData.website ? { Website: formData.website } : {}),
         Description: descriptionParts.join(' | '),
         Lead_Source: 'Immistack Website',
         Lead_Status: 'Not Contacted'
@@ -140,7 +149,16 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { email, firmName, firmSize }: WaitlistFormData = req.body;
+    const {
+      email,
+      firmName,
+      firmSize,
+      persona,
+      source,
+      referralSource,
+      website,
+      audience,
+    }: WaitlistFormData = req.body;
 
     // Validate required fields
     if (!email || !firmName || !firmSize) {
@@ -149,8 +167,18 @@ export default async function handler(req: any, res: any) {
       });
     }
 
-    // Create lead in Zoho CRM
-    await zohoCRMService.createLead({ email, firmName, firmSize });
+    // Create lead in Zoho CRM. All forms (waitlist, lead magnet, affiliate)
+    // submit to this single endpoint; segmentation comes from persona/source.
+    await zohoCRMService.createLead({
+      email,
+      firmName,
+      firmSize,
+      persona,
+      source,
+      referralSource,
+      website,
+      audience,
+    });
 
     res.status(200).json({
       message: 'Lead created successfully in Zoho CRM'

@@ -11,6 +11,7 @@ const navItems = [
   { label: 'Pricing', to: '/pricing' },
   { label: 'About', to: '/about' },
   { label: 'Resources', to: '/blog' },
+  { label: 'Affiliates', to: '/affiliate' },
 ];
 
 export const Navbar: React.FC = () => {
