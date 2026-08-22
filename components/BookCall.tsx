@@ -39,15 +39,15 @@ export const BookCall: React.FC<{ compact?: boolean }> = ({ compact = false }) =
   }, []);
 
   const trigger = CAL_LINK ? (
-    <button
-      type="button"
+    <a
+      href={`https://cal.com/${CAL_LINK}`}
       data-cal-namespace={NAMESPACE}
       data-cal-link={CAL_LINK}
       data-cal-config='{"layout":"month_view"}'
       className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-md bg-gold text-navy font-bold shadow-lg shadow-gold/20 hover:bg-yellow-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
     >
       <CalendarClock className="h-5 w-5" aria-hidden="true" /> Book a call
-    </button>
+    </a>
   ) : (
     <a
       href="mailto:hello@immistack.com?subject=Immistack%20intro%20call"

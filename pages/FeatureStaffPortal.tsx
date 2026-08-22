@@ -1,6 +1,7 @@
 import React from 'react';
 import { Briefcase, UserPlus, FileText, PenTool, BellRing, ShieldCheck, CheckCircle2, FileSearch } from 'lucide-react';
 import { Button } from '../components/Button';
+import { MockButton } from '../components/SandboxBadge';
 
 export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   return (
@@ -153,7 +154,7 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                            <FileText className="h-5 w-5 text-gray-400" />
                            <span className="text-sm font-bold text-navy">Police Check (AFP)</span>
                         </div>
-                        <button className="text-xs font-bold text-white bg-techBlue px-3 py-1 rounded">Request</button>
+                        <MockButton className="text-xs font-bold text-white bg-techBlue px-3 py-1 rounded">Request</MockButton>
                      </div>
                   </div>
                </div>
@@ -171,8 +172,8 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                      <span className="text-green-600">✓ Address History verified (No gaps)</span>
                   </div>
                   <div className="flex gap-2">
-                     <button className="bg-navy text-white text-xs px-4 py-2 rounded font-bold">Generate PDF</button>
-                     <button className="bg-white border border-gray-300 text-gray-600 text-xs px-4 py-2 rounded font-bold">Send for Signature</button>
+                     <MockButton className="bg-navy text-white text-xs px-4 py-2 rounded font-bold">Generate PDF</MockButton>
+                     <MockButton className="bg-white border border-gray-300 text-gray-600 text-xs px-4 py-2 rounded font-bold">Send for Signature</MockButton>
                   </div>
                </div>
                <div className="order-1 md:order-2">
