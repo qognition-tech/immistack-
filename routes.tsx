@@ -65,7 +65,7 @@ const PRICING_FAQ: FaqItem[] = [
   {
     question: 'Which countries does Immistack support?',
     answer:
-      'Immistack is built for immigration and migration practices across Australia, Canada, the United Kingdom and New Zealand, including automated VEVO checks for Australia.',
+      'Immistack is built for immigration and migration practices across Australia, Canada, the United Kingdom and New Zealand. Regulator integrations for all four are sandbox today, with production wiring pending accreditation.',
   },
   {
     question: 'Can I change plans as my firm grows?',
@@ -76,9 +76,9 @@ const PRICING_FAQ: FaqItem[] = [
 
 const FEATURES_FAQ: FaqItem[] = [
   {
-    question: 'What is automated VEVO checking?',
+    question: 'Does Immistack connect to government visa systems?',
     answer:
-      'Immistack connects to Australian visa entitlement verification (VEVO) so you can confirm client visa status and conditions automatically instead of checking manually.',
+      'Not yet. Immistack ships sandbox integrations for eight regulators, with production wiring pending accreditation. Every regulator response carries its own provenance and a sandbox flag, so a sandbox result can never be mistaken for live data.',
   },
   {
     question: 'Does Immistack automate immigration forms?',
