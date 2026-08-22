@@ -28,7 +28,7 @@ export const PAGES: PageMeta[] = [
     path: '/',
     title: 'Immistack | Immigration CRM & Case Management Software',
     description:
-      'Streamline your immigration practice with Immistack: the all-in-one CRM for VEVO checks, client intake, and compliance across AU, CA, UK & NZ.',
+      'Streamline your immigration practice with Immistack: the all-in-one CRM for document checklists, client intake, and compliance across AU, CA, UK & NZ.',
     keyword: 'immigration CRM software',
   },
   {
@@ -36,7 +36,7 @@ export const PAGES: PageMeta[] = [
     path: '/features',
     title: 'Features | Immigration CRM & Automation – Immistack',
     description:
-      "Explore Immistack's features: automated VEVO checks, smart client intake, workflow automation, compliance tracking and global case management.",
+      "Explore Immistack's features: per-subclass document checklists, smart client intake, workflow automation, expiry alerts and global case management.",
     keyword: 'immigration case management features',
   },
   {
@@ -60,16 +60,16 @@ export const PAGES: PageMeta[] = [
     path: '/blog',
     title: 'Immigration Practice Resources & Guides | Immistack Blog',
     description:
-      'Expert guides, tips and updates on immigration case management, VEVO checks, compliance and practice growth from the Immistack team.',
+      'Expert guides, tips and updates on immigration case management, compliance, record-keeping and practice growth from the Immistack team.',
     keyword: 'immigration practice guides',
   },
   {
     page: 'FEATURE_COMPLIANCE',
     path: '/compliance-vevo',
-    title: 'Compliance & Automated VEVO Checks | Immistack',
+    title: 'Compliance, Checklists & Audit Trail | Immistack',
     description:
-      'Automate Australian visa entitlement verification (VEVO) checks for your clients with Immistack. Save time, reduce errors and stay compliant.',
-    keyword: 'automated VEVO checks Australia',
+      'Per-subclass document checklists, visa expiry alerts, CPD and insurance records and a tamper-evident audit log for migration agents. Built for the 2026 Regulations.',
+    keyword: 'migration agent compliance software Australia',
   },
   {
     page: 'FEATURE_CRM',

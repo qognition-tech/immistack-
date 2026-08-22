@@ -38,7 +38,7 @@ export const OrganizationSchema: React.FC = () => {
         url: SITE_ORIGIN,
         publisher: { '@id': `${SITE_ORIGIN}/#organization` },
         description:
-          'Immigration CRM and case management software with automated VEVO checks, client intake, workflow automation and compliance tracking.',
+          'Immigration CRM and case management software with per-subclass document checklists, client intake, workflow automation and a hash-chained audit log.',
         offers: {
           '@type': 'Offer',
           price: '0',
