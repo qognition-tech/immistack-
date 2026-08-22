@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreditCard, DollarSign, RefreshCw, Receipt, Globe, Upload } from 'lucide-react';
+import { CreditCard, DollarSign, RefreshCw, Receipt, Globe } from 'lucide-react';
 import { Button } from '../components/Button';
 import { MockButton } from '../components/SandboxBadge';
 
@@ -58,21 +58,21 @@ export const FeatureBilling: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWa
          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
                <CreditCard className="h-8 w-8 text-indigo-600 mb-4" />
-               <h3 className="font-bold text-navy text-lg mb-2">Universal Gateway Support</h3>
-               <p className="text-gray-600 text-sm mb-4">Don't change your provider. We integrate with Stripe, Square, PayPal, Authorize.net, LawPay, and eWay.</p>
+               <h3 className="font-bold text-navy text-lg mb-2">Keep Your Provider</h3>
+               <p className="text-gray-600 text-sm mb-4">Clients settle with you the way they already do. Staff record each payment against the matter, and the ledger keeps receivables and payables in separate columns — they are never added together.</p>
                <div className="flex gap-2 flex-wrap">
-                  <span className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-600 font-semibold">Stripe</span>
-                  <span className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-600 font-semibold">LawPay</span>
-                  <span className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-600 font-semibold">Square</span>
+                  <span className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-600 font-semibold">Receivable</span>
+                  <span className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-600 font-semibold">Payable</span>
+                  <span className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-600 font-semibold">Government fee</span>
                </div>
             </div>
 
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
                <Globe className="h-8 w-8 text-green-600 mb-4" />
-               <h3 className="font-bold text-navy text-lg mb-2">Bank Transfer & Wise</h3>
-               <p className="text-gray-600 text-sm mb-2">Clients prefer local transfers. Issue virtual account numbers via Wise or accept direct deposits.</p>
-               <div className="flex items-center gap-2 text-xs text-techBlue font-bold cursor-pointer">
-                  <Upload className="h-3 w-3" /> Upload Bank CSV for auto-reconciliation
+               <h3 className="font-bold text-navy text-lg mb-2">Fees You Pay, Tracked Separately</h3>
+               <p className="text-gray-600 text-sm mb-2">Government charges the firm pays on a client's behalf — a visa application charge, a disbursement — are recorded as outbound, with their own kind and reference, so a receivables report is never inflated by money that went the other way.</p>
+               <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <Globe className="h-3 w-3" /> Fee schedules come from the country config pack
                </div>
             </div>
 

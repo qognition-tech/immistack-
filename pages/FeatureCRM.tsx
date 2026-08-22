@@ -121,14 +121,13 @@ export const FeatureCRM: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitli
                   <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center mb-4">
                      <CreditCard className="h-6 w-6 text-indigo-600" />
                   </div>
-                  <h4 className="font-bold text-navy text-lg mb-2">Connect Any Gateway</h4>
+                  <h4 className="font-bold text-navy text-lg mb-2">Settle However You Already Do</h4>
                   <p className="text-sm text-gray-500 mb-4">
-                     Direct integration with Stripe, Square, PayPal, and Authorize.net. 
+                     Take payment by bank transfer or terminal, then record it against the matter. Money in and money out are kept in separate columns and never summed together.
                   </p>
                   <div className="flex gap-2 opacity-60">
-                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">Stripe</span>
-                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">Square</span>
-                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">PayPal</span>
+                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">Receivables</span>
+                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">Payables</span>
                   </div>
                </div>
 
@@ -136,13 +135,13 @@ export const FeatureCRM: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitli
                   <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4">
                      <Landmark className="h-6 w-6 text-green-600" />
                   </div>
-                  <h4 className="font-bold text-navy text-lg mb-2">Bank Transfers & Wise</h4>
+                  <h4 className="font-bold text-navy text-lg mb-2">Staged Plans With a Real Gate</h4>
                   <p className="text-sm text-gray-500 mb-4">
-                     Provide unique virtual account numbers for international clients to pay via local bank transfer.
+                     Upfront, instalment or stage-gated plans come from the config pack. When a plan says a stage is unpaid, the matter cannot advance past it — enforced by the workflow, not by a reminder.
                   </p>
                   <div className="flex gap-2 opacity-60">
-                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">Wise</span>
-                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">Wire</span>
+                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">Stage-gated</span>
+                     <span className="text-[10px] font-bold bg-gray-100 px-2 py-1 rounded">Instalments</span>
                   </div>
                </div>
 

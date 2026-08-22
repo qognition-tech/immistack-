@@ -72,7 +72,7 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
                               <div className="p-1.5 bg-gold/10 rounded-full mt-0.5"><CreditCard className="h-4 w-4 text-goldDark" /></div>
                               <div>
                                  <strong className="block text-navy">Frictionless Payments</strong>
-                                 <span className="text-sm text-gray-500">Integrated Stripe/Square payments. "Pay Now" buttons on every invoice.</span>
+                                 <span className="text-sm text-gray-500">Every invoice and its status, with what is outstanding by matter — and a clear note of how to settle with the firm.</span>
                               </div>
                            </li>
                         </ul>

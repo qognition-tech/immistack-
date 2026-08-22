@@ -34,6 +34,11 @@ const BANNED = [
   [/\d+M\+?\s*visas/i, "processed-visa counts — none exist"],
   [/100%\s*(accuracy|verified|compliance)/i, "unsupported accuracy claim"],
   [/SLA uptime guarantee/i, "no SLA"],
+  // The product has NO client-facing payment processor. /billing/checkout is
+  // Meru billing the tenant; client settlement is out-of-band and staff record
+  // it via PATCH /payments/:id/settle. This is a deliberate design, not a gap.
+  [/\b(Square|PayPal|Authorize\.net|Wise)\b/, "no payment-processor integration exists"],
+  [/(direct|native) integration with Stripe/i, "no client-facing Stripe integration"],
 ];
 
 function* files(p) {
