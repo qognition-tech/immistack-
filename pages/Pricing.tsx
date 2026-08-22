@@ -12,7 +12,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
 
   const faqs = [
     {
-      question: "Can I migrate data from Migration Manager or LEAP?",
+      question: "Can I migrate data from my current practice-management system?",
       answer: "Yes. We offer a dedicated 'White-Glove Migration Service'. For annual plans, this service is complimentary. We transfer client profiles, active matters, notes, and documents with zero downtime."
     },
     {
@@ -38,7 +38,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
           Pricing that scales with your firm.
         </h1>
         <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-          Replace your CRM, trust accounting software, and form filler with one platform. 
+          Replace your CRM, document checklists, and form filler with one platform. 
           <br className="hidden md:block"/> No hidden fees. Cancel anytime.
         </p>
 
@@ -123,8 +123,8 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
                 {[
                   'Unlimited Active Matters',
                   'AI Document Parsing',
-                  'Trust Accounting (Compliant)',
-                  'Automated VEVO/Visa Checks',
+                  'Payment-Gated Workflow',
+                  'Visa Expiry Alerts',
                   'Multi-Currency Invoicing',
                   'Priority Phone Support'
                 ].map((feature, i) => (
@@ -158,8 +158,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
                   'Custom API Integrations',
                   'Single Sign-On (SSO)',
                   'Audit Logs & Advanced Security',
-                  'Data Sovereignty Choice (AU/UK/CA)',
-                  'SLA Uptime Guarantee'
+                  'Data Sovereignty Choice (AU/UK/CA)'
                 ].map((feature, i) => (
                   <div key={i} className="flex gap-3 text-sm text-navy/80">
                     <Check className="w-5 h-5 text-navy shrink-0" />
@@ -176,8 +175,8 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
            <div className="grid md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-gray-100">
               <div className="px-4 py-2">
                  <ShieldCheck className="h-8 w-8 text-growth mx-auto mb-4" />
-                 <h4 className="font-bold text-navy mb-2">Bank-Grade Security</h4>
-                 <p className="text-sm text-gray-500">SOC2 Type II Certified. AES-256 encryption at rest and in transit.</p>
+                 <h4 className="font-bold text-navy mb-2">Isolation Enforced by the Database</h4>
+                 <p className="text-sm text-gray-500">Postgres row-level security with FORCE, a non-BYPASSRLS app role, and a hash-chained audit log. AES-256 encryption at rest and in transit.</p>
               </div>
               <div className="px-4 py-2">
                  <Globe className="h-8 w-8 text-techBlue mx-auto mb-4" />
