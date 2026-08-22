@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from './Button';
+import { MockButton, SandboxBadge } from './SandboxBadge';
 import { CheckCircle2, Play, LayoutDashboard, Users, FileText, Settings, Bell, Search, PieChart, CreditCard, MoreHorizontal, Scale, GraduationCap, Building2 } from 'lucide-react';
 
 interface HeroProps {
@@ -62,11 +63,11 @@ export const HeroSection: React.FC<HeroProps> = ({ onOpenWaitlist }) => {
             <div className="flex items-center gap-6 text-sm text-gray-500 font-medium border-t border-gray-200 pt-6">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-growth" />
-                <span>SOC2 Type II Certified</span>
+                <span>Row-level security enforced by Postgres</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-growth" />
-                <span>OMARA / OISC Compliant</span>
+                <span>Hash-chained audit log</span>
               </div>
             </div>
           </div>
@@ -88,10 +89,11 @@ export const HeroSection: React.FC<HeroProps> = ({ onOpenWaitlist }) => {
                     </div>
                  </div>
                  <div className="flex items-center gap-3">
-                    <button className="p-2 hover:bg-gray-100 rounded-full text-gray-500 relative">
+                    <SandboxBadge className="hidden md:inline-flex" />
+                    <MockButton className="p-2 rounded-full text-gray-500 relative">
                        <Bell className="h-4 w-4" />
                        <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                    </button>
+                    </MockButton>
                     <div className="w-8 h-8 bg-gradient-to-tr from-gold to-goldDark rounded-full flex items-center justify-center text-white text-xs font-bold border border-white shadow-sm">
                        JD
                     </div>
@@ -138,8 +140,8 @@ export const HeroSection: React.FC<HeroProps> = ({ onOpenWaitlist }) => {
                           <p className="text-xs text-gray-500">Welcome back, James. You have 3 urgent deadlines.</p>
                        </div>
                        <div className="flex gap-2">
-                          <button className="bg-white border border-gray-300 text-navy text-xs px-3 py-2 rounded-md font-medium shadow-sm hover:bg-gray-50">Filter View</button>
-                          <button className="bg-techBlue text-white text-xs px-3 py-2 rounded-md font-medium shadow-sm hover:bg-blue-600">+ New Matter</button>
+                          <MockButton className="bg-white border border-gray-300 text-navy text-xs px-3 py-2 rounded-md font-medium shadow-sm">Filter View</MockButton>
+                          <MockButton className="bg-techBlue text-white text-xs px-3 py-2 rounded-md font-medium shadow-sm">+ New Matter</MockButton>
                        </div>
                     </div>
 
