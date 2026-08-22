@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Bot, Sparkles, Zap, Mail, FileSearch } from 'lucide-react';
 import { Button } from '../components/Button';
+import { SandboxBadge } from '../components/SandboxBadge';
 
 export const FeatureAI: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   const schema = {
@@ -114,8 +115,8 @@ export const FeatureAI: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlis
                      </div>
                   </div>
                </div>
-               <div className="flex items-center justify-center gap-2 text-xs text-growth font-bold">
-                  <CheckCircle2 className="h-4 w-4" /> 100% Accuracy Verified
+               <div className="flex items-center justify-center gap-2 text-xs text-gray-500 font-medium">
+                  <SandboxBadge /> <span>Extracted fields are queued for staff review before they touch a matter.</span>
                </div>
             </div>
             

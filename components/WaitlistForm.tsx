@@ -86,7 +86,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://immistack.com';
     const shareUrl = `${origin}/?ref=${code}`;
     const shareText = encodeURIComponent(
-      'I just joined the Immistack early-access waitlist — the immigration CRM with automated VEVO checks. Jump the line:',
+      'I just joined the Immistack early-access waitlist — the immigration CRM with a tamper-evident audit log. Jump the line:',
     );
 
     const copy = async () => {
