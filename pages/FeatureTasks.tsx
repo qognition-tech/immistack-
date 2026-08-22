@@ -52,7 +52,7 @@ export const FeatureTasks: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWait
                      <div className="text-xs font-bold text-gray-400 mb-3 uppercase">Lodged</div>
                      <div className="bg-white p-3 rounded shadow-sm border-l-4 border-growth">
                         <div className="text-xs font-bold text-navy">Partner Visa 820</div>
-                        <div className="text-[10px] text-gray-500 mt-1">Auto-checked VEVO</div>
+                        <div className="text-[10px] text-gray-500 mt-1">Checklist complete · 12/12</div>
                      </div>
                   </div>
                </div>

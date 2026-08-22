@@ -42,8 +42,8 @@ export const Features: React.FC<FeaturesProps> = ({ onOpenWaitlist, onNavigate }
               <div className="w-12 h-12 bg-growth/10 rounded-lg flex items-center justify-center mb-4">
                   <Globe className="h-6 w-6 text-growth" />
               </div>
-              <h3 className="text-xl font-bold text-navy mb-2 group-hover:text-growth">Compliance & VEVO</h3>
-              <p className="text-sm text-gray-600 mb-4">Automated VEVO and right-to-work status checks.</p>
+              <h3 className="text-xl font-bold text-navy mb-2 group-hover:text-growth">Compliance & Audit Trail</h3>
+              <p className="text-sm text-gray-600 mb-4">Per-subclass document checklists, expiry alerts and a hash-chained audit log.</p>
               <span className="text-xs font-bold text-growth flex items-center gap-1">Learn more <ArrowRight className="h-3 w-3" /></span>
            </div>
 
@@ -168,7 +168,7 @@ export const Features: React.FC<FeaturesProps> = ({ onOpenWaitlist, onNavigate }
                  </div>
                  <h4 className="font-bold text-navy mb-2">Staff Management</h4>
                  <p className="text-xs text-gray-500 leading-relaxed mb-4">
-                    Onboard new team members and assign granular permissions. Ensure junior staff cannot access Trust Accounts.
+                    Onboard new team members and assign granular permissions. Every action lands in the append-only audit log.
                  </p>
                  <ul className="text-xs text-navy space-y-1">
                     <li className="flex items-center gap-2"><div className="w-1 h-1 bg-growth rounded-full"></div> Role-based Access</li>

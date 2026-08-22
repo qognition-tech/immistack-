@@ -5,7 +5,7 @@ import { Home as HomeIcon, ArrowRight } from 'lucide-react';
 const POPULAR = [
   { label: 'Features', path: '/features' },
   { label: 'Pricing', path: '/pricing' },
-  { label: 'Compliance & VEVO', path: '/compliance-vevo' },
+  { label: 'Compliance & Audit Trail', path: '/compliance-vevo' },
   { label: 'For Migration Agents', path: '/migration-agents' },
   { label: 'Blog', path: '/blog' },
 ];
