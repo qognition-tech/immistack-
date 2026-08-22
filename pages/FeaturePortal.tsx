@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, Users, Lock, CreditCard, Smartphone, Shield, Briefcase, ChevronRight, LayoutDashboard } from 'lucide-react';
 import { Button } from '../components/Button';
+import { MockButton } from '../components/SandboxBadge';
 
 export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   const [activeTab, setActiveTab] = useState<'CLIENT' | 'AGENT' | 'ADMIN'>('CLIENT');
@@ -92,7 +93,7 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
                               <div className="bg-navy p-4 rounded-xl shadow-sm text-white mb-4">
                                  <div className="text-xs font-bold text-white/60 mb-1">PENDING ACTION</div>
                                  <div className="font-bold mb-2">Upload Police Check</div>
-                                 <button className="w-full py-2 bg-white text-navy font-bold rounded text-xs">Tap to Upload</button>
+                                 <MockButton className="w-full py-2 bg-white text-navy font-bold rounded text-xs">Tap to Upload</MockButton>
                               </div>
                            </div>
                         </div>
@@ -171,14 +172,14 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
                               <div className="p-1.5 bg-navy/10 rounded-full mt-0.5"><Shield className="h-4 w-4 text-navy" /></div>
                               <div>
                                  <strong className="block text-navy">Role-Based Access</strong>
-                                 <span className="text-sm text-gray-500">Granular permissions. Restrict junior staff from trust accounts or sensitive files.</span>
+                                 <span className="text-sm text-gray-500">Granular permissions, backed by Postgres row-level security so a tenant boundary cannot be crossed even by the application role.</span>
                               </div>
                            </li>
                            <li className="flex items-start gap-3">
                               <div className="p-1.5 bg-navy/10 rounded-full mt-0.5"><LayoutDashboard className="h-4 w-4 text-navy" /></div>
                               <div>
                                  <strong className="block text-navy">Financial Reporting</strong>
-                                 <span className="text-sm text-gray-500">Real-time revenue tracking, trust account ledgers, and staff utilization reports.</span>
+                                 <span className="text-sm text-gray-500">Real-time revenue tracking, arrears by matter, and staff utilization reports.</span>
                               </div>
                            </li>
                         </ul>
