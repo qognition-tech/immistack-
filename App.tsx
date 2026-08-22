@@ -94,7 +94,7 @@ const App: React.FC = () => {
                 <h5 className="font-bold text-navy mb-5 tracking-wide">Platform</h5>
                 <ul className="space-y-3 text-gray-500">
                   <li><FooterLink page="FEATURE_CRM" className="hover:text-goldDark transition-colors">CRM &amp; Intake</FooterLink></li>
-                  <li><FooterLink page="FEATURE_COMPLIANCE" className="hover:text-goldDark transition-colors">Compliance &amp; VEVO</FooterLink></li>
+                  <li><FooterLink page="FEATURE_COMPLIANCE" className="hover:text-goldDark transition-colors">Compliance &amp; Audit Trail</FooterLink></li>
                   <li><FooterLink page="FEATURE_AI" className="hover:text-goldDark transition-colors">AI Automation</FooterLink></li>
                   <li><FooterLink page="FEATURE_PORTAL" className="hover:text-goldDark transition-colors">Client Portal</FooterLink></li>
                   <li><FooterLink page="FEATURE_TASKS" className="hover:text-goldDark transition-colors">Task Management</FooterLink></li>
@@ -122,7 +122,7 @@ const App: React.FC = () => {
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-400">
                 <Shield className="h-4 w-4 text-growth" />
-                <span className="text-xs font-semibold">SOC2 Type II Compliant &amp; ISO 27001 Certified</span>
+                <span className="text-xs font-semibold">Sandbox integrations for eight regulators &middot; production wiring pending accreditation</span>
               </div>
               <p className="text-gray-400">© {new Date().getFullYear()} Immistack Inc.</p>
             </div>
