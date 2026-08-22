@@ -1,6 +1,7 @@
 import React from 'react';
 import { CreditCard, DollarSign, RefreshCw, Receipt, Globe, Upload } from 'lucide-react';
 import { Button } from '../components/Button';
+import { MockButton } from '../components/SandboxBadge';
 
 export const FeatureBilling: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   return (
@@ -34,7 +35,7 @@ export const FeatureBilling: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWa
                      <div className="text-2xl font-bold text-navy">$4,500.00</div>
                      <div className="text-xs text-gray-400">Total Due</div>
                   </div>
-                  <button className="bg-navy text-white px-6 py-2 rounded-lg font-bold text-sm hover:bg-navyLight">Pay Now</button>
+                  <MockButton className="bg-navy text-white px-6 py-2 rounded-lg font-bold text-sm">Pay Now</MockButton>
                </div>
                <div className="space-y-4">
                   <div className="flex justify-between items-center text-sm">
@@ -89,8 +90,8 @@ export const FeatureBilling: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWa
 
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
                <Receipt className="h-8 w-8 text-goldDark mb-4" />
-               <h3 className="font-bold text-navy text-lg mb-2">Xero & QuickBooks Sync</h3>
-               <p className="text-gray-600 text-sm">Two-way sync. When a client pays in Immistack, it's instantly reconciled in your accounting software.</p>
+               <h3 className="font-bold text-navy text-lg mb-2">Payment-Gated Workflow</h3>
+               <p className="text-gray-600 text-sm">Turn on <code className="text-xs">blockProgressOnArrears</code> and a matter cannot advance to the next stage while an invoice is overdue. No chasing, no exceptions.</p>
             </div>
          </div>
       </div>
