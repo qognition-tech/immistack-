@@ -28,7 +28,7 @@ export const Industries: React.FC<IndustriesProps> = ({onOpenWaitlist, onNavigat
                 <div className="p-3 bg-gold/10 rounded-lg w-fit mb-6"><Scale className="h-8 w-8 text-goldDark" /></div>
                 <h2 className="text-2xl font-bold text-navy mb-4 group-hover:text-goldDark transition-colors">Migration Agents</h2>
                 <p className="text-gray-600 mb-8 text-sm leading-relaxed flex-grow">
-                   For registered agents (OMARA/OISC) who need rigorous compliance, trust accounting, and CPD tracking.
+                   For registered agents (OMARA/OISC) who need rigorous compliance, a tamper-evident audit trail, and CPD tracking.
                 </p>
                 <div className="flex items-center text-goldDark font-bold text-sm mt-auto">
                    View Features <ArrowRight className="h-4 w-4 ml-2" />

@@ -32,7 +32,7 @@ export const IndustryAgents: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWa
                 <div className="space-y-4">
                    {[
                       "Automated Code of Conduct delivery to client",
-                      "Trust Account deficiency alerts",
+                      "Visa expiry alerts driven by configurable alert rules",
                       "Conflict of Interest checker",
                       "CPD Point logbook",
                       "Secure file note timestamping"
