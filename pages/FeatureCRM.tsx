@@ -112,7 +112,7 @@ export const FeatureCRM: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitli
             <div className="text-center mb-12">
                <h2 className="text-3xl font-bold text-navy mb-4">Get Paid Faster, Your Way.</h2>
                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                  Immistack supports all major payment gateways and automates your trust accounting compliance.
+                  Invoices, stage payments and a payment-gated workflow: a matter cannot advance while an invoice is in arrears.
                </p>
             </div>
             
