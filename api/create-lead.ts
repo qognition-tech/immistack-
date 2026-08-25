@@ -1,193 +1,163 @@
-interface ZohoTokenResponse {
-  access_token: string;
-  refresh_token?: string;
-  expires_in: number;
+/**
+ * POST /api/create-lead — the single inbound capture endpoint for this site.
+ *
+ * Every form (waitlist, lead magnet, affiliate, contact) posts here. Segmentation comes
+ * from `source`, which maps to a tag; it does not come from separate endpoints.
+ *
+ * Replaces an earlier Zoho implementation. That version never worked in production —
+ * its `ZOHO_*` values were placeholder strings — and it hard-required `firmName` and
+ * `firmSize`, so affiliate submissions (which send neither) would have 400'd regardless.
+ * Both problems are fixed here.
+ *
+ * Records land in Twenty CRM tagged `IMMISTACK` + `IMMISTACK_MARKETING` + a capture-point
+ * tag. See api/_twenty.ts.
+ */
+import {
+  upsertLead,
+  isTwentyConfigured,
+  TwentyNotConfiguredError,
+  SOURCE_TAGS,
+} from './_twenty';
+
+/** Only this site may post here. An open CORS policy on a lead endpoint invites junk. */
+const ALLOWED_ORIGINS = [
+  'https://immistack.com',
+  'https://www.immistack.com',
+  'https://immistack-marketing.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:4173',
+];
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Crude in-memory throttle. Serverless instances are short-lived, so this only blunts
+ *  a burst from one warm instance — it is a speed bump, not a security control. */
+const RECENT = new Map<string, number[]>();
+const WINDOW_MS = 60_000;
+const MAX_PER_WINDOW = 5;
+
+function rateLimited(key: string): boolean {
+  const now = Date.now();
+  const hits = (RECENT.get(key) || []).filter((t) => now - t < WINDOW_MS);
+  hits.push(now);
+  RECENT.set(key, hits);
+  if (RECENT.size > 500) RECENT.clear(); // bound memory
+  return hits.length > MAX_PER_WINDOW;
 }
 
-interface ZohoLeadResponse {
-  data: Array<{
-    code: string;
-    details: any;
-    message: string;
-    status: string;
-  }>;
+function pickOrigin(req: any): string | null {
+  const origin = req.headers?.origin;
+  if (!origin) return null;
+  return ALLOWED_ORIGINS.includes(origin) ? origin : null;
 }
 
-interface WaitlistFormData {
-  email: string;
-  firmName: string;
-  firmSize: string;
-  /** "Individual" or "Professional" — day-one list segmentation. */
-  persona?: string;
-  /** Capture point, e.g. "Exit Intent Popup", "Lead Magnet". */
-  source?: string;
-  /** Inbound referral code from the waitlist referral program. */
-  referralSource?: string;
-  /** Affiliate's website or social profile (Affiliate Program form). */
-  website?: string;
-  /** Affiliate's audience / promotion channel (Affiliate Program form). */
-  audience?: string;
+function str(v: unknown, max = 500): string | undefined {
+  if (typeof v !== 'string') return undefined;
+  const t = v.trim();
+  if (!t) return undefined;
+  return t.slice(0, max);
 }
-
-class ZohoCRMService {
-  private clientId: string;
-  private clientSecret: string;
-  private refreshToken: string;
-  private accessToken: string | null = null;
-  private tokenExpiry: number | null = null;
-
-  constructor() {
-    this.clientId = process.env.ZOHO_CLIENT_ID || '';
-    this.clientSecret = process.env.ZOHO_CLIENT_SECRET || '';
-    this.refreshToken = process.env.ZOHO_REFRESH_TOKEN || '';
-  }
-
-  private async getAccessToken(): Promise<string> {
-    if (this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry) {
-      return this.accessToken;
-    }
-
-    const response = await fetch('https://accounts.zoho.com/oauth/v2/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        client_id: this.clientId,
-        client_secret: this.clientSecret,
-        refresh_token: this.refreshToken,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to get access token: ${response.statusText}`);
-    }
-
-    const data: ZohoTokenResponse = await response.json();
-    this.accessToken = data.access_token;
-    this.tokenExpiry = Date.now() + (data.expires_in * 1000) - 60000; // 1 minute buffer
-
-    return this.accessToken;
-  }
-
-  async createLead(formData: WaitlistFormData): Promise<void> {
-    if (!this.clientId || !this.clientSecret || !this.refreshToken) {
-      throw new Error('Zoho CRM credentials not configured');
-    }
-
-    const accessToken = await this.getAccessToken();
-
-    const persona = formData.persona || 'Professional';
-    const captureSource = formData.source || 'Website';
-    const descriptionParts = [
-      `Persona: ${persona}`,
-      `Firm Size: ${formData.firmSize}`,
-      `Capture Source: ${captureSource}`,
-    ];
-    if (formData.audience) {
-      descriptionParts.push(`Audience / Channel: ${formData.audience}`);
-    }
-    if (formData.referralSource) {
-      descriptionParts.push(`Referred By: ${formData.referralSource}`);
-    }
-
-    const leadData = {
-      data: [{
-        Company: formData.firmName,
-        Last_Name: formData.firmName,
-        Email: formData.email,
-        // Industry is a standard Zoho Leads picklist field, handy for segmentation.
-        Industry: persona === 'Individual' ? 'Individual / Applicant' : 'Immigration Professional',
-        // Optional standard Zoho field; affiliates submit a website/social profile.
-        ...(formData.website ? { Website: formData.website } : {}),
-        Description: descriptionParts.join(' | '),
-        Lead_Source: 'Immistack Website',
-        Lead_Status: 'Not Contacted'
-      }]
-    };
-
-    const response = await fetch('https://www.zohoapis.com/crm/v2/Leads', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(leadData),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Failed to create lead: ${errorData.message || response.statusText}`);
-    }
-
-    const result: ZohoLeadResponse = await response.json();
-
-    if (result.data[0].status !== 'success') {
-      throw new Error(`Zoho CRM error: ${result.data[0].message}`);
-    }
-
-    console.log('Lead created successfully:', result.data[0]);
-  }
-}
-
-const zohoCRMService = new ZohoCRMService();
 
 export default async function handler(req: any, res: any) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = pickOrigin(req);
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
 
   try {
-    const {
-      email,
-      firmName,
-      firmSize,
-      persona,
-      source,
-      referralSource,
-      website,
-      audience,
-    }: WaitlistFormData = req.body;
+    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
 
-    // Validate required fields
-    if (!email || !firmName || !firmSize) {
-      return res.status(400).json({
-        message: 'Missing required fields: email, firmName, firmSize'
+    // Honeypot: a real person never fills a field they cannot see. Answer 200 so a bot
+    // learns nothing from the response.
+    if (str(body.company_website) || str(body.hp)) {
+      return res.status(200).json({ message: 'Thanks — you are on the list.' });
+    }
+
+    const email = str(body.email, 320)?.toLowerCase();
+    if (!email || !EMAIL_RE.test(email)) {
+      return res.status(400).json({ message: 'A valid email address is required.' });
+    }
+
+    const ip =
+      (req.headers?.['x-forwarded-for'] || '').toString().split(',')[0].trim() ||
+      req.socket?.remoteAddress ||
+      'unknown';
+    if (rateLimited(ip)) {
+      return res.status(429).json({ message: 'Too many submissions. Please try again shortly.' });
+    }
+
+    if (!isTwentyConfigured()) {
+      // Say what is actually wrong rather than pretending it worked.
+      console.error('[create-lead] TWENTY_API_KEY is not set on this deployment');
+      return res.status(503).json({
+        message:
+          'We could not record your details right now. Please email hello@immistack.com and we will add you by hand.',
       });
     }
 
-    // Create lead in Zoho CRM. All forms (waitlist, lead magnet, affiliate)
-    // submit to this single endpoint; segmentation comes from persona/source.
-    await zohoCRMService.createLead({
+    // Accept both shapes: the waitlist form sends firmName/firmSize, the affiliate form
+    // sends name/website/audience. Neither is required beyond the email.
+    const name = str(body.name) || str(body.fullName);
+    const firmName = str(body.firmName) || str(body.company);
+    const firmSize = str(body.firmSize, 80);
+    const persona = str(body.persona, 80);
+    const website = str(body.website, 500);
+    const audience = str(body.audience, 500);
+    const referralSource = str(body.referralSource, 200);
+    const message = str(body.message, 4000);
+    const phone = str(body.phone, 60);
+
+    const rawSource = str(body.source, 80) || '';
+    const key = rawSource.toLowerCase().replace(/[\s-]+/g, '_');
+    const source = key in SOURCE_TAGS ? key : (website || audience) ? 'affiliate' : 'waitlist';
+
+    const noteLines = [
+      `**Captured:** ${new Date().toISOString()}`,
+      `**Capture point:** ${rawSource || source}`,
+      persona ? `**Persona:** ${persona}` : null,
+      firmName ? `**Firm:** ${firmName}` : null,
+      firmSize ? `**Firm size:** ${firmSize}` : null,
+      website ? `**Website / profile:** ${website}` : null,
+      audience ? `**Audience / channel:** ${audience}` : null,
+      referralSource ? `**Referred by:** ${referralSource}` : null,
+      message ? `\n**Message:**\n${message}` : null,
+      `\n_Recorded automatically from immistack.com. Tags are applied by the site, not by a human._`,
+    ].filter(Boolean) as string[];
+
+    const result = await upsertLead({
       email,
-      firmName,
-      firmSize,
-      persona,
+      name,
+      companyName: firmName,
+      phone,
+      websiteUrl: website,
       source,
-      referralSource,
-      website,
-      audience,
+      noteTitle: `ImmiStack — ${rawSource || source} submission`,
+      noteLines,
     });
 
-    res.status(200).json({
-      message: 'Lead created successfully in Zoho CRM'
+    // Never log the email itself; the id is enough to find the record.
+    console.log(
+      `[create-lead] ok personId=${result.personId} created=${result.created} tags=${result.tags.join('+')} note=${result.noteAttached}`,
+    );
+
+    return res.status(200).json({
+      message: 'Thanks — you are on the list.',
+      created: result.created,
     });
   } catch (error) {
-    console.error('Error creating lead:', error);
-    res.status(500).json({
-      message: 'Failed to create lead in Zoho CRM',
-      error: error instanceof Error ? error.message : 'Unknown error'
+    if (error instanceof TwentyNotConfiguredError) {
+      return res.status(503).json({ message: 'CRM is not configured on this deployment.' });
+    }
+    console.error('[create-lead] failed:', error instanceof Error ? error.message : error);
+    return res.status(500).json({
+      message:
+        'Something went wrong recording your details. Please email hello@immistack.com and we will sort it out.',
     });
   }
 }
