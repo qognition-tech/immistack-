@@ -44,25 +44,25 @@ export const BookCall: React.FC<{ compact?: boolean }> = ({ compact = false }) =
       data-cal-namespace={NAMESPACE}
       data-cal-link={CAL_LINK}
       data-cal-config='{"layout":"month_view"}'
-      className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-md bg-gold text-navy font-bold shadow-lg shadow-gold/20 hover:bg-yellow-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
+      className="inline-flex max-w-full items-center justify-center gap-2 min-h-[48px] px-5 sm:px-7 py-3 text-center rounded-md bg-gold text-navy font-bold shadow-lg shadow-gold/20 hover:bg-yellow-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
     >
-      <CalendarClock className="h-5 w-5" aria-hidden="true" /> Book a call
+      <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" /> Book a call
     </a>
   ) : (
     <a
       href="mailto:hello@immistack.com?subject=Immistack%20intro%20call"
-      className="inline-flex items-center justify-center gap-2 h-12 px-7 rounded-md bg-gold text-navy font-bold shadow-lg shadow-gold/20 hover:bg-yellow-600 transition-colors"
+      className="inline-flex max-w-full items-center justify-center gap-2 min-h-[48px] px-5 sm:px-7 py-3 text-center rounded-md bg-gold text-navy font-bold shadow-lg shadow-gold/20 hover:bg-yellow-600 transition-colors"
     >
-      <Mail className="h-5 w-5" aria-hidden="true" /> Email us to book a call
+      <Mail className="h-5 w-5 shrink-0" aria-hidden="true" /> Email us to book a call
     </a>
   );
 
   if (compact) return trigger;
 
   return (
-    <section className="py-20 bg-white border-t border-gray-100" aria-labelledby="book-heading">
-      <div className="max-w-3xl mx-auto px-4 text-center">
-        <h2 id="book-heading" className="text-3xl font-heading font-bold text-navy mb-4">
+    <section className="py-14 sm:py-16 lg:py-20 bg-white border-t border-gray-100" aria-labelledby="book-heading">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+        <h2 id="book-heading" className="text-2xl sm:text-3xl font-heading font-bold text-navy mb-4">
           Talk to the people building it
         </h2>
         <p className="text-gray-600 mb-8">

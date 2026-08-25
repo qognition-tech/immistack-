@@ -15,7 +15,7 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
            <Users className="h-4 w-4 text-navy" />
            <span className="text-xs font-bold uppercase tracking-wide text-navy">Unified Ecosystem</span>
          </div>
-         <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
+         <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
            Three dedicated portals.<br/><span className="text-goldDark">One single source of truth.</span>
          </h1>
          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -28,35 +28,35 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
             
             {/* Tab Navigation */}
-            <div className="flex border-b border-gray-100">
+            <div className="flex flex-col sm:flex-row border-b border-gray-100">
                <button 
                   onClick={() => setActiveTab('CLIENT')}
-                  className={`flex-1 py-6 text-center font-bold text-sm uppercase tracking-wide transition-all ${activeTab === 'CLIENT' ? 'bg-white text-goldDark border-b-4 border-goldDark' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
+                  className={`flex-1 py-4 sm:py-6 text-center font-bold text-xs sm:text-sm uppercase tracking-wide transition-all ${activeTab === 'CLIENT' ? 'bg-white text-goldDark border-b-4 border-goldDark' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
                >
                   1. Client Portal
                </button>
                <button 
                   onClick={() => setActiveTab('AGENT')}
-                  className={`flex-1 py-6 text-center font-bold text-sm uppercase tracking-wide transition-all ${activeTab === 'AGENT' ? 'bg-white text-techBlue border-b-4 border-techBlue' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
+                  className={`flex-1 py-4 sm:py-6 text-center font-bold text-xs sm:text-sm uppercase tracking-wide transition-all ${activeTab === 'AGENT' ? 'bg-white text-techBlue border-b-4 border-techBlue' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
                >
                   2. Staff / Agent Portal
                </button>
                <button 
                   onClick={() => setActiveTab('ADMIN')}
-                  className={`flex-1 py-6 text-center font-bold text-sm uppercase tracking-wide transition-all ${activeTab === 'ADMIN' ? 'bg-white text-navy border-b-4 border-navy' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
+                  className={`flex-1 py-4 sm:py-6 text-center font-bold text-xs sm:text-sm uppercase tracking-wide transition-all ${activeTab === 'ADMIN' ? 'bg-white text-navy border-b-4 border-navy' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
                >
                   3. Admin Headquarters
                </button>
             </div>
 
             {/* Content Area */}
-            <div className="p-8 md:p-12 bg-slate-50 min-h-[500px] flex items-center justify-center">
+            <div className="p-4 sm:p-8 md:p-12 bg-slate-50 sm:min-h-[500px] flex items-center justify-center">
                
                {/* CLIENT PORTAL VIEW */}
                {activeTab === 'CLIENT' && (
                   <div className="grid md:grid-cols-2 gap-12 items-center w-full animate-fade-in">
                      <div>
-                        <h3 className="text-3xl font-bold text-navy mb-4">A White-Labeled Mobile Experience</h3>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">A White-Labeled Mobile Experience</h3>
                         <p className="text-gray-600 mb-6">
                            Your clients don't want to login to a "database". They want an app-like experience to track their visa, scan passports, and pay invoices.
                         </p>
@@ -78,7 +78,7 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
                         </ul>
                      </div>
                      <div className="flex justify-center">
-                        <div className="w-[280px] h-[550px] bg-navy rounded-[40px] border-[8px] border-navy shadow-2xl relative overflow-hidden">
+                        <div className="w-full max-w-[280px] h-[520px] sm:h-[550px] bg-navy rounded-[40px] border-[8px] border-navy shadow-2xl relative overflow-hidden">
                            {/* Mobile Screen */}
                            <div className="bg-gray-50 w-full h-full pt-10 px-4">
                               <div className="flex justify-between items-center mb-6">
@@ -105,7 +105,7 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
                {activeTab === 'AGENT' && (
                   <div className="grid md:grid-cols-2 gap-12 items-center w-full animate-fade-in">
                      <div>
-                        <h3 className="text-3xl font-bold text-navy mb-4">The Caseworker's Command Center</h3>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">The Caseworker's Command Center</h3>
                         <p className="text-gray-600 mb-6">
                            Designed for speed. Agents manage tasks, draft forms, and log file notes without clicking through endless menus.
                         </p>
@@ -132,7 +132,7 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
                            <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                            <div className="w-3 h-3 rounded-full bg-green-400"></div>
                         </div>
-                        <div className="p-4 grid grid-cols-3 gap-4 h-64">
+                        <div className="p-4 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 h-auto sm:h-64">
                            <div className="bg-gray-100 rounded p-2">
                               <div className="text-xs font-bold text-gray-500 mb-2">TO DO (4)</div>
                               <div className="bg-white p-2 rounded shadow-sm text-xs border-l-2 border-red-500 mb-2">
@@ -163,7 +163,7 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
                {activeTab === 'ADMIN' && (
                   <div className="grid md:grid-cols-2 gap-12 items-center w-full animate-fade-in">
                      <div>
-                        <h3 className="text-3xl font-bold text-navy mb-4">Executive Oversight & Control</h3>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">Executive Oversight & Control</h3>
                         <p className="text-gray-600 mb-6">
                            Manage risk, revenue, and resources across multiple branches or countries from one dashboard.
                         </p>

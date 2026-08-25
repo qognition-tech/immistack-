@@ -35,7 +35,7 @@ export const FeatureAI: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlis
                  <Sparkles className="h-4 w-4 text-gold" />
                  <span className="text-xs font-bold uppercase tracking-wide text-gold">Immistack Intelligence™</span>
                </div>
-               <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
+               <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
                  Your smartest employee <br/>never sleeps.
                </h1>
                <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-2xl">
@@ -57,7 +57,7 @@ export const FeatureAI: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlis
                <div className="w-12 h-12 bg-techBlue/10 rounded-xl flex items-center justify-center mb-6">
                   <Mail className="h-6 w-6 text-techBlue" />
                </div>
-               <h3 className="text-3xl font-bold text-navy mb-4">Hyper-Personalized Communication</h3>
+               <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">Hyper-Personalized Communication</h3>
                <p className="text-lg text-gray-600 mb-6">
                   Generic templates get ignored. Our AI analyzes the client's case stage and writes contextual updates that sound like they came from you.
                </p>
@@ -124,7 +124,7 @@ export const FeatureAI: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlis
                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
                   <FileSearch className="h-6 w-6 text-purple-600" />
                </div>
-               <h3 className="text-3xl font-bold text-navy mb-4">Intelligent Document Processing</h3>
+               <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">Intelligent Document Processing</h3>
                <p className="text-lg text-gray-600 mb-6">
                   Stop manually typing passport numbers. Drag and drop any identity document, and our AI instantly populates the fields in the case file.
                </p>

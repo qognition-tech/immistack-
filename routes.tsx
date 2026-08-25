@@ -6,7 +6,7 @@ import { Seo } from './components/Seo';
 import { BreadcrumbSchema, FaqSchema, FaqItem } from './components/Schema';
 import { useWaitlist } from './context/WaitlistContext';
 import { Page } from './types';
-import { PAGES, PageMeta, ARTICLE_META, NOT_FOUND_META, pathForPage } from './seo/site';
+import { PAGES, PageMeta, ARTICLE_META, SECURITY_META, NOT_FOUND_META, pathForPage } from './seo/site';
 
 // Pages
 import { Home } from './pages/Home';
@@ -30,6 +30,7 @@ import { IndustryCorporate } from './pages/IndustryCorporate';
 import { Resources } from './pages/Resources';
 import { ResourceArticle } from './pages/ResourceArticle';
 import { Affiliate } from './pages/Affiliate';
+import { Security } from './pages/Security';
 import { NotFound } from './pages/NotFound';
 
 const PAGE_COMPONENTS: Record<Page, React.ComponentType<any>> = {
@@ -145,6 +146,27 @@ const ArticleRoute: React.FC = () => {
   );
 };
 
+/**
+ * /security is registered directly rather than through PAGES, because a PAGES
+ * entry needs an id in the `Page` union in types.ts. It still gets the same
+ * <Seo> head tags and breadcrumb schema every other page gets, and
+ * vite-react-ssg prerenders it from this route table.
+ */
+const SecurityRoute: React.FC = () => {
+  const { openWaitlist } = useWaitlist();
+  return (
+    <>
+      <Seo
+        title={SECURITY_META.title}
+        description={SECURITY_META.description}
+        path={SECURITY_META.path}
+      />
+      <BreadcrumbSchema trail={[{ name: 'Security', path: SECURITY_META.path }]} />
+      <Security onOpenWaitlist={() => openWaitlist({ source: 'CTA: Security' })} />
+    </>
+  );
+};
+
 const NotFoundRoute: React.FC = () => (
   <>
     <Seo title={NOT_FOUND_META.title} description={NOT_FOUND_META.description} path="/404" noindex />
@@ -166,6 +188,7 @@ export const routes: RouteRecord[] = [
     element: <App />,
     children: [
       ...pageChildren,
+      { path: SECURITY_META.path.replace(/^\//, ''), element: <SecurityRoute /> },
       { path: ARTICLE_META.path.replace(/^\//, ''), element: <ArticleRoute /> },
       // Param fallback so any /blog/<slug> resolves client-side.
       { path: 'blog/:slug', element: <ArticleRoute /> },

@@ -20,7 +20,7 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                  <Briefcase className="h-4 w-4 text-techBlue" />
                  <span className="text-xs font-bold uppercase tracking-wide text-techBlue">The Engine Room</span>
                </div>
-               <h1 className="text-4xl md:text-6xl font-heading font-bold text-navy mb-6">
+               <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold text-navy mb-6">
                  Where work actually gets done.
                </h1>
                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
@@ -42,7 +42,7 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                   <div className="w-12 h-12 bg-navy/5 rounded-xl flex items-center justify-center mb-6">
                      <UserPlus className="h-6 w-6 text-navy" />
                   </div>
-                  <h3 className="text-3xl font-bold text-navy mb-4">1. Lead Handling</h3>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">1. Lead Handling</h3>
                   <p className="text-gray-600 mb-4 text-lg">
                      Don't let leads go cold. The Staff Portal aggregates inquiries from your website, WhatsApp, and email into a single "New Leads" pipeline.
                   </p>
@@ -87,7 +87,7 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                <div className="order-2 md:order-1 bg-white border border-gray-200 rounded-xl shadow-lg p-6">
                    <div className="mb-4">
                       <div className="text-xs font-bold text-gray-400 uppercase mb-2">Kanban Board: Processing</div>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                          <div className="bg-gray-100 p-2 rounded">
                             <div className="text-[10px] font-bold text-navy mb-1">In Progress (12)</div>
                             <div className="bg-white p-2 rounded shadow-sm text-xs mb-1">Smith - 482 Visa</div>
@@ -104,7 +104,7 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                   <div className="w-12 h-12 bg-growth/10 rounded-xl flex items-center justify-center mb-6">
                      <Briefcase className="h-6 w-6 text-growth" />
                   </div>
-                  <h3 className="text-3xl font-bold text-navy mb-4">2. Case Processing</h3>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">2. Case Processing</h3>
                   <p className="text-gray-600 mb-4 text-lg">
                      Move cases through a visual pipeline. From "Intake" to "Lodged" to "Finalized". 
                   </p>
@@ -128,7 +128,7 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                   <div className="w-12 h-12 bg-techBlue/10 rounded-xl flex items-center justify-center mb-6">
                      <FileSearch className="h-6 w-6 text-techBlue" />
                   </div>
-                  <h3 className="text-3xl font-bold text-navy mb-4">3. Document Requests</h3>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">3. Document Requests</h3>
                   <p className="text-gray-600 mb-4 text-lg">
                      Stop chasing clients via email. Send secure upload links to the Client Portal in one click.
                   </p>
@@ -180,7 +180,7 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                   <div className="w-12 h-12 bg-gold/10 rounded-xl flex items-center justify-center mb-6">
                      <PenTool className="h-6 w-6 text-goldDark" />
                   </div>
-                  <h3 className="text-3xl font-bold text-navy mb-4">4. Visa Drafting</h3>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">4. Visa Drafting</h3>
                   <p className="text-gray-600 mb-4 text-lg">
                      Map client data directly into government forms (Form 80, 1221, 956). 
                   </p>

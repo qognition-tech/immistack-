@@ -22,6 +22,25 @@ export default {
     './context/**/*.{ts,tsx}',
   ],
   theme: {
+    /*
+     * The default Tailwind scale plus `xs` (400px), which separates a 320px
+     * phone from a 375/414px one — the widths where the three-up mockup grids
+     * and the persona tabs stop fitting.
+     *
+     * Declared here rather than in `extend` on purpose: `extend.screens` appends
+     * a new key AFTER `2xl`, and Tailwind emits screen variants in declaration
+     * order, so an extended `xs:` rule would sit last in the stylesheet and
+     * override every larger breakpoint. Listing the full set keeps `xs` first
+     * and leaves sm…2xl at their stock values.
+     */
+    screens: {
+      xs: '400px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       colors: {
         navy: '#0B1120',

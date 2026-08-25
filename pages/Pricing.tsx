@@ -34,7 +34,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
       
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
-        <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6 tracking-tight">
           Pricing that scales with your firm.
         </h1>
         <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
@@ -44,16 +44,16 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
 
         {/* Toggle */}
         <div className="flex justify-center mb-16">
-          <div className="relative bg-white p-1.5 rounded-xl border border-gray-200 shadow-sm inline-flex items-center gap-1">
+          <div className="relative bg-white p-1.5 rounded-xl border border-gray-200 shadow-sm inline-flex flex-wrap justify-center items-center gap-1 max-w-full">
             <button 
               onClick={() => setAnnual(false)}
-              className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${!annual ? 'bg-navy text-white shadow-md' : 'text-gray-500 hover:text-navy'}`}
+              className={`px-4 sm:px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${!annual ? 'bg-navy text-white shadow-md' : 'text-gray-500 hover:text-navy'}`}
             >
               Monthly
             </button>
             <button 
               onClick={() => setAnnual(true)}
-              className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 flex items-center gap-2 ${annual ? 'bg-navy text-white shadow-md' : 'text-gray-500 hover:text-navy'}`}
+              className={`px-4 sm:px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 flex items-center gap-2 ${annual ? 'bg-navy text-white shadow-md' : 'text-gray-500 hover:text-navy'}`}
             >
               Yearly <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold uppercase ${annual ? 'bg-gold text-navy' : 'bg-green-100 text-green-700'}`}>Save 20%</span>
             </button>
@@ -64,7 +64,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
         <div className="grid lg:grid-cols-3 gap-8 items-start max-w-7xl mx-auto relative">
            
            {/* STARTER TIER */}
-           <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 relative group z-10">
+           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 relative group z-10">
               <div className="mb-6 text-left">
                 <h3 className="text-xl font-bold text-navy mb-2">Starter</h3>
                 <p className="text-sm text-gray-500 min-h-[40px]">Essential tools for solo practitioners and boutique firms.</p>
@@ -97,7 +97,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
            </div>
 
            {/* PROFESSIONAL TIER (Hero) */}
-           <div className="bg-navy rounded-3xl p-8 border border-navy shadow-2xl relative z-20 transform lg:-translate-y-4 ring-4 ring-navy/5">
+           <div className="bg-navy rounded-3xl p-6 sm:p-8 border border-navy shadow-2xl relative z-20 transform lg:-translate-y-4 ring-4 ring-navy/5">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
                  <span className="bg-gold text-navy text-xs font-extrabold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg">Most Popular</span>
               </div>
@@ -137,7 +137,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
            </div>
 
            {/* ENTERPRISE TIER */}
-           <div className="bg-white rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 relative z-10">
+           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 relative z-10">
               <div className="mb-6 text-left">
                 <h3 className="text-xl font-bold text-navy mb-2">Enterprise</h3>
                 <p className="text-sm text-gray-500 min-h-[40px]">Custom solutions for global networks and large agencies.</p>
@@ -193,7 +193,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}
 
         {/* FAQ Section */}
         <div className="max-w-3xl mx-auto mt-24">
-           <h2 className="text-3xl font-heading font-bold text-navy text-center mb-10">Frequently Asked Questions</h2>
+           <h2 className="text-2xl sm:text-3xl font-heading font-bold text-navy text-center mb-10">Frequently Asked Questions</h2>
            <div className="space-y-4">
               {faqs.map((faq, index) => (
                  <div key={index} className="bg-white border border-gray-200 rounded-xl overflow-hidden transition-all hover:border-gray-300">

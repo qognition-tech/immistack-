@@ -46,34 +46,34 @@ const POINTS = [
 ];
 
 export const ProofPoints: React.FC = () => (
-  <section className="py-24 bg-navy relative overflow-hidden" aria-labelledby="proof-heading">
-    <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-techBlue/5 rounded-full blur-[100px]" aria-hidden="true"></div>
-    <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[100px]" aria-hidden="true"></div>
+  <section className="py-16 sm:py-20 lg:py-24 bg-navy relative overflow-hidden" aria-labelledby="proof-heading">
+    <div className="absolute top-0 right-0 w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] lg:w-[600px] lg:h-[600px] max-w-full bg-techBlue/5 rounded-full blur-[100px]" aria-hidden="true"></div>
+    <div className="absolute bottom-0 left-0 w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] lg:w-[600px] lg:h-[600px] max-w-full bg-gold/5 rounded-full blur-[100px]" aria-hidden="true"></div>
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div className="text-center mb-16">
-        <h2 id="proof-heading" className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">
+      <div className="text-center mb-10 sm:mb-14 lg:mb-16">
+        <h2 id="proof-heading" className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-white mb-6">
           What we can <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold via-yellow-200 to-gold">prove.</span>
         </h2>
-        <p className="text-xl text-slate-300 max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg lg:text-xl text-slate-300 max-w-2xl mx-auto">
           Immistack is in early access. We do not publish testimonials or certifications we do not have. These are the
           guarantees built into the platform today.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {POINTS.map(({ icon: Icon, title, body }) => (
-          <div key={title} className="bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 hover:border-gold/30 transition-colors">
+          <div key={title} className="bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 lg:p-7 hover:bg-white/10 hover:border-gold/30 transition-colors">
             <div className="w-10 h-10 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center mb-5">
               <Icon className="h-5 w-5 text-gold" aria-hidden="true" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+            <h3 className="text-base sm:text-lg font-bold text-white mb-2">{title}</h3>
             <p className="text-sm text-slate-300 leading-relaxed">{body}</p>
           </div>
         ))}
       </div>
 
-      <div className="mt-10 flex items-start gap-3 rounded-xl border border-amber-400/30 bg-amber-400/10 p-5 text-sm text-amber-100">
+      <div className="mt-8 sm:mt-10 flex items-start gap-3 rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 sm:p-5 text-sm text-amber-100">
         <FlaskConical className="h-5 w-5 shrink-0 text-amber-300" aria-hidden="true" />
         <p>
           <strong className="text-amber-200">Integration status:</strong> sandbox integrations for eight regulators — AU

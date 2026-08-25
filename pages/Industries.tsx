@@ -14,7 +14,7 @@ export const Industries: React.FC<IndustriesProps> = ({onOpenWaitlist, onNavigat
        
        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-             <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6">Tailored for your workflow.</h1>
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6">Tailored for your workflow.</h1>
              <p className="text-xl text-gray-600">Select your industry vertical to see specific features.</p>
           </div>
 

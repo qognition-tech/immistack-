@@ -3,11 +3,53 @@
 @tailwind utilities;
 
 @layer base {
+  /*
+   * `overflow-x: hidden` on <body> alone does not stop a sideways scroll in
+   * iOS Safari — the viewport is the <html> element there, so a wide child
+   * still drags the page. Both elements carry the guard, and `max-width: 100%`
+   * stops a fixed-width descendant from widening the root box in the first
+   * place rather than only hiding the result.
+   */
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  html {
+    /* Stop iOS inflating text when a phone is rotated to landscape. */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     background-color: theme('colors.slate.DEFAULT');
     color: #0f172a;
-    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    /*
+     * At 320px an unbroken token (an email address, a share URL, a
+     * "Subclass 482" style id) is wider than its column and pushes the whole
+     * layout sideways. Break it instead.
+     */
+    overflow-wrap: break-word;
+  }
+
+  /*
+   * Media never wider than its column. `height: auto` keeps the intrinsic
+   * aspect ratio when the width is clamped. Deliberately not applied to
+   * `svg` — every icon here is a lucide glyph sized by `h-4 w-4` utilities,
+   * and the sizing classes should stay the only thing that controls them.
+   */
+  img,
+  video,
+  iframe,
+  canvas {
+    max-width: 100%;
+  }
+
+  img,
+  video {
+    height: auto;
   }
 
   /* Respect the OS "reduce motion" setting — several sections auto-animate. */

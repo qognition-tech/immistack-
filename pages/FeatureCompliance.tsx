@@ -18,7 +18,7 @@ export const FeatureCompliance: React.FC<{onOpenWaitlist: () => void}> = ({onOpe
                  <ShieldCheck className="h-4 w-4 text-growth" />
                  <span className="text-xs font-bold uppercase tracking-wide text-growth">Compliance &amp; Audit Trail</span>
                </div>
-               <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">
+               <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-6">
                  Never miss a visa expiry again.
                </h1>
                <p className="text-xl text-slate-300 mb-8 leading-relaxed">
@@ -99,7 +99,7 @@ export const FeatureCompliance: React.FC<{onOpenWaitlist: () => void}> = ({onOpe
 
          {/* Visual Section */}
          <div className="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
-            <div className="bg-gray-50 border-b border-gray-200 px-8 py-4 flex justify-between items-center">
+            <div className="bg-gray-50 border-b border-gray-200 px-4 sm:px-8 py-4 flex flex-wrap gap-3 justify-between items-center">
                <div className="flex items-center gap-3">
                   <h3 className="font-bold text-navy">Compliance Dashboard</h3>
                   <SandboxBadge />
@@ -110,8 +110,8 @@ export const FeatureCompliance: React.FC<{onOpenWaitlist: () => void}> = ({onOpe
                   <div className="h-3 w-3 rounded-full bg-green-400"></div>
                </div>
             </div>
-            <div className="p-8 overflow-x-auto">
-               <table className="w-full text-left">
+            <div className="p-4 sm:p-8 overflow-x-auto">
+               <table className="w-full text-left min-w-[640px]">
                   <thead>
                      <tr className="border-b border-gray-100 text-xs font-bold text-gray-400 uppercase tracking-wider">
                         <th className="pb-4">Client</th>

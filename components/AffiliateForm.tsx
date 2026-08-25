@@ -63,11 +63,11 @@ export const AffiliateForm: React.FC<AffiliateFormProps> = ({ source = 'Affiliat
 
   if (status === CRMStatus.SUCCESS) {
     return (
-      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 md:p-10 text-center flex flex-col items-center justify-center min-h-[420px]">
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8 md:p-10 text-center flex flex-col items-center justify-center min-h-[320px] sm:min-h-[420px]">
         <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-growth/10 mb-5">
           <CheckCircle className="h-9 w-9 text-growth" />
         </div>
-        <h3 className="text-2xl font-heading font-bold text-navy mb-2">Application received!</h3>
+        <h3 className="text-xl sm:text-2xl font-heading font-bold text-navy mb-2">Application received!</h3>
         <p className="text-gray-500 max-w-sm mx-auto text-sm">
           Thanks for applying to the Immistack Partner Program. We’ll review your application and email{' '}
           <span className="font-semibold text-navy">{email}</span> with your affiliate dashboard and
@@ -78,9 +78,9 @@ export const AffiliateForm: React.FC<AffiliateFormProps> = ({ source = 'Affiliat
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 md:p-10">
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8 md:p-10">
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-heading font-bold text-navy mb-2">Become an Affiliate</h3>
+        <h3 className="text-xl sm:text-2xl font-heading font-bold text-navy mb-2">Become an Affiliate</h3>
         <p className="text-gray-500 text-sm">
           Earn <span className="font-semibold text-navy">30% recurring commission</span> for every firm you refer.
         </p>

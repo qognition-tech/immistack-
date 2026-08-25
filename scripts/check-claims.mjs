@@ -11,6 +11,18 @@
 // Comments are NOT exempt on purpose: a comment saying "we removed the SOC 2
 // claim" is fine, but a commented-out claim is one uncomment from shipping.
 // Document the removal in git history, not in the file.
+//
+// ONE escape hatch, deliberately narrow. Saying "we hold no SOC 2 certification"
+// is the opposite of claiming one, and a security page that cannot say so is worse
+// than one that can. So a line is exempt only if the line IMMEDIATELY BEFORE it
+// carries `claims-ok:` plus a reason:
+//
+//     {/* claims-ok: explicit negative disclosure, not a claim */}
+//     <p>Immistack holds no SOC 2 report and no ISO 27001 certification today.</p>
+//
+// Deliberately not automatic negation-detection — "no SOC 2 gaps" would sail
+// through that. A human writes the marker, it shows up in the diff, and every use
+// is counted and printed below so the exemptions cannot grow in silence.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
@@ -23,7 +35,9 @@ const BANNED = [
   [/trusted by/i, "'trusted by' — no customers to name"],
   [/IRCC Direct Connect/i, "IRCC has no API"],
   [/Home Office API/i, "the Home Office has no public API"],
-  [/trust[- ]account/i, "trust accounting does not exist"],
+  // "Trust Acct" slipped past the long form once — match the abbreviation too.
+  [/trust[- ]?acc(ount|t)\b/i, "trust accounting does not exist"],
+  [/trust\s+a\/c\b/i, "trust accounting does not exist"],
   [/commission[- ]track/i, "commission tracking does not exist"],
   [/\bXero\b/, "no Xero integration"],
   [/\bQuickBooks\b/, "no QuickBooks integration"],
@@ -47,17 +61,37 @@ function* files(p) {
   else if (/\.(tsx?|html)$/.test(p)) yield p;
 }
 
+const ALLOW = /claims-ok:/;
+
 let hits = 0;
+const exempt = [];
 for (const root of ROOTS) {
   let list; try { list = [...files(root)]; } catch { continue; }
   for (const f of list) {
     const lines = readFileSync(f, "utf8").split("\n");
     lines.forEach((line, i) => {
+      const waived = i > 0 && ALLOW.test(lines[i - 1]);
       for (const [re, why] of BANNED) {
-        if (re.test(line)) { hits++; console.log(`${f}:${i + 1}: ${why}\n    ${line.trim().slice(0, 120)}`); }
+        if (!re.test(line)) continue;
+        if (waived) {
+          exempt.push(`${f}:${i + 1}: ${why} — waived by claims-ok on the line above`);
+          continue;
+        }
+        hits++;
+        console.log(`${f}:${i + 1}: ${why}\n    ${line.trim().slice(0, 120)}`);
       }
     });
   }
 }
-if (hits) { console.error(`\n✗ ${hits} banned claim(s). The product cannot back these. Remove them; do not soften them.`); process.exit(1); }
-console.log("✓ check:claims — no banned claims in source");
+// Always print the waivers, pass or fail. An exemption nobody sees is an exemption
+// that grows.
+if (exempt.length) {
+  console.log(`\n${exempt.length} waived by an explicit claims-ok marker:`);
+  for (const e of exempt) console.log(`  · ${e}`);
+}
+
+if (hits) {
+  console.error(`\n✗ ${hits} banned claim(s). The product cannot back these. Remove them; do not soften them.`);
+  process.exit(1);
+}
+console.log(`\n✓ check:claims — no banned claims in source${exempt.length ? ` (${exempt.length} waived)` : ""}`);

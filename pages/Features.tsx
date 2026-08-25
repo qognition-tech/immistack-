@@ -14,7 +14,7 @@ export const Features: React.FC<FeaturesProps> = ({ onOpenWaitlist, onNavigate }
       
       {/* Header */}
       <div className="text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-         <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
+         <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
            The complete operating system for <br/><span className="text-goldDark">Migration Agencies</span>.
          </h1>
          <p className="text-xl text-gray-600">
@@ -135,7 +135,7 @@ export const Features: React.FC<FeaturesProps> = ({ onOpenWaitlist, onNavigate }
                     <Shield className="h-4 w-4 text-navy" />
                     <span className="text-xs font-bold uppercase tracking-wide text-navy">Command Center</span>
                  </div>
-                 <h2 className="text-3xl font-heading font-bold text-navy">Admin Portal Overview</h2>
+                 <h2 className="text-2xl sm:text-3xl font-heading font-bold text-navy">Admin Portal Overview</h2>
                  <p className="text-gray-600 mt-2 max-w-2xl">
                     Maintain complete control over your firm's operations, security, and configuration.
                  </p>
@@ -209,12 +209,12 @@ export const Features: React.FC<FeaturesProps> = ({ onOpenWaitlist, onNavigate }
         </div>
 
         {/* Integration Section */}
-        <div className="bg-navy rounded-3xl p-12 text-center text-white relative overflow-hidden">
+        <div className="bg-navy rounded-3xl p-8 sm:p-12 text-center text-white relative overflow-hidden">
            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-techBlue/10 rounded-full blur-[100px]"></div>
            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gold/10 rounded-full blur-[100px]"></div>
            
            <div className="relative z-10">
-              <h2 className="text-3xl font-heading font-bold mb-6">Not sure where to start?</h2>
+              <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-6">Not sure where to start?</h2>
               <p className="text-slate-300 max-w-2xl mx-auto mb-10">
                  Our team can audit your current workflow and suggest the modules that will give you the highest ROI.
               </p>

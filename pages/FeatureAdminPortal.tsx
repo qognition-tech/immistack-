@@ -20,7 +20,7 @@ export const FeatureAdminPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                  <Settings className="h-4 w-4 text-gold" />
                  <span className="text-xs font-bold uppercase tracking-wide text-gold">Mission Control</span>
                </div>
-               <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">
+               <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-6">
                  Complete firm oversight.
                </h1>
                <p className="text-xl text-slate-300 mb-8 leading-relaxed">
@@ -47,9 +47,10 @@ export const FeatureAdminPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                      Create custom roles (e.g., "Senior Agent", "Paralegal", "Accountant") with granular permissions.
                   </p>
                </div>
-               <div className="md:col-span-2 bg-white border border-gray-200 rounded-xl shadow-sm p-8">
+               <div className="md:col-span-2 bg-white border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8">
                   <h4 className="font-bold text-navy mb-4 border-b border-gray-100 pb-2">Permission Matrix</h4>
-                  <div className="grid grid-cols-4 gap-4 text-sm">
+                  <div className="overflow-x-auto -mx-2 px-2">
+                  <div className="grid grid-cols-4 gap-x-3 gap-y-4 text-sm min-w-[420px]">
                      <div className="font-bold text-gray-500">Action</div>
                      <div className="text-center font-bold text-navy">Admin</div>
                      <div className="text-center font-bold text-navy">Agent</div>
@@ -60,7 +61,7 @@ export const FeatureAdminPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                      <div className="text-center text-growth">✓</div>
                      <div className="text-center text-growth">✓</div>
 
-                     <div className="text-gray-600">Access Trust Acct</div>
+                     <div className="text-gray-600">Approve Refunds</div>
                      <div className="text-center text-growth">✓</div>
                      <div className="text-center text-gray-300">-</div>
                      <div className="text-center text-gray-300">-</div>
@@ -69,6 +70,7 @@ export const FeatureAdminPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                      <div className="text-center text-growth">✓</div>
                      <div className="text-center text-gray-300">-</div>
                      <div className="text-center text-gray-300">-</div>
+                  </div>
                   </div>
                </div>
             </div>

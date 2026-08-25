@@ -52,7 +52,7 @@ export const PAGES: PageMeta[] = [
     path: '/about',
     title: 'About Immistack | Built for Immigration Professionals',
     description:
-      "Immistack was built by migration agents and technologists to simplify global mobility. Learn our story and how we're transforming practice management.",
+      'Why Immistack exists, and what actually backs it: database-enforced tenant isolation, a hash-chained audit log and per-subclass checklists from a versioned pack.',
     keyword: 'about immistack immigration',
   },
   {
@@ -192,7 +192,21 @@ export const ARTICLE_META = {
   path: `/blog/${ARTICLE_SLUG}`,
   title: 'The State of Immigration Tech 2026 | Immistack',
   description:
-    'How 500+ migration agents are adopting AI-driven compliance and automation in 2026 — benchmarks, trends and what it means for your firm.',
+    'How migration practices are adopting AI-driven compliance and automation in 2026 — what is changing, what is hype, and what it means for your firm.',
+};
+
+/**
+ * /security is a standalone route (not a PAGES entry) because the `Page` union
+ * lives in types.ts, which this change does not own. It is registered directly
+ * in routes.tsx and prerendered from there.
+ *
+ * NOTE: public/sitemap.xml is hand-maintained and does NOT yet list /security.
+ */
+export const SECURITY_META = {
+  path: '/security',
+  title: 'Security & Data Protection | Immistack',
+  description:
+    'How Immistack protects immigration data: Postgres row-level security per tenant, a hash-chained append-only audit log, TLS and AES-256 — and what we do not have yet.',
 };
 
 export const NOT_FOUND_META = {
@@ -216,5 +230,5 @@ export function pathForPage(page: Page): string {
 
 /** All concrete paths to prerender (real pages + the demo article). */
 export function allStaticPaths(): string[] {
-  return [...PAGES.map((p) => p.path), ARTICLE_META.path];
+  return [...PAGES.map((p) => p.path), SECURITY_META.path, ARTICLE_META.path];
 }

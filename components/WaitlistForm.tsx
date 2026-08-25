@@ -100,17 +100,17 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
     };
 
     return (
-      <div className="bg-white p-8 text-center flex flex-col items-center justify-center min-h-[400px]">
+      <div className="bg-white p-6 sm:p-8 text-center flex flex-col items-center justify-center min-h-[320px] sm:min-h-[400px]">
         <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-growth/10 mb-5">
           <CheckCircle className="h-9 w-9 text-growth" />
         </div>
-        <h3 className="text-2xl font-heading font-bold text-navy mb-2">You’re on the list!</h3>
+        <h3 className="text-xl sm:text-2xl font-heading font-bold text-navy mb-2">You’re on the list!</h3>
         <p className="text-gray-500 mb-6 max-w-sm mx-auto text-sm">
           We’ll email <span className="font-semibold text-navy">{formData.email}</span> with your founding-member
           access and 50%-off launch offer.
         </p>
 
-        <div className="w-full bg-slate rounded-xl p-5 border border-gray-100">
+        <div className="w-full min-w-0 bg-slate rounded-xl p-4 sm:p-5 border border-gray-100">
           <div className="inline-flex items-center gap-2 text-goldDark text-xs font-bold uppercase tracking-widest mb-2">
             <Gift className="h-4 w-4" /> Jump the line
           </div>
@@ -122,23 +122,24 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
             <input
               readOnly
               value={shareUrl}
-              className="flex-1 px-3 py-2 text-xs bg-white border border-gray-200 rounded-lg text-gray-600 truncate"
+              aria-label="Your referral link"
+              className="min-w-0 flex-1 min-h-[44px] px-3 py-2 text-xs bg-white border border-gray-200 rounded-lg text-gray-600 truncate"
             />
             <button
               onClick={copy}
-              className="shrink-0 px-3 rounded-lg bg-navy text-white flex items-center gap-1.5 text-xs font-medium hover:bg-navyLight transition-colors"
+              className="shrink-0 min-h-[44px] px-3.5 rounded-lg bg-navy text-white flex items-center justify-center gap-1.5 text-xs font-medium hover:bg-navyLight transition-colors"
             >
               {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               {copied ? 'Copied' : 'Copy'}
             </button>
           </div>
 
-          <div className="flex gap-2">
+          <div className="grid grid-cols-3 gap-2">
             <a
               href={`https://wa.me/?text=${shareText}%20${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 py-2 rounded-lg bg-white border border-gray-200 text-xs font-medium text-navy hover:border-gold transition-colors"
+              className="flex min-h-[44px] items-center justify-center rounded-lg bg-white border border-gray-200 px-1 text-center text-xs font-medium text-navy hover:border-gold transition-colors"
             >
               WhatsApp
             </a>
@@ -146,13 +147,13 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
               href={`https://x.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 py-2 rounded-lg bg-white border border-gray-200 text-xs font-medium text-navy hover:border-gold transition-colors"
+              className="flex min-h-[44px] items-center justify-center rounded-lg bg-white border border-gray-200 px-1 text-center text-xs font-medium text-navy hover:border-gold transition-colors"
             >
               Share on X
             </a>
             <a
               href={`mailto:?subject=${encodeURIComponent('Check out Immistack')}&body=${shareText}%20${encodeURIComponent(shareUrl)}`}
-              className="flex-1 py-2 rounded-lg bg-white border border-gray-200 text-xs font-medium text-navy hover:border-gold transition-colors"
+              className="flex min-h-[44px] items-center justify-center rounded-lg bg-white border border-gray-200 px-1 text-center text-xs font-medium text-navy hover:border-gold transition-colors"
             >
               Email
             </a>
@@ -167,20 +168,20 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
     <button
       type="button"
       onClick={() => setPersona(value)}
-      className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold border transition-all ${
+      className={`flex-1 flex min-h-[44px] items-center justify-center gap-2 px-2 py-2.5 rounded-lg text-center text-sm font-semibold border transition-all ${
         persona === value
           ? 'bg-navy text-white border-navy shadow-md'
           : 'bg-white text-navy/70 border-gray-200 hover:border-gray-300'
       }`}
     >
-      <Icon className="h-4 w-4" /> {label}
+      <Icon className="h-4 w-4 shrink-0" /> {label}
     </button>
   );
 
   return (
-    <div className="bg-white p-8 md:p-10">
+    <div className="bg-white p-6 sm:p-8 md:p-10">
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-heading font-bold text-navy mb-2">Get Early Access</h3>
+        <h3 className="text-xl sm:text-2xl font-heading font-bold text-navy mb-2">Get Early Access</h3>
         <p className="text-gray-500 text-sm">
           Be first to simplify your immigration journey.
           <br />
@@ -189,7 +190,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
       </div>
 
       {/* Persona segmentation */}
-      <div className="flex gap-2 mb-5">
+      <div className="flex flex-col xs:flex-row gap-2 mb-5">
         {personaTab('Individual', 'I’m an individual', User)}
         {personaTab('Professional', 'I’m a lawyer / consultant', Building2)}
       </div>

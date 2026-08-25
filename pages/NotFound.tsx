@@ -14,8 +14,8 @@ export const NotFound: React.FC = () => {
   return (
     <section className="min-h-[70vh] flex items-center justify-center px-4 pt-32 pb-20">
       <div className="max-w-xl text-center">
-        <p className="text-7xl font-heading font-bold text-gold-gradient mb-4">404</p>
-        <h1 className="text-3xl font-heading font-bold text-navy mb-3">Page not found</h1>
+        <p className="text-6xl sm:text-7xl font-heading font-bold text-gold-gradient mb-4">404</p>
+        <h1 className="text-2xl sm:text-3xl font-heading font-bold text-navy mb-3">Page not found</h1>
         <p className="text-gray-500 mb-8">
           The page you’re looking for doesn’t exist or has moved. Here are some popular destinations instead.
         </p>

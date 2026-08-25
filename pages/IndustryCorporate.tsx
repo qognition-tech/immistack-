@@ -17,7 +17,7 @@ export const IndustryCorporate: React.FC<{onOpenWaitlist: () => void}> = ({onOpe
                    <Building2 className="h-4 w-4 text-navy" />
                    <span className="text-xs font-bold uppercase tracking-wide text-navy">Global Mobility</span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
                    Internal mobility, simplified.
                 </h1>
                 <p className="text-xl text-gray-600 mb-8 leading-relaxed">

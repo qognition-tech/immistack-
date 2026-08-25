@@ -19,7 +19,7 @@ export const FeatureBilling: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWa
                  <CreditCard className="h-4 w-4 text-techBlue" />
                  <span className="text-xs font-bold uppercase tracking-wide text-techBlue">Smart Payments</span>
                </div>
-               <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
+               <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
                  Turn quotes into cash, instantly.
                </h1>
                <p className="text-xl text-gray-600 mb-8 leading-relaxed">

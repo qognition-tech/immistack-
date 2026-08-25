@@ -18,7 +18,7 @@ export const FeatureForms: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWait
                  <FileText className="h-4 w-4 text-techBlue" />
                  <span className="text-xs font-bold uppercase tracking-wide text-techBlue">PDF Automation</span>
                </div>
-               <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
+               <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
                  Fill complex forms in seconds.
                </h1>
                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
@@ -32,7 +32,7 @@ export const FeatureForms: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWait
                <div className="absolute top-4 right-4 bg-techBlue text-white text-xs font-bold px-2 py-1 rounded">Auto-Filled</div>
                <div className="border border-gray-300 p-4 rounded bg-gray-50 font-mono text-xs text-gray-600 leading-loose">
                   <div className="border-b border-gray-200 pb-2 mb-2 font-bold text-navy">Form 80 - Personal Particulars</div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      <div>
                         <span className="block text-[10px] text-gray-400 uppercase">Family Name</span>
                         <div className="bg-yellow-100 px-2 py-1 border border-yellow-300 text-navy font-bold">SMITH</div>
@@ -41,7 +41,7 @@ export const FeatureForms: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWait
                         <span className="block text-[10px] text-gray-400 uppercase">Given Names</span>
                         <div className="bg-yellow-100 px-2 py-1 border border-yellow-300 text-navy font-bold">JOHN JAMES</div>
                      </div>
-                     <div className="col-span-2">
+                     <div className="sm:col-span-2">
                         <span className="block text-[10px] text-gray-400 uppercase">Address History (Last 10 Years)</span>
                         <div className="bg-yellow-100 px-2 py-1 border border-yellow-300 text-navy mb-1">123 Collins St, Melbourne VIC 3000 (2020-Present)</div>
                         <div className="bg-yellow-100 px-2 py-1 border border-yellow-300 text-navy">45 Queen St, Auckland NZ (2015-2020)</div>

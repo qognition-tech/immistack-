@@ -51,24 +51,24 @@ export const Affiliate: React.FC = () => {
               <Handshake className="h-4 w-4 text-goldDark" />
               <span className="text-xs font-bold uppercase tracking-wide text-goldDark">Partner Program</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
               Earn recurring revenue referring immigration firms.
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
               Join the Immistack Affiliate Program and earn <span className="font-semibold text-navy">30% recurring
               commission</span> for every migration agent, education consultant or HR team you bring on board.
             </p>
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-3 gap-4 sm:gap-6">
               <div>
-                <div className="text-3xl font-bold text-navy">30%</div>
+                <div className="text-2xl sm:text-3xl font-bold text-navy">30%</div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">Recurring</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-navy">90-day</div>
+                <div className="text-2xl sm:text-3xl font-bold text-navy">90-day</div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">Cookie</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-navy">Monthly</div>
+                <div className="text-2xl sm:text-3xl font-bold text-navy">Monthly</div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">Payouts</div>
               </div>
             </div>
@@ -83,7 +83,7 @@ export const Affiliate: React.FC = () => {
       {/* Benefits */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-heading font-bold text-navy mb-3">Why partner with Immistack</h2>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold text-navy mb-3">Why partner with Immistack</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             One of the most rewarding affiliate programs in legal &amp; immigration tech.
           </p>
@@ -102,7 +102,7 @@ export const Affiliate: React.FC = () => {
       {/* How it works */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-heading font-bold text-navy mb-3">How it works</h2>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold text-navy mb-3">How it works</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">Three steps to your first payout.</p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
@@ -118,7 +118,7 @@ export const Affiliate: React.FC = () => {
         <div className="mt-16 bg-navy rounded-2xl p-10 md:p-14 text-center relative overflow-hidden">
           <div className="relative z-10">
             <Users className="h-10 w-10 text-gold mx-auto mb-4" />
-            <h2 className="text-3xl font-heading font-bold text-white mb-3">Ready to start earning?</h2>
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-3">Ready to start earning?</h2>
             <p className="text-gray-300 max-w-xl mx-auto mb-8">
               Applications are reviewed within one business day. It’s free to join.
             </p>

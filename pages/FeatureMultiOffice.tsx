@@ -18,7 +18,7 @@ export const FeatureMultiOffice: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                  <Globe className="h-4 w-4 text-navy" />
                  <span className="text-xs font-bold uppercase tracking-wide text-navy">Global Scale</span>
                </div>
-               <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
+               <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6">
                  One platform. Unlimited branches.
                </h1>
                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
@@ -28,8 +28,8 @@ export const FeatureMultiOffice: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                   Contact Enterprise Sales
                </Button>
             </div>
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-               <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
                      <div className="text-xs font-bold text-gray-400 uppercase">Melbourne HQ</div>
                      <div className="text-xl font-bold text-navy">$842k</div>

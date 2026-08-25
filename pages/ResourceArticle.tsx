@@ -10,7 +10,7 @@ export const ResourceArticle: React.FC<{onOpenWaitlist: () => void}> = ({onOpenW
              <div className="inline-flex items-center gap-2 text-goldDark text-xs font-bold uppercase tracking-widest mb-4">
                 Trend Report
              </div>
-             <h1 className="text-4xl md:text-5xl font-heading font-bold text-navy mb-6 leading-tight">
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6 leading-tight">
                 The Future of AI in Visa Processing: Reducing Refusals by 30%
              </h1>
              <div className="flex items-center gap-6 text-sm text-gray-500 border-b border-gray-100 pb-8">

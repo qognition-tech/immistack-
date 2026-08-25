@@ -16,7 +16,7 @@ export const FeatureCRM: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitli
                  <Layout className="h-4 w-4 text-techBlue" />
                  <span className="text-xs font-bold uppercase tracking-wide text-techBlue">Intelligent CRM</span>
                </div>
-               <h1 className="text-4xl md:text-6xl font-heading font-bold text-navy mb-6">
+               <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold text-navy mb-6">
                  Stop doing data entry.
                </h1>
                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
@@ -33,7 +33,7 @@ export const FeatureCRM: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitli
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
          <div className="grid md:grid-cols-2 gap-16 mb-24 items-center">
             <div>
-               <h3 className="text-3xl font-bold text-navy mb-4">Smart Questionnaires</h3>
+               <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">Smart Questionnaires</h3>
                <p className="text-lg text-gray-600 mb-6">
                   Build intake forms with conditional logic. If a client selects "Married", the form automatically asks for Spousal details. If they select "Single", it skips.
                </p>
@@ -97,7 +97,7 @@ export const FeatureCRM: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitli
                </div>
             </div>
             <div className="order-1 md:order-2">
-               <h3 className="text-3xl font-bold text-navy mb-4">WhatsApp & Email Sync</h3>
+               <h3 className="text-2xl sm:text-3xl font-bold text-navy mb-4">WhatsApp & Email Sync</h3>
                <p className="text-lg text-gray-600 mb-6">
                   Stop searching through your phone for client messages. Immistack syncs WhatsApp and Email conversations directly to the client's timeline.
                </p>
@@ -110,7 +110,7 @@ export const FeatureCRM: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitli
          {/* New Section: Financial & Payments */}
          <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl p-8 md:p-12 border border-gray-200 shadow-sm mb-12">
             <div className="text-center mb-12">
-               <h2 className="text-3xl font-bold text-navy mb-4">Get Paid Faster, Your Way.</h2>
+               <h2 className="text-2xl sm:text-3xl font-bold text-navy mb-4">Get Paid Faster, Your Way.</h2>
                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                   Invoices, stage payments and a payment-gated workflow: a matter cannot advance while an invoice is in arrears.
                </p>
