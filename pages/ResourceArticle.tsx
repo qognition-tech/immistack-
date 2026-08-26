@@ -22,10 +22,10 @@ export const ResourceArticle: React.FC<{onOpenWaitlist: () => void}> = ({onOpenW
 
           <div className="prose prose-lg prose-navy max-w-none text-gray-600">
              <p className="lead text-xl text-navy font-medium mb-6">
-                Artificial Intelligence is no longer a buzzword in the immigration sector—it is a competitive necessity. Early adopters are seeing dramatic reductions in administrative overhead and refusal rates.
+                Artificial Intelligence is no longer a buzzword in the immigration sector, but the gap between what gets demonstrated and what actually runs in a practice is still wide. This is a look at what the tooling does today, and where the claims outrun it.
              </p>
              <p className="mb-6">
-                In our latest survey of 500 migration agents, we found that firms using AI-driven document analysis tools reported a 30% drop in Request for Information (RFI) notices from the Department of Home Affairs. Why? Because the AI catches missing or blurry documents before the application is even lodged.
+                The benefit most often claimed is fewer Request for Information (RFI) notices, on the theory that an automated check catches a missing or unreadable document before lodgement rather than after. The mechanism is plausible. The numbers attached to it usually are not: we have run no study of our own, and we are not going to repeat someone else’s figure as though we had. Treat any specific percentage in this market as a vendor claim until someone shows you the method.
              </p>
              <h3 className="text-2xl font-bold text-navy mb-4">The "Perfect Application" Hypothesis</h3>
              <p className="mb-6">

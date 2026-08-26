@@ -47,6 +47,12 @@ const BANNED = [
   [/\d+\+?\s*(partner )?firms\b/i, "customer counts — none exist"],
   [/\d+M\+?\s*visas/i, "processed-visa counts — none exist"],
   [/100%\s*(accuracy|verified|compliance)/i, "unsupported accuracy claim"],
+  // "Bank-level encryption" says nothing checkable. Name the control instead:
+  // TLS in transit, AES-256 at rest, per-tenant row-level isolation.
+  [/bank[- ]level/i, "'bank-level' — name the actual control instead"],
+  // Every AI surface is gated on OPENAI_API_KEY, which is unset. Nothing AI is "live".
+  [/live[:\s-]+ai\b/i, "AI is gated on OPENAI_API_KEY — it is not live"],
+  [/\bAI[- ](powered|driven)\b/i, "AI is not connected; do not claim it as a shipped capability"],
   [/SLA uptime guarantee/i, "no SLA"],
   // The product has NO client-facing payment processor. /billing/checkout is
   // Meru billing the tenant; client settlement is out-of-band and staff record
@@ -62,6 +68,26 @@ function* files(p) {
 }
 
 const ALLOW = /claims-ok:/;
+const COMMENTISH = /^\s*(\/\/|\*|\/\*|\{\s*\/\*)/;
+
+/**
+ * A line is waived if the comment block DIRECTLY above it carries `claims-ok:`.
+ *
+ * Deliberately a block, not a single line: values wrap (`description:` on one line, the
+ * string on the next) and reasons run past 100 characters, so requiring the marker to sit
+ * on exactly line i-1 made the escape hatch unusable and produced silent confusion rather
+ * than safety. We walk back only through comment and blank lines, so the marker still has
+ * to be attached to the thing it waives — it cannot drift in from elsewhere in the file.
+ */
+function waivedBy(lines, i) {
+  for (let j = i - 1; j >= 0 && i - j <= 6; j--) {
+    const line = lines[j];
+    if (ALLOW.test(line)) return true;
+    if (line.trim() === '' || COMMENTISH.test(line)) continue;
+    return false; // hit real code — the comment block has ended
+  }
+  return false;
+}
 
 let hits = 0;
 const exempt = [];
@@ -70,11 +96,11 @@ for (const root of ROOTS) {
   for (const f of list) {
     const lines = readFileSync(f, "utf8").split("\n");
     lines.forEach((line, i) => {
-      const waived = i > 0 && ALLOW.test(lines[i - 1]);
+      const waived = waivedBy(lines, i);
       for (const [re, why] of BANNED) {
         if (!re.test(line)) continue;
         if (waived) {
-          exempt.push(`${f}:${i + 1}: ${why} — waived by claims-ok on the line above`);
+          exempt.push(`${f}:${i + 1}: ${why} — waived by a claims-ok marker above`);
           continue;
         }
         hits++;

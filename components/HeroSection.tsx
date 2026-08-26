@@ -24,7 +24,7 @@ export const HeroSection: React.FC<HeroProps> = ({ onOpenWaitlist }) => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-growth opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-growth"></span>
               </span>
-              <span className="text-xs font-bold uppercase tracking-wide text-navy">Live: AI Document Parsing</span>
+              <span className="text-xs font-bold uppercase tracking-wide text-navy">Live: Per-subclass document checklists</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-navy tracking-tight leading-[1.15] sm:leading-[1.1] mb-5 sm:mb-6">

@@ -87,7 +87,7 @@ export const FeaturePillars: React.FC = () => {
                    <div className="p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
                       <Briefcase className="h-6 w-6 text-navy mb-2" />
                       <h5 className="font-bold text-navy text-sm">Secure Uploads</h5>
-                      <p className="text-xs text-gray-500">Bank-level encryption for sensitive docs.</p>
+                      <p className="text-xs text-gray-500">TLS in transit, AES-256 at rest, per-tenant isolation.</p>
                    </div>
                    <div className="p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
                       <BellRing className="h-6 w-6 text-navy mb-2" />

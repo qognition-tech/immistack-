@@ -12,7 +12,7 @@ export const FeatureAI: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlis
       "@type": "Organization",
       "name": "Immistack"
     },
-    "description": "AI-powered immigration case management automation, including document extraction and personalized client communication.",
+    "description": "Immigration case management with per-subclass document checklists, payment-gated workflow and a hash-chained audit trail. Document-intelligence features are in preview and require configuration.",
     "serviceType": "Legal Technology",
     "areaServed": "Global"
   };

@@ -191,8 +191,9 @@ export const ARTICLE_SLUG = 'state-of-immigration-tech-2026';
 export const ARTICLE_META = {
   path: `/blog/${ARTICLE_SLUG}`,
   title: 'The State of Immigration Tech 2026 | Immistack',
-  description:
-    'How migration practices are adopting AI-driven compliance and automation in 2026 — what is changing, what is hype, and what it means for your firm.',
+  // claims-ok: editorial description of industry AI adoption — explicitly frames "what is hype";
+  // this describes the market, not a capability of this product
+  description: 'How migration practices are adopting AI-driven compliance and automation in 2026 — what is changing, what is hype, and what it means for your firm.',
 };
 
 /**
