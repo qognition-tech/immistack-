@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { RouteRecord } from 'vite-react-ssg';
 import App from './App';
 import { Seo } from './components/Seo';
+import { RouteErrorBoundary } from './components/RouteErrorBoundary';
 import { BreadcrumbSchema, FaqSchema, FaqItem } from './components/Schema';
 import { useWaitlist } from './context/WaitlistContext';
 import { Page } from './types';
@@ -186,6 +187,12 @@ export const routes: RouteRecord[] = [
   {
     path: '/',
     element: <App />,
+    // Without this, react-router renders its raw default screen. The case that actually
+    // fires here is a stale deploy: vite-react-ssg's loader-data manifest is keyed by a
+    // per-build hash, so a tab holding the previous HTML requests a manifest that no longer
+    // exists, Vercel answers 404 with an HTML body, and `.json()` throws. The boundary
+    // reloads once to pick up the new build. See components/RouteErrorBoundary.tsx.
+    errorElement: <RouteErrorBoundary />,
     children: [
       ...pageChildren,
       { path: SECURITY_META.path.replace(/^\//, ''), element: <SecurityRoute /> },
