@@ -10,6 +10,13 @@
  *   `scripts/twenty-schema.mjs`. Run that script before this code can tag anything.
  * - Upsert by email, never blind-create. A person who fills two forms is one record with
  *   two tags, not two records.
+ * - IMPORTANT: importers must spell this `./_twenty.js`, not `./_twenty`. package.json
+ *   is `"type": "module"`, so Node's ESM loader at runtime requires an explicit file
+ *   extension on a relative import. Without it the deployed function dies with
+ *   ERR_MODULE_NOT_FOUND before the handler ever runs — a green build and a green
+ *   deploy, and every form submission returning FUNCTION_INVOCATION_FAILED. The `.js`
+ *   specifier resolving to a `.ts` file is the standard TypeScript-ESM convention and
+ *   is correct under `moduleResolution: "bundler"`.
  * - The API key is server-side only. It must never reach the browser bundle, which is why
  *   this file lives in `api/` and is imported only by serverless handlers.
  */

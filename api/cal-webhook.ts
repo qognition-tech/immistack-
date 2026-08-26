@@ -14,7 +14,7 @@
  * computed over, so `config.api.bodyParser` is disabled below and we read the raw stream.
  */
 import crypto from 'node:crypto';
-import { upsertLead, isTwentyConfigured } from './_twenty';
+import { upsertLead, isTwentyConfigured } from './_twenty.js';
 
 export const config = {
   api: {

@@ -17,7 +17,7 @@ import {
   isTwentyConfigured,
   TwentyNotConfiguredError,
   SOURCE_TAGS,
-} from './_twenty';
+} from './_twenty.js';
 
 /** Only this site may post here. An open CORS policy on a lead endpoint invites junk. */
 const ALLOWED_ORIGINS = [
