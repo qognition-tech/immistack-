@@ -58,7 +58,11 @@ const BANNED = [
   // Meru billing the tenant; client settlement is out-of-band and staff record
   // it via PATCH /payments/:id/settle. This is a deliberate design, not a gap.
   [/\b(Square|PayPal|Authorize\.net|Wise)\b/, "no payment-processor integration exists"],
-  [/(direct|native) integration with Stripe/i, "no client-facing Stripe integration"],
+  // Was only `/(direct|native) integration with Stripe/i`, which a bare
+  // "Stripe Connected" label sails past — that exact miss shipped on
+  // FeatureAdminPortal.tsx and in the HeroSection dashboard mockup. Match the
+  // name outright; there is no client-facing Stripe integration in any form.
+  [/\bStripe\b/i, "no client-facing Stripe integration exists"],
 ];
 
 function* files(p) {

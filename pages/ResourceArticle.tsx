@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft, Calendar, User, Clock } from 'lucide-react';
-import { Button } from '../components/Button';
+import { BookCallTrigger } from '../components/BookCallTrigger';
 
 export const ResourceArticle: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   return (
@@ -11,7 +11,7 @@ export const ResourceArticle: React.FC<{onOpenWaitlist: () => void}> = ({onOpenW
                 Trend Report
              </div>
              <h1 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-navy mb-6 leading-tight">
-                The Future of AI in Visa Processing: Reducing Refusals by 30%
+                The Future of AI in Visa Processing: Why the Percentages Don't Hold Up
              </h1>
              <div className="flex items-center gap-6 text-sm text-gray-500 border-b border-gray-100 pb-8">
                 <div className="flex items-center gap-2"><Calendar className="h-4 w-4" /> Oct 24, 2024</div>
@@ -35,10 +35,6 @@ export const ResourceArticle: React.FC<{onOpenWaitlist: () => void}> = ({onOpenW
                 Immistack's AI Engine doesn't get tired. It cross-references the client's passport expiry date against the visa subclass requirements instantly. It scans police checks for relevant convictions. It highlights gaps in address history that would otherwise trigger a Section 56 request.
              </p>
              
-             <div className="bg-slate-50 border-l-4 border-gold p-6 my-8 italic text-navy font-medium">
-                "We used to spend 4 hours checking a Partner Visa application. Now the AI does the first pass in 3 seconds. We just review the flags."
-             </div>
-
              <h3 className="text-2xl font-bold text-navy mb-4">What's Next?</h3>
              <p className="mb-6">
                 We are moving towards predictive analytics. Based on historical data, the system will soon be able to give a "Success Probability Score" for each case before it is lodged, allowing agents to manage client expectations with data-backed confidence.
@@ -47,7 +43,7 @@ export const ResourceArticle: React.FC<{onOpenWaitlist: () => void}> = ({onOpenW
 
           <div className="mt-16 pt-8 border-t border-gray-100 text-center">
              <h4 className="font-bold text-navy mb-4">Ready to modernize your firm?</h4>
-             <Button onClick={onOpenWaitlist} variant="primary">Start Free Trial</Button>
+             <BookCallTrigger variant="primary">Book a Demo</BookCallTrigger>
           </div>
        </div>
     </div>

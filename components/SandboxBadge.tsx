@@ -9,12 +9,16 @@ import { FlaskConical } from 'lucide-react';
  */
 export const SandboxBadge: React.FC<{ className?: string; dark?: boolean }> = ({ className = '', dark = false }) => (
   <span
-    className={`inline-flex max-w-full items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+    className={`inline-flex max-w-full shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
       dark ? 'border-amber-400/40 bg-amber-400/10 text-amber-300' : 'border-amber-300 bg-amber-50 text-amber-800'
     } ${className}`}
   >
     <FlaskConical className="h-3 w-3 shrink-0" aria-hidden="true" />
-    Sandbox preview · sample data
+    {/* Full disclosure at >=400px; below that (a tight mockup toolbar on a
+        phone) the short form still says "sandbox" rather than disappearing
+        or wrapping the row it sits in. */}
+    <span className="hidden xs:inline">Sandbox preview · sample data</span>
+    <span className="xs:hidden">Sandbox</span>
   </span>
 );
 

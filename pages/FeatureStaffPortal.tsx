@@ -1,7 +1,7 @@
 import React from 'react';
 import { Briefcase, UserPlus, FileText, PenTool, BellRing, ShieldCheck, CheckCircle2, FileSearch } from 'lucide-react';
 import { Button } from '../components/Button';
-import { MockButton } from '../components/SandboxBadge';
+import { MockButton, SandboxBadge } from '../components/SandboxBadge';
 
 export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   return (
@@ -164,16 +164,19 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
             <div className="grid md:grid-cols-2 gap-12 items-start">
                <div className="order-2 md:order-1 bg-white border border-gray-200 rounded-xl shadow-lg p-6 relative">
                   <div className="absolute top-4 right-4 text-xs font-mono text-gray-400">ID: #FN-9921</div>
+                  <div className="mb-4">
+                     <SandboxBadge />
+                  </div>
                   <h4 className="font-bold text-navy mb-4">Visa Drafting</h4>
                   <div className="bg-gray-50 border border-gray-200 rounded p-3 mb-4 text-sm text-gray-600">
                      <div className="font-bold text-navy mb-1">Form 80 Auto-Fill</div>
-                     Populated 42 fields from client profile. 
+                     Populated 42 fields from client profile.
                      <br/>
                      <span className="text-green-600">✓ Address History verified (No gaps)</span>
                   </div>
                   <div className="flex gap-2">
                      <MockButton className="bg-navy text-white text-xs px-4 py-2 rounded font-bold">Generate PDF</MockButton>
-                     <MockButton className="bg-white border border-gray-300 text-gray-600 text-xs px-4 py-2 rounded font-bold">Send for Signature</MockButton>
+                     <MockButton className="bg-white border border-gray-300 text-gray-600 text-xs px-4 py-2 rounded font-bold">Record Acceptance</MockButton>
                   </div>
                </div>
                <div className="order-1 md:order-2">
@@ -192,7 +195,7 @@ export const FeatureStaffPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                         <CheckCircle2 className="h-5 w-5 text-growth" /> Auto-fill PDFs
                      </li>
                      <li className="flex items-center gap-3 text-sm text-navy">
-                        <CheckCircle2 className="h-5 w-5 text-growth" /> Digital Signatures (DocuSign)
+                        <CheckCircle2 className="h-5 w-5 text-growth" /> Recorded acceptance — timestamped, IP-logged, SHA-256 hashed (not an e-signature)
                      </li>
                   </ul>
                </div>

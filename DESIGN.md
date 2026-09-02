@@ -1,12 +1,14 @@
 # DESIGN.md — Immistack Design System
 
-The visual language for the Immistack marketing site. Source of truth for tokens is the inlined Tailwind config in `index.html` (there is no `tailwind.config.js`). Add or change tokens there.
+The visual language for the Immistack marketing site. Source of truth for tokens is `tailwind.config.js`. Add or change tokens there.
 
 ## Brand
 
-- **Product**: Immistack — "the operating system for modern global mobility. Built by migration lawyers for migration lawyers."
+- **Product**: Immistack — the operating system for modern global mobility, built for registered migration agents, education consultants, and corporate HR teams. (Not migration lawyers — see `~/qognition-ops/clients/immistack/context.md`, primary persona.)
 - **Logo**: an ascending three-bar "stack" mark — two navy bars and one taller gold bar (see `components/Logo.tsx`, the footer in `App.tsx`, and the SVG favicon in `index.html`).
 - **Tone**: premium, trustworthy, professional-fintech. Navy authority + gold accent + green for growth/success.
+
+> Brand copy in this file — the product line above, any headline or tagline quoted elsewhere in this doc — is a style reference, not a cleared claim. It is subject to `~/qognition-ops/clients/immistack/guardrails.md` and `brand-voice.md` like any other client-facing copy; verify before reusing verbatim on a page.
 
 ## Color tokens
 
@@ -17,7 +19,7 @@ The visual language for the Immistack marketing site. Source of truth for tokens
 | `techBlue` | `#3B82F6` | Secondary accent, links, secondary buttons |
 | `gold` | `#FBBF24` | Primary accent / CTA highlight (Amber 400) |
 | `goldLight` | `#FEF3C7` | Soft gold backgrounds (Amber 100) |
-| `goldDark` | `#D97706` | Gold text / hover, icon accents (Amber 600) |
+| `goldDark` | `#B45309` | Gold text / hover, icon accents (Amber 700 — was Amber 600 `#D97706`, which fails WCAG AA at 3.19:1 on white; `#B45309` is 5.02:1) |
 | `goldVivid` | `#FFD700` | Rich gold highlights |
 | `slate` | `#F8FAFC` | Default page background |
 | `growth` | `#10B981` | Success, money, positive states |

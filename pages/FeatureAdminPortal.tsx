@@ -1,6 +1,7 @@
 import React from 'react';
 import { Settings, Users, Globe, BarChart3, CreditCard, Lock } from 'lucide-react';
 import { Button } from '../components/Button';
+import { SandboxBadge } from '../components/SandboxBadge';
 
 export const FeatureAdminPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   return (
@@ -103,12 +104,12 @@ export const FeatureAdminPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                      <h3 className="text-xl font-bold text-navy">Pricing & Payment Rules</h3>
                   </div>
                   <p className="text-gray-600 mb-6 text-sm">
-                     Set default professional fees for visa types and configure payment gateway API keys.
+                     Set default professional fees for visa types, pulled from the country config pack, and record settlement against each matter.
                   </p>
                   <div className="space-y-4">
                      <div className="flex justify-between text-sm border-b border-gray-100 pb-2">
-                        <span className="text-gray-600">Gateway</span>
-                        <span className="font-bold text-navy">Stripe Connected</span>
+                        <span className="text-gray-600">Client settlement</span>
+                        <span className="font-bold text-navy">Staff-recorded</span>
                      </div>
                      <div className="flex justify-between text-sm border-b border-gray-100 pb-2">
                         <span className="text-gray-600">Tax Rate (GST)</span>
@@ -124,11 +125,14 @@ export const FeatureAdminPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
 
             {/* Section 3: Analytics */}
             <div className="bg-navyLight rounded-2xl p-8 border border-gray-700">
-               <div className="flex items-center gap-3 mb-8">
-                  <BarChart3 className="h-6 w-6 text-gold" />
-                  <h3 className="text-2xl font-bold text-white">Advanced Analytics Dashboard</h3>
+               <div className="flex items-center justify-between gap-3 mb-8 flex-wrap">
+                  <div className="flex items-center gap-3">
+                     <BarChart3 className="h-6 w-6 text-gold" />
+                     <h3 className="text-2xl font-bold text-white">Advanced Analytics Dashboard</h3>
+                  </div>
+                  <SandboxBadge dark />
                </div>
-               <div className="grid md:grid-cols-4 gap-6">
+               <div className="grid md:grid-cols-3 gap-6">
                   <div className="bg-navy p-4 rounded-lg border border-gray-600">
                      <div className="text-xs text-gray-400 uppercase tracking-widest">Revenue</div>
                      <div className="text-2xl font-bold text-white mt-1">$1.2M</div>
@@ -136,10 +140,6 @@ export const FeatureAdminPortal: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                   <div className="bg-navy p-4 rounded-lg border border-gray-600">
                      <div className="text-xs text-gray-400 uppercase tracking-widest">Active Cases</div>
                      <div className="text-2xl font-bold text-white mt-1">482</div>
-                  </div>
-                  <div className="bg-navy p-4 rounded-lg border border-gray-600">
-                     <div className="text-xs text-gray-400 uppercase tracking-widest">Success Rate</div>
-                     <div className="text-2xl font-bold text-growth mt-1">99.1%</div>
                   </div>
                   <div className="bg-navy p-4 rounded-lg border border-gray-600">
                      <div className="text-xs text-gray-400 uppercase tracking-widest">Staff Count</div>

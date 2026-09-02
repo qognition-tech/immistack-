@@ -66,8 +66,8 @@ export const FeatureForms: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWait
             </div>
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
                <UploadCloud className="h-8 w-8 text-growth mb-4" />
-               <h3 className="font-bold text-navy text-lg mb-2">Client Signature</h3>
-               <p className="text-gray-600 text-sm">Send completed forms to the Client Portal for one-click digital signature (DocuSign integrated).</p>
+               <h3 className="font-bold text-navy text-lg mb-2">Client Acceptance</h3>
+               <p className="text-gray-600 text-sm">Send completed forms to the Client Portal for recorded acceptance — timestamped, IP-logged, SHA-256 hashed. Not an e-signature.</p>
             </div>
          </div>
       </div>

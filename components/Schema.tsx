@@ -39,11 +39,18 @@ export const OrganizationSchema: React.FC = () => {
         publisher: { '@id': `${SITE_ORIGIN}/#organization` },
         description:
           'Immigration CRM and case management software with per-subclass document checklists, client intake, workflow automation and a hash-chained audit log.',
+        // Three real tiers, no free plan and no single number that represents
+        // them honestly — an AggregateOffer states the true range (see
+        // pages/Pricing.tsx) instead of picking one price or omitting pricing
+        // structured data altogether. offerCount matches the published tiers;
+        // update all three together if pages/Pricing.tsx changes.
         offers: {
-          '@type': 'Offer',
-          price: '0',
+          '@type': 'AggregateOffer',
           priceCurrency: 'AUD',
-          description: 'Start free — founding member pricing at launch.',
+          lowPrice: '129',
+          highPrice: '319',
+          offerCount: '3',
+          description: 'Billed per registered agent, per month, plus GST. Admin and support-staff seats are unlimited and free.',
         },
       },
     ],

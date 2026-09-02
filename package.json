@@ -6,8 +6,8 @@
   "packageManager": "pnpm@10.26.2",
   "scripts": {
     "dev": "vite",
-    "build": "vite-react-ssg build",
-    "build:spa": "vite build",
+    "build": "npm run check:claims && vite-react-ssg build",
+    "build:spa": "npm run check:claims && vite build",
     "preview": "vite preview",
     "twenty:schema": "node scripts/twenty-schema.mjs",
     "check:claims": "node scripts/check-claims.mjs"

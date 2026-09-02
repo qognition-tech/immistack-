@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, Users, Lock, CreditCard, Smartphone, Shield, Briefcase, ChevronRight, LayoutDashboard } from 'lucide-react';
 import { Button } from '../components/Button';
-import { MockButton } from '../components/SandboxBadge';
+import { MockButton, SandboxBadge } from '../components/SandboxBadge';
 
 export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   const [activeTab, setActiveTab] = useState<'CLIENT' | 'AGENT' | 'ADMIN'>('CLIENT');
@@ -25,8 +25,11 @@ export const FeaturePortal: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWai
 
       {/* Interactive Portal Switcher */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+         <div className="flex justify-end mb-3">
+            <SandboxBadge />
+         </div>
          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
-            
+
             {/* Tab Navigation */}
             <div className="flex flex-col sm:flex-row border-b border-gray-100">
                <button 

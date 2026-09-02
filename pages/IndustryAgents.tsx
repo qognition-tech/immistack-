@@ -1,6 +1,6 @@
 import React from 'react';
 import { Scale, CheckCircle2, Shield } from 'lucide-react';
-import { Button } from '../components/Button';
+import { BookCallTrigger } from '../components/BookCallTrigger';
 
 export const IndustryAgents: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
   return (
@@ -23,9 +23,9 @@ export const IndustryAgents: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWa
                 <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                    Designed specifically for OMARA and OISC registered agents. Immistack enforces the Code of Conduct in your workflow automatically.
                 </p>
-                <Button onClick={onOpenWaitlist} variant="gold" className="px-8 py-4">
-                   Start Free Trial
-                </Button>
+                <BookCallTrigger variant="gold" className="px-8 py-4">
+                   Book a Demo
+                </BookCallTrigger>
              </div>
              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
                 <h3 className="font-bold text-navy mb-6 border-b border-gray-100 pb-2">Agent Toolkit</h3>

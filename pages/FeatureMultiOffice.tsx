@@ -59,7 +59,7 @@ export const FeatureMultiOffice: React.FC<{onOpenWaitlist: () => void}> = ({onOp
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
                <Building className="h-8 w-8 text-techBlue mb-4" />
                <h3 className="font-bold text-navy text-lg mb-2">Branch Partitioning</h3>
-               <p className="text-gray-600 text-sm">Keep client databases separate for data sovereignty and privacy compliance (GDPR vs Australian Privacy Principles).</p>
+               <p className="text-gray-600 text-sm">Branch-scoped access, enforced by Postgres row-level security — a London staff account cannot query a Melbourne client record, even by accident.</p>
             </div>
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
                <Coins className="h-8 w-8 text-goldDark mb-4" />

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from './Button';
+import { BookCallTrigger } from './BookCallTrigger';
 import { MockButton, SandboxBadge } from './SandboxBadge';
-import { CheckCircle2, Play, LayoutDashboard, Users, FileText, Settings, Bell, Search, PieChart, CreditCard, MoreHorizontal, Scale, GraduationCap, Building2 } from 'lucide-react';
+import { CheckCircle2, LayoutDashboard, Users, FileText, Settings, Bell, Search, PieChart, CreditCard, MoreHorizontal, Scale, GraduationCap, Building2 } from 'lucide-react';
 
 interface HeroProps {
   onOpenWaitlist: () => void;
@@ -36,12 +36,9 @@ export const HeroSection: React.FC<HeroProps> = ({ onOpenWaitlist }) => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button onClick={onOpenWaitlist} variant="primary" className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg shadow-xl shadow-navy/20 border-b-4 border-navyLight active:border-b-0 active:translate-y-1 transition-all">
-                Start Free Trial
-              </Button>
-              <button onClick={onOpenWaitlist} className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-medium text-navy border border-gray-300 rounded-md bg-white hover:bg-gray-50 hover:border-gray-400 transition-all flex items-center justify-center gap-2 shadow-sm">
-                <Play className="h-4 w-4 shrink-0 fill-navy" /> Watch Demo
-              </button>
+              <BookCallTrigger variant="primary" className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg shadow-xl shadow-navy/20 border-b-4 border-navyLight active:border-b-0 active:translate-y-1 transition-all">
+                Book a Demo
+              </BookCallTrigger>
             </div>
 
             {/* Persona Pills */}
@@ -89,7 +86,7 @@ export const HeroSection: React.FC<HeroProps> = ({ onOpenWaitlist }) => {
                     </div>
                  </div>
                  <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                    <SandboxBadge className="hidden lg:inline-flex" />
+                    <SandboxBadge />
                     <MockButton className="p-2 rounded-full text-gray-500 relative">
                        <Bell className="h-4 w-4" />
                        <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
@@ -200,7 +197,7 @@ export const HeroSection: React.FC<HeroProps> = ({ onOpenWaitlist }) => {
                                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Lodged
                                    </span>
                                 </td>
-                                <td className="px-3 py-2.5 sm:px-4 sm:py-3 text-growth font-bold">Paid (Stripe)</td>
+                                <td className="px-3 py-2.5 sm:px-4 sm:py-3 text-growth font-bold">Paid</td>
                                 <td className="px-3 py-2.5 sm:px-4 sm:py-3 text-right">
                                    <div className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-200 text-[10px] font-bold text-gray-600">SJ</div>
                                 </td>

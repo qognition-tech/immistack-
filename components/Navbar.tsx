@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
-import { Button } from './Button';
+import { BookCallTrigger } from './BookCallTrigger';
 import { Menu, X } from 'lucide-react';
-import { useWaitlist } from '../context/WaitlistContext';
 
 const navItems = [
   { label: 'Features', to: '/features' },
@@ -17,7 +16,6 @@ const navItems = [
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { openWaitlist } = useWaitlist();
   const location = useLocation();
 
   useEffect(() => {
@@ -83,13 +81,12 @@ export const Navbar: React.FC = () => {
           <a href="/login" className="text-sm font-medium text-navy hover:text-goldDark transition-colors whitespace-nowrap">
             Log in
           </a>
-          <Button
+          <BookCallTrigger
             variant="primary"
-            onClick={() => openWaitlist({ source: 'Navbar CTA' })}
             className="text-sm lg:px-4 xl:px-6 py-2.5 whitespace-nowrap shadow-xl shadow-gold/20 hover:shadow-gold/30 bg-gradient-to-r from-navy to-navyLight border border-navy/10"
           >
-            Start Free Trial
-          </Button>
+            Book a Demo
+          </BookCallTrigger>
         </div>
 
         {/* Mobile Menu Button */}
@@ -119,15 +116,9 @@ export const Navbar: React.FC = () => {
             </NavLink>
           ))}
           <div className="h-px bg-gray-100 my-2 shrink-0"></div>
-          <Button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              openWaitlist({ source: 'Mobile Nav CTA' });
-            }}
-            fullWidth
-          >
-            Get Started
-          </Button>
+          <BookCallTrigger fullWidth>
+            Book a Demo
+          </BookCallTrigger>
         </div>
       )}
     </nav>
