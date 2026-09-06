@@ -1,7 +1,10 @@
 import { Page } from '../types';
 
 // Canonical production origin. Used for canonical tags, OG urls and the sitemap.
-export const SITE_ORIGIN = 'https://immistack.com';
+// The apex (immistack.com) 301s to www — see workspace CLAUDE.md §4, verified
+// 2026-09-05. Canonical/OG/hreflang tags must point at the host that actually
+// serves the content, not the redirect source.
+export const SITE_ORIGIN = 'https://www.immistack.com';
 
 // Markets the product serves (used for hreflang alternates).
 export const HREFLANG_LOCALES = ['en-AU', 'en-CA', 'en-GB', 'en-NZ'];
@@ -207,7 +210,7 @@ export const SECURITY_META = {
   path: '/security',
   title: 'Security & Data Protection | Immistack',
   description:
-    'How Immistack protects immigration data: Postgres row-level security per tenant, a hash-chained append-only audit log, TLS and AES-256 — and what we do not have yet.',
+    'How Immistack protects immigration data: Postgres row-level security per tenant, a hash-chained append-only audit log, encryption in transit and at rest — and what we do not have yet.',
 };
 
 export const NOT_FOUND_META = {

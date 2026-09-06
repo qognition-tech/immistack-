@@ -51,7 +51,7 @@ const CONTROLS = [
     heading: 'How your data is handled',
     points: [
       'TLS for all data in transit, between your browser and the platform and between the platform and its own services.',
-      'AES-256 encryption at rest for the database and for stored documents.',
+      'Encryption at rest for the database and for stored documents.',
       'Per-tenant row-level isolation at the storage layer, not merely a tenant column that the application promises to filter on.',
       'Document and file access is decided by a single access-control service shared by every read path. A document you may not read returns "not found" rather than "forbidden", so the existence of another client’s file is not disclosed.',
     ],

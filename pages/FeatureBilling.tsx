@@ -87,8 +87,8 @@ export const FeatureBilling: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWa
             
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
                <DollarSign className="h-8 w-8 text-growth mb-4" />
-               <h3 className="font-bold text-navy text-lg mb-2">Multi-Currency</h3>
-               <p className="text-gray-600 text-sm">Invoice in USD, AUD, GBP, or CAD. Ideal for firms with international offices or clients.</p>
+               <h3 className="font-bold text-navy text-lg mb-2">Receivables & Payables, Tracked Separately</h3>
+               <p className="text-gray-600 text-sm">Money coming in and money going out are never summed into one number. A government charge you pay on a client's behalf never inflates what your firm is owed.</p>
             </div>
 
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">

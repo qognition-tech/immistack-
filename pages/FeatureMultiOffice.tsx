@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Building, Shield, Coins } from 'lucide-react';
+import { Globe, Building, Shield, Layers } from 'lucide-react';
 import { Button } from '../components/Button';
 
 export const FeatureMultiOffice: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
@@ -62,14 +62,14 @@ export const FeatureMultiOffice: React.FC<{onOpenWaitlist: () => void}> = ({onOp
                <p className="text-gray-600 text-sm">Branch-scoped access, enforced by Postgres row-level security — a London staff account cannot query a Melbourne client record, even by accident.</p>
             </div>
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
-               <Coins className="h-8 w-8 text-goldDark mb-4" />
-               <h3 className="font-bold text-navy text-lg mb-2">Multi-Currency</h3>
-               <p className="text-gray-600 text-sm">Issue invoices in local currencies for each branch. Consolidate reporting into a single base currency for HQ.</p>
+               <Layers className="h-8 w-8 text-goldDark mb-4" />
+               <h3 className="font-bold text-navy text-lg mb-2">One Config Pack Per Country</h3>
+               <p className="text-gray-600 text-sm">Each office's country pack ships and versions independently. A local rule change is a pack update, not a redeploy of the other offices.</p>
             </div>
             <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
                <Shield className="h-8 w-8 text-growth mb-4" />
-               <h3 className="font-bold text-navy text-lg mb-2">Unified Compliance</h3>
-               <p className="text-gray-600 text-sm">Apply different compliance rules per branch (e.g., OMARA rules for AU office, OISC rules for UK office).</p>
+               <h3 className="font-bold text-navy text-lg mb-2">Per-Branch Rules</h3>
+               <p className="text-gray-600 text-sm">Apply a different regulator's rule set per branch — for example, enabling OMARA's requirements for the AU office and OISC's for the UK office.</p>
             </div>
          </div>
       </div>

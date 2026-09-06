@@ -47,9 +47,33 @@ const BANNED = [
   [/\d+\+?\s*(partner )?firms\b/i, "customer counts — none exist"],
   [/\d+M\+?\s*visas/i, "processed-visa counts — none exist"],
   [/100%\s*(accuracy|verified|compliance)/i, "unsupported accuracy claim"],
-  // "Bank-level encryption" says nothing checkable. Name the control instead:
-  // TLS in transit, AES-256 at rest, per-tenant row-level isolation.
-  [/bank[- ]level/i, "'bank-level' — name the actual control instead"],
+  // "Bank-level encryption" says nothing checkable. Name a real, verified control
+  // instead — TLS in transit and per-tenant row-level isolation are both true and
+  // checkable in this codebase. Do NOT reach for a specific cipher (AES-256,
+  // below) as the replacement — nobody has verified which cipher the managed
+  // Postgres/storage provider actually uses, and a wrong specific is worse than
+  // the vague claim it replaced.
+  [/bank[- ]level/i, "'bank-level' — name a real, verified control instead"],
+  [/500\+/, "500+ — no customer count exists"],
+  [/1M\+/, "1M+ — no processed-visa count exists"],
+  [/migration lawyers/i, "the persona is registered migration agents, not lawyers — see DESIGN.md"],
+  [/\bDocuSign\b/i, "no e-signature integration exists; acceptance records are not signatures"],
+  [/start free trial/i, "no self-serve trial exists — CTAs route to demo booking"],
+  [/cancel anytime/i, "no self-serve subscription to cancel — CTAs route to demo booking"],
+  // AES-256 is a specific, checkable claim nobody has verified against the
+  // actual managed database/storage provider. "Encryption at rest" (no cipher
+  // named) is the honest version until someone confirms the cipher in use.
+  [/AES-?256/i, "AES-256 — cipher not verified against the managed infra; say 'encryption at rest' instead"],
+  [/multi-?currency/i, "multi-currency invoicing does not exist — payments are single-currency, minor-units only"],
+  [/data sovereignty/i, "no per-region data-residency choice exists — see meru-core CLAUDE.md §8 (three-database split is unwired)"],
+  [/dedicated success manager/i, "no named-account-manager program exists"],
+  // The exact trust-bar phrasing this site once shipped on /pricing — a
+  // regulator-acronym list dressed as a compliance certification, when OMARA,
+  // OISC and CICC are the agents' regulators, not ours. Scoped to this phrase
+  // rather than the acronyms themselves: OMARA/OISC are legitimately named
+  // elsewhere to describe the audience (e.g. "registered agents (OMARA/OISC)")
+  // and the config pack's per-branch rule flexibility, which is real.
+  [/built for (omara|oisc|cicc)\b[^.]{0,80}regulatory standards/i, "regulator names presented as a compliance certification — the acronyms are real, this claim about them is not"],
   // Every AI surface is gated on OPENAI_API_KEY, which is unset. Nothing AI is "live".
   [/live[:\s-]+ai\b/i, "AI is gated on OPENAI_API_KEY — it is not live"],
   [/\bAI[- ](powered|driven)\b/i, "AI is not connected; do not claim it as a shipped capability"],

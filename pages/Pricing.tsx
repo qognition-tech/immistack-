@@ -17,15 +17,11 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
     },
     {
       question: "Is there a setup fee, or a lock-in term?",
-      answer: "No setup fee, and no lock-in term, on any plan. Pricing is billed monthly per registered agent — you can add or remove agent seats, or cancel, at any time. For Enterprise clients requiring custom API integrations, a one-time implementation fee may apply."
+      answer: "No setup fee, and no lock-in term, on any plan. Pricing is billed monthly per registered agent — you can add or remove agent seats, or cancel, at any time. For Enterprise clients requiring custom integration work, a one-time implementation fee may apply."
     },
     {
       question: "Do admin and support staff cost extra?",
       answer: "No. Only registered agent seats are billed. Admin, paralegal, and other support-staff seats are unlimited and free on every plan."
-    },
-    {
-      question: "Do you support multi-currency invoicing?",
-      answer: "Yes. The Professional and Enterprise plans allow you to issue invoices in USD, AUD, GBP, and CAD, while maintaining a single base currency for your reporting."
     }
   ];
 
@@ -67,10 +63,11 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
               <div className="text-left space-y-4">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Core Features</p>
                 {[
-                  'Up to 30 Active Matters',
                   'Client Portal (Standard)',
                   'Basic CRM & Intake Forms',
                   'Standard Form Automation',
+                  'Payment-gated workflow',
+                  'Audit log',
                   'Unlimited support-staff seats',
                   'No setup fee, no lock-in',
                   'Email Support'
@@ -107,11 +104,8 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
               <div className="text-left space-y-4">
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Everything in Starter, plus:</p>
                 {[
-                  'Unlimited Active Matters',
                   'AI Document Parsing',
-                  'Payment-Gated Workflow',
-                  'Visa Expiry Alerts',
-                  'Multi-Currency Invoicing',
+                  'Visa expiry alerts (awaiting practitioner sign-off)',
                   'Priority Phone Support'
                 ].map((feature, i) => (
                   <div key={i} className="flex gap-3 text-sm text-white">
@@ -142,10 +136,9 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
               <div className="text-left space-y-4">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Professional Plus:</p>
                 {[
-                  'Dedicated Success Manager',
-                  'Custom API Integrations',
+                  'Full API access',
                   'Single Sign-On (SSO)',
-                  'Audit Logs & Advanced Security',
+                  'Advanced security controls',
                   'Branch-scoped access across countries (RLS-enforced)'
                 ].map((feature, i) => (
                   <div key={i} className="flex gap-3 text-sm text-navy/80">
@@ -173,12 +166,12 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
               <div className="px-4 py-2">
                  <ShieldCheck className="h-8 w-8 text-growth mx-auto mb-4" />
                  <h4 className="font-bold text-navy mb-2">Isolation Enforced by the Database</h4>
-                 <p className="text-sm text-gray-500">Postgres row-level security with FORCE, a non-BYPASSRLS app role, and a hash-chained audit log. AES-256 encryption at rest and in transit.</p>
+                 <p className="text-sm text-gray-500">Postgres row-level security with FORCE, a non-BYPASSRLS app role, and a hash-chained audit log.</p>
               </div>
               <div className="px-4 py-2">
                  <Globe className="h-8 w-8 text-techBlue mx-auto mb-4" />
-                 <h4 className="font-bold text-navy mb-2">Global Compliance</h4>
-                 <p className="text-sm text-gray-500">Built for OMARA (AU), OISC (UK), and CICC (CA) regulatory standards.</p>
+                 <h4 className="font-bold text-navy mb-2">Four Jurisdictions, One Codebase</h4>
+                 <p className="text-sm text-gray-500">Australia, Canada, the UK and New Zealand are configuration, not forks.</p>
               </div>
               <div className="px-4 py-2">
                  <Users className="h-8 w-8 text-goldDark mx-auto mb-4" />
