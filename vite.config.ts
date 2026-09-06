@@ -9,6 +9,12 @@ import { SITE_ORIGIN, sitemapEntries, robotsTxt, allStaticPaths } from './seo/si
 // `ssgOptions` field consumed by vite-react-ssg type-checks cleanly.
 export default ({ mode }: { mode: string }) => {
   loadEnv(mode, '.', '');
+  // See CLAUDE.md "Legal pages readiness flag" — read here from `process.env`
+  // (populated by the `loadEnv` call above), not `import.meta.env`: this file
+  // runs in vite-react-ssg's own Node config-loading context, not through
+  // Vite's normal client-bundle transform, so `import.meta.env` is not the
+  // right read here even though it is in routes.tsx/App.tsx.
+  const legalPagesReady = process.env.VITE_LEGAL_PAGES_READY === 'true';
   return {
     base: '/',
     server: {
@@ -33,7 +39,7 @@ export default ({ mode }: { mode: string }) => {
       // emits them.
       onFinished(dir: string) {
         if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-        const entries = sitemapEntries();
+        const entries = sitemapEntries(legalPagesReady);
         const xml =
           '<?xml version="1.0" encoding="UTF-8"?>\n' +
           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
@@ -43,7 +49,7 @@ export default ({ mode }: { mode: string }) => {
         writeFileSync(path.join(dir, 'robots.txt'), robotsTxt());
         writeFileSync(
           path.join(dir, '_prerender-manifest.json'),
-          JSON.stringify({ origin: SITE_ORIGIN, paths: allStaticPaths() }, null, 2),
+          JSON.stringify({ origin: SITE_ORIGIN, paths: allStaticPaths(legalPagesReady) }, null, 2),
         );
       },
     },

@@ -9,6 +9,13 @@ import { useWaitlist } from './context/WaitlistContext';
 import { Page } from './types';
 import { PAGES, PageMeta, ARTICLE_META, SECURITY_META, NOT_FOUND_META, pathForPage } from './seo/site';
 
+// See CLAUDE.md "Legal pages readiness flag". Default OFF — the operator has
+// not supplied the entity name, ABN, registered address or privacy officer
+// pages/Privacy.tsx and pages/Terms.tsx need. Off, the routes below are not
+// registered at all, so both paths fall through to the `*` catch-all and 404
+// rather than publish a page carrying `[NEEDS DATA: …]` tokens.
+const LEGAL_PAGES_READY = import.meta.env.VITE_LEGAL_PAGES_READY === 'true';
+
 // Pages
 import { Home } from './pages/Home';
 import { Features } from './pages/Features';
@@ -150,8 +157,12 @@ export const routes: RouteRecord[] = [
       { path: ARTICLE_META.path.replace(/^\//, ''), element: <ArticleRoute /> },
       // Param fallback so any /blog/<slug> resolves client-side.
       { path: 'blog/:slug', element: <ArticleRoute /> },
-      { path: 'privacy', element: <PrivacyRoute /> },
-      { path: 'terms', element: <TermsRoute /> },
+      ...(LEGAL_PAGES_READY
+        ? [
+            { path: 'privacy', element: <PrivacyRoute /> },
+            { path: 'terms', element: <TermsRoute /> },
+          ]
+        : []),
       // Concrete path so vite-react-ssg prerenders dist/404.html for hosting.
       { path: '404', element: <NotFoundRoute /> },
       { path: '*', element: <NotFoundRoute /> },

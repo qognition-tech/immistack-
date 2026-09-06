@@ -6,6 +6,12 @@ import { WaitlistProvider } from './context/WaitlistContext';
 import { OrganizationSchema } from './components/Schema';
 import { GtmScript, GtmNoscript } from './components/Gtm';
 
+// See CLAUDE.md "Legal pages readiness flag" — the operator has not supplied
+// the entity name, ABN, registered address or privacy officer these pages
+// need. Default OFF: the footer link and the routes themselves disappear
+// (routes.tsx) rather than publish a page with brackets in it.
+const LEGAL_PAGES_READY = import.meta.env.VITE_LEGAL_PAGES_READY === 'true';
+
 /**
  * Root layout. Footer link groups and the standing regulator-status line are
  * Theo's copy verbatim (§1, Global elements) — do not add a partner-firm
@@ -33,7 +39,7 @@ const App: React.FC = () => {
 
         <footer style={{ borderTop: '1px solid var(--s-line)', background: 'var(--s-soft)' }}>
           <div className="wrap py-12 sm:py-16 text-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 sm:gap-10 mb-10">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 ${LEGAL_PAGES_READY ? 'md:grid-cols-5' : 'md:grid-cols-4'} gap-8 sm:gap-10 mb-10`}>
               <div className="md:col-span-1">
                 <Link to="/" className="inline-block mb-4">
                   <Logo variant="mark" size="medium" />
@@ -71,13 +77,15 @@ const App: React.FC = () => {
                 </ul>
               </div>
 
-              <div>
-                <h2 className="kicker" style={{ marginTop: 0 }}>Legal</h2>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                  <li><Link to="/privacy" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Privacy</Link></li>
-                  <li><Link to="/terms" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Terms</Link></li>
-                </ul>
-              </div>
+              {LEGAL_PAGES_READY && (
+                <div>
+                  <h2 className="kicker" style={{ marginTop: 0 }}>Legal</h2>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    <li><Link to="/privacy" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Privacy</Link></li>
+                    <li><Link to="/terms" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Terms</Link></li>
+                  </ul>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4" style={{ borderTop: '1px solid var(--s-line)', paddingTop: '1.5rem' }}>

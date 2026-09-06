@@ -186,6 +186,29 @@ export const NOT_FOUND_META = {
   description: 'The page you are looking for could not be found.',
 };
 
+/**
+ * /privacy and /terms — standalone routes for the same reason /security is
+ * (see SECURITY_META above). Gated on `VITE_LEGAL_PAGES_READY` (default off,
+ * see CLAUDE.md): the operator has not supplied the entity name, ABN,
+ * registered address or privacy officer these pages need, so
+ * `allStaticPaths`/`sitemapEntries` below only include them when the caller
+ * (vite.config.ts) passes `includeLegalPages: true`. This file stays
+ * env-free on purpose — it is imported from both the Node config context and
+ * the client bundle, and `import.meta.env` is only safe to read in the
+ * latter (see routes.tsx / App.tsx for the actual flag read).
+ */
+export const PRIVACY_META = {
+  path: '/privacy',
+  title: 'Privacy policy | ImmiStack',
+  description: "ImmiStack's privacy policy.",
+};
+
+export const TERMS_META = {
+  path: '/terms',
+  title: 'Terms of service | ImmiStack',
+  description: "ImmiStack's terms of service.",
+};
+
 // Lookup helpers ------------------------------------------------------------
 const PAGE_TO_PATH: Record<string, string> = PAGES.reduce(
   (acc, p) => {
@@ -204,9 +227,15 @@ export function absUrl(path: string): string {
   return `${SITE_ORIGIN}${path === '/' ? '' : path}`;
 }
 
-/** All concrete paths to prerender (real pages + the security route + the demo article). */
-export function allStaticPaths(): string[] {
-  return [...PAGES.map((p) => p.path), SECURITY_META.path, ARTICLE_META.path];
+/**
+ * All concrete paths to prerender (real pages + the security route + the demo
+ * article). `includeLegalPages` defaults to false so a caller that forgets to
+ * pass it gets the safe (excluded) behaviour, matching `VITE_LEGAL_PAGES_READY`
+ * default-off.
+ */
+export function allStaticPaths(includeLegalPages = false): string[] {
+  const legal = includeLegalPages ? [PRIVACY_META.path, TERMS_META.path] : [];
+  return [...PAGES.map((p) => p.path), SECURITY_META.path, ARTICLE_META.path, ...legal];
 }
 
 /**
@@ -217,8 +246,8 @@ export function allStaticPaths(): string[] {
  * not have. Multi-market relevance is signalled instead through on-page copy
  * and `Organization.areaServed`.
  */
-export function sitemapEntries() {
-  return allStaticPaths().map((path) => ({
+export function sitemapEntries(includeLegalPages = false) {
+  return allStaticPaths(includeLegalPages).map((path) => ({
     path,
     loc: absUrl(path),
     lastmod: CONTENT_UPDATED,

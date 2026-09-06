@@ -38,6 +38,10 @@ No `GEMINI_API_KEY`/`@google/genai` — that was an earlier prototype's dependen
 warnings and exits 0, so a reviewer can see in-progress pages like `/privacy`/`/terms` before
 every `[NEEDS DATA: …]` token in them is resolved — Production and local builds still fail.
 
+**Legal pages readiness flag.** `VITE_LEGAL_PAGES_READY` (default off) keeps `/privacy` and
+`/terms` out of `routes.tsx`, the sitemap/prerender manifest and the footer until the operator
+supplies the entity name, ABN, address and privacy officer those pages need — off, both paths 404.
+
 ## Project layout
 
 | Path | Purpose |
