@@ -10,7 +10,8 @@
     "build:spa": "npm run check:claims && vite build",
     "preview": "vite preview",
     "twenty:schema": "node scripts/twenty-schema.mjs",
-    "check:claims": "node scripts/check-claims.mjs"
+    "check:claims": "node scripts/check-claims.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

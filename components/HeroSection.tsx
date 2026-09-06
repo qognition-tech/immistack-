@@ -80,9 +80,18 @@ export const HeroSection: React.FC<HeroProps> = ({ onOpenWaitlist }) => {
                        <div className="w-6 h-6 bg-navy rounded-sm flex items-center justify-center text-white font-bold text-xs">IS</div>
                        <span className="font-bold text-navy text-sm">Immistack</span>
                     </div>
-                    <div className="hidden md:flex items-center gap-1 bg-gray-100 px-2 py-1.5 rounded-md w-40 lg:w-64 max-w-full border border-gray-200">
-                       <Search className="h-3.5 w-3.5 text-gray-400" />
-                       <span className="text-xs text-gray-400">Search cases, clients, or files...</span>
+                    {/*
+                      Shown at md (single-column layout, full-width mock) and again at xl,
+                      once the two-column hero has room. Hidden at exactly lg (1024-1279px),
+                      where the hero switches to two columns and this card's own width drops
+                      to roughly half the viewport — not enough for a 256px search field next
+                      to the wordmark, sandbox badge, bell and avatar without wrapping onto a
+                      second line and spilling out of the fixed-height top bar into the row
+                      below. See resp-audit findings, 2026-09-06.
+                    */}
+                    <div className="hidden md:flex lg:hidden xl:flex items-center gap-1 bg-gray-100 px-2 py-1.5 rounded-md w-40 lg:w-64 max-w-full min-w-0 border border-gray-200 overflow-hidden">
+                       <Search className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                       <span className="text-xs text-gray-400 whitespace-nowrap truncate">Search cases, clients, or files...</span>
                     </div>
                  </div>
                  <div className="flex items-center gap-2 sm:gap-3 shrink-0">
