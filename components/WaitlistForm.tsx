@@ -83,7 +83,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
   // ---- Success + referral step -------------------------------------------
   if (status === CRMStatus.SUCCESS) {
     const code = referralCodeFor(formData.email || 'immistack');
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://immistack.com';
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.immistack.com';
     const shareUrl = `${origin}/?ref=${code}`;
     const shareText = encodeURIComponent(
       'I just joined the Immistack early-access waitlist — the immigration CRM with a tamper-evident audit log. Jump the line:',

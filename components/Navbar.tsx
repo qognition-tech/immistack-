@@ -78,9 +78,6 @@ export const Navbar: React.FC = () => {
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex items-center lg:gap-3 xl:gap-4 shrink-0">
-          <a href="/login" className="text-sm font-medium text-navy hover:text-goldDark transition-colors whitespace-nowrap">
-            Log in
-          </a>
           <BookCallTrigger
             variant="primary"
             className="text-sm lg:px-4 xl:px-6 py-2.5 whitespace-nowrap shadow-xl shadow-gold/20 hover:shadow-gold/30 bg-gradient-to-r from-navy to-navyLight border border-navy/10"

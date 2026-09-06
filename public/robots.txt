@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://immistack.com/sitemap.xml
+Sitemap: https://www.immistack.com/sitemap.xml
