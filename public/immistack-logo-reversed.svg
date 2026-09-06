@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 32" height="32">
+  <g transform="scale(0.9)"><g>
+  <rect x="4" y="18" width="6" height="12" rx="1" fill="#FFFFFF"/>
+  <rect x="13" y="10" width="6" height="20" rx="1" fill="#FFFFFF"/>
+  <rect x="22" y="2" width="6" height="28" rx="1" fill="#FFFFFF" stroke="#A63D26" stroke-width="1"/>
+</g></g>
+  <text x="42" y="24" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="22" fill="#FFFFFF">Immi<tspan fill="#FFFFFF">Stack</tspan></text>
+</svg>

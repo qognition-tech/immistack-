@@ -1,20 +1,43 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# ImmiStack marketing site
 
-# Run and deploy your AI Studio app
+Marketing / lead-capture site for ImmiStack, an immigration CRM and case-management product
+for registered migration agents in AU/CA/UK/NZ. Public, static, must build and deploy even
+when the product backend is down. See `CLAUDE.md` for the full architecture, conventions and
+env vars — this file is just how to run it.
 
-This contains everything you need to run your app locally.
+**Stack:** React 19 + Vite 6 + `vite-react-ssg` (prerendered static HTML), Tailwind CSS v4,
+TypeScript, pnpm. Not Next.js.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1NPbUkyN1Nk78PXt3Fbba34dJgV4L_yXW
+## Run locally
 
-## Run Locally
+```bash
+pnpm install
+cp .env.example .env        # fill in what you need — see CLAUDE.md "Env vars"
+pnpm dev                    # http://localhost:5173
+```
 
-**Prerequisites:**  Node.js
+## Build
 
+```bash
+pnpm run build       # check:claims → SSG build → verify-prerender → check:placeholders
+pnpm run build:spa   # plain SPA build, no prerender, no gates — for quick local checks only
+pnpm preview         # serve the built dist/
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+`pnpm run build` is the one that ships. It fails the build if a page renders a banned claim, a
+literal `[NEEDS DATA: …]`/`[COPY NEEDED]` token, or an unresolved `{{PRICE_*}}` slot — see
+`CLAUDE.md` for what each gate checks and how to add a waiver.
+
+## Deploy
+
+Vercel, CLI-driven — pushing to GitHub does not deploy. `--prod` updates the live public site
+(`www.immistack.com`); confirm before running it.
+
+```bash
+vercel deploy --prod --yes --scope qognitionagencys-projects
+```
+
+## More
+
+- `CLAUDE.md` — architecture, the lead-capture pipeline, env vars, conventions.
+- `DESIGN.md` — typography, colour tokens, layout and motion.

@@ -1,13 +1,15 @@
 import React from 'react';
 import { Check, Minus } from 'lucide-react';
-import { Button } from './Button';
+import { BookCallButton } from './BookCallButton';
 
 type Cell = true | string;
 
 /**
- * Immistack vs. a generic CRM. Every Immistack cell is a verifiable platform
- * behaviour; the generic column describes what a horizontal CRM does by
- * default, not a named competitor.
+ * ImmiStack vs. a generic CRM — recovered from the live site (git HEAD
+ * `components/ComparisonTable.tsx`), ported onto Tailwind 4 tokens. Already
+ * honest: every ImmiStack cell is a verifiable platform behaviour; the
+ * generic column describes what a horizontal CRM does by default, not a
+ * named competitor.
  */
 const ROWS: { feature: string; immi: Cell; generic: Cell }[] = [
   { feature: 'Tenant isolation', immi: 'Postgres row-level security with FORCE, non-BYPASSRLS app role, verified over HTTP', generic: 'Application-layer checks' },
@@ -19,78 +21,65 @@ const ROWS: { feature: string; immi: Cell; generic: Cell }[] = [
   { feature: 'Immigration workflows, forms and portals', immi: true, generic: 'Built from scratch' },
 ];
 
-export const ComparisonTable: React.FC<{ onOpenWaitlist: () => void }> = ({ onOpenWaitlist }) => {
-  return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-slate" aria-labelledby="compare-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 sm:mb-14 lg:mb-16">
-          <h2 id="compare-heading" className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-navy mb-4">
-            Immistack versus a generic CRM
-          </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">
-            A horizontal CRM can hold immigration data. It cannot enforce immigration rules. Here is what is built in.
-          </p>
-        </div>
-
-        {/*
-          Three columns of prose cannot fit a 320px screen, so the table scrolls
-          inside its own box rather than dragging the page sideways. The hint
-          below is part of the fix: a scroll container with no cue reads as a
-          truncated table, not a scrollable one.
-        */}
-        <div className="overflow-x-auto shadow-xl rounded-2xl border border-gray-200">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr>
-                <th scope="col" className="p-4 sm:p-6 bg-white border-b-2 border-gray-200 min-w-[160px] sm:min-w-[200px]">
-                  <span className="sr-only">Capability</span>
-                </th>
-                <th scope="col" className="p-4 sm:p-6 border-b-2 border-gold bg-navy text-white min-w-[200px] sm:min-w-[260px]">
-                  <div className="text-xl sm:text-2xl font-bold">Immistack</div>
-                  <div className="text-xs text-gold mt-1 font-bold uppercase tracking-wide">Early access</div>
-                </th>
-                <th scope="col" className="p-4 sm:p-6 border-b-2 border-gray-200 bg-gray-50 min-w-[170px] sm:min-w-[200px]">
-                  <div className="text-base sm:text-lg font-bold text-gray-600">Generic CRM</div>
-                  <div className="text-xs text-gray-600 mt-1">Horizontal sales CRM, configured for immigration</div>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white">
-              {ROWS.map((row) => (
-                <tr key={row.feature} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                  <th scope="row" className="p-4 sm:p-5 font-bold text-navy text-sm border-r border-gray-100 text-left">
-                    {row.feature}
-                  </th>
-                  <td className="p-4 sm:p-5 bg-navy/5 border-r border-navy/10 font-medium text-navy text-sm">
-                    {row.immi === true ? (
-                      <span className="flex items-center gap-2">
-                        <span className="bg-growth/10 p-1 rounded-full shrink-0"><Check className="w-4 h-4 text-growth" aria-hidden="true" /></span>
-                        <span>Included</span>
-                      </span>
-                    ) : (
-                      row.immi
-                    )}
-                  </td>
-                  <td className="p-4 sm:p-5 text-gray-600 text-sm">
-                    {row.generic === true ? <Check className="w-5 h-5 text-gray-600" aria-label="Included" /> : (
-                      <span className="flex items-start gap-2"><Minus className="w-4 h-4 mt-0.5 text-gray-400 shrink-0" aria-hidden="true" />{row.generic}</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-3 text-center text-xs text-gray-500 md:hidden" aria-hidden="true">
-          Scroll the table sideways to compare &rarr;
+export const ComparisonTable: React.FC<{ primaryPosition: string }> = ({ primaryPosition }) => (
+  <section className="py-16 sm:py-20 lg:py-24" style={{ background: 'var(--s-soft)' }} aria-labelledby="compare-heading">
+    <div className="wrap">
+      <div className="text-center mb-10 sm:mb-14" style={{ maxWidth: '48rem', marginInline: 'auto' }}>
+        <h2 id="compare-heading" style={{ marginTop: 0 }}>ImmiStack versus a generic CRM</h2>
+        <p className="lede mx-auto">
+          A horizontal CRM can hold immigration data. It cannot enforce immigration rules. Here is what is built in.
         </p>
-
-        <div className="mt-10 sm:mt-12 text-center">
-          <Button onClick={onOpenWaitlist} variant="gold" className="w-full sm:w-auto px-6 sm:px-10 py-4 text-base sm:text-lg shadow-xl shadow-gold/20">
-            Request early access
-          </Button>
-        </div>
       </div>
-    </section>
-  );
-};
+
+      <div className="t-wrap" role="region" aria-label="ImmiStack versus a generic CRM" tabIndex={0}>
+        <table className="dt">
+          <thead>
+            <tr>
+              <th scope="col"><span className="sr-only">Capability</span></th>
+              <th scope="col" style={{ background: 'var(--s-ink)', color: '#fff' }}>
+                <div style={{ fontSize: 'var(--text-lg)', fontWeight: 600 }}>ImmiStack</div>
+                <div className="text-xs mt-1 font-bold uppercase tracking-wide" style={{ color: 'var(--s-accent)' }}>Early access</div>
+              </th>
+              <th scope="col">
+                <div style={{ fontWeight: 600 }}>Generic CRM</div>
+                <div className="text-xs mt-1" style={{ color: 'var(--s-muted)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
+                  Horizontal sales CRM, configured for immigration
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {ROWS.map((row) => (
+              <tr key={row.feature}>
+                <th scope="row">{row.feature}</th>
+                <td>
+                  {row.immi === true ? (
+                    <span className="flex items-center gap-2">
+                      <Check className="w-4 h-4" style={{ color: 'var(--s-success)' }} aria-hidden="true" /> Included
+                    </span>
+                  ) : (
+                    row.immi
+                  )}
+                </td>
+                <td style={{ color: 'var(--s-muted)' }}>
+                  {row.generic === true ? (
+                    <Check className="w-5 h-5" style={{ color: 'var(--s-muted)' }} aria-label="Included" />
+                  ) : (
+                    <span className="flex items-start gap-2">
+                      <Minus className="w-4 h-4 mt-0.5 shrink-0" style={{ color: 'var(--s-line)' }} aria-hidden="true" />
+                      {row.generic}
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="mt-10 sm:mt-12 text-center">
+        <BookCallButton position={primaryPosition} />
+      </div>
+    </div>
+  </section>
+);

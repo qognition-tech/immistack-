@@ -4,10 +4,17 @@ import type { RouteRecord } from 'vite-react-ssg';
 import App from './App';
 import { Seo } from './components/Seo';
 import { RouteErrorBoundary } from './components/RouteErrorBoundary';
-import { BreadcrumbSchema, FaqSchema, FaqItem } from './components/Schema';
+import { BreadcrumbSchema } from './components/Schema';
 import { useWaitlist } from './context/WaitlistContext';
 import { Page } from './types';
 import { PAGES, PageMeta, ARTICLE_META, SECURITY_META, NOT_FOUND_META, pathForPage } from './seo/site';
+
+// See CLAUDE.md "Legal pages readiness flag". Default OFF — the operator has
+// not supplied the entity name, ABN, registered address or privacy officer
+// pages/Privacy.tsx and pages/Terms.tsx need. Off, the routes below are not
+// registered at all, so both paths fall through to the `*` catch-all and 404
+// rather than publish a page carrying `[NEEDS DATA: …]` tokens.
+const LEGAL_PAGES_READY = import.meta.env.VITE_LEGAL_PAGES_READY === 'true';
 
 // Pages
 import { Home } from './pages/Home';
@@ -15,13 +22,7 @@ import { Features } from './pages/Features';
 import { FeatureCRM } from './pages/FeatureCRM';
 import { FeatureCompliance } from './pages/FeatureCompliance';
 import { FeaturePortal } from './pages/FeaturePortal';
-import { FeatureStaffPortal } from './pages/FeatureStaffPortal';
-import { FeatureAdminPortal } from './pages/FeatureAdminPortal';
-import { FeatureAI } from './pages/FeatureAI';
 import { FeatureBilling } from './pages/FeatureBilling';
-import { FeatureTasks } from './pages/FeatureTasks';
-import { FeatureForms } from './pages/FeatureForms';
-import { FeatureMultiOffice } from './pages/FeatureMultiOffice';
 import { Pricing } from './pages/Pricing';
 import { About } from './pages/About';
 import { Industries } from './pages/Industries';
@@ -32,6 +33,8 @@ import { Resources } from './pages/Resources';
 import { ResourceArticle } from './pages/ResourceArticle';
 import { Affiliate } from './pages/Affiliate';
 import { Security } from './pages/Security';
+import { Privacy } from './pages/Privacy';
+import { Terms } from './pages/Terms';
 import { NotFound } from './pages/NotFound';
 
 const PAGE_COMPONENTS: Record<Page, React.ComponentType<any>> = {
@@ -48,50 +51,8 @@ const PAGE_COMPONENTS: Record<Page, React.ComponentType<any>> = {
   FEATURE_CRM: FeatureCRM,
   FEATURE_COMPLIANCE: FeatureCompliance,
   FEATURE_PORTAL: FeaturePortal,
-  FEATURE_STAFF_PORTAL: FeatureStaffPortal,
-  FEATURE_ADMIN_PORTAL: FeatureAdminPortal,
-  FEATURE_AI: FeatureAI,
   FEATURE_BILLING: FeatureBilling,
-  FEATURE_TASKS: FeatureTasks,
-  FEATURE_FORMS: FeatureForms,
-  FEATURE_MULTIOFFICE: FeatureMultiOffice,
   AFFILIATE: Affiliate,
-};
-
-const PRICING_FAQ: FaqItem[] = [
-  {
-    question: 'Is there a free trial of Immistack?',
-    answer:
-      'Yes. You can join the early-access waitlist for free and founding members receive a launch discount plus extended trial access.',
-  },
-  {
-    question: 'Which countries does Immistack support?',
-    answer:
-      'Immistack is built for immigration and migration practices across Australia, Canada, the United Kingdom and New Zealand. Regulator integrations for all four are sandbox today, with production wiring pending accreditation.',
-  },
-  {
-    question: 'Can I change plans as my firm grows?',
-    answer:
-      'Yes. Plans scale by team size and module, so solo practitioners through to multi-office networks can upgrade at any time.',
-  },
-];
-
-const FEATURES_FAQ: FaqItem[] = [
-  {
-    question: 'Does Immistack connect to government visa systems?',
-    answer:
-      'Not yet. Immistack ships sandbox integrations for eight regulators, with production wiring pending accreditation. Every regulator response carries its own provenance and a sandbox flag, so a sandbox result can never be mistaken for live data.',
-  },
-  {
-    question: 'Does Immistack automate immigration forms?',
-    answer:
-      'Yes. Client and case data flows into immigration forms automatically, reducing re-keying and errors across your matters.',
-  },
-];
-
-const FAQ_BY_PAGE: Partial<Record<Page, FaqItem[]>> = {
-  PRICING: PRICING_FAQ,
-  FEATURES: FEATURES_FAQ,
 };
 
 /** Friendly breadcrumb label = title before the first "|". */
@@ -100,14 +61,14 @@ function crumbName(meta: PageMeta): string {
 }
 
 /**
- * Per-route wrapper: emits SEO head tags + schema, and injects the
+ * Per-route wrapper: emits SEO head tags + breadcrumb schema, and injects the
  * onOpenWaitlist / onNavigate props the existing page components expect.
+ * FAQPage schema is emitted per-page by <ObjectionAccordion>, not here.
  */
 const PageShell: React.FC<{ meta: PageMeta }> = ({ meta }) => {
   const navigate = useNavigate();
   const { openWaitlist } = useWaitlist();
   const Component = PAGE_COMPONENTS[meta.page];
-  const faq = FAQ_BY_PAGE[meta.page];
   const injected = {
     onOpenWaitlist: () => openWaitlist({ source: `CTA: ${crumbName(meta)}` }),
     onNavigate: (page: Page) => navigate(pathForPage(page)),
@@ -116,10 +77,7 @@ const PageShell: React.FC<{ meta: PageMeta }> = ({ meta }) => {
   return (
     <>
       <Seo title={meta.title} description={meta.description} path={meta.path} />
-      {meta.path !== '/' && (
-        <BreadcrumbSchema trail={[{ name: crumbName(meta), path: meta.path }]} />
-      )}
-      {faq && <FaqSchema items={faq} />}
+      {meta.path !== '/' && <BreadcrumbSchema trail={[{ name: crumbName(meta), path: meta.path }]} />}
       {/* Existing pages have varying prop shapes; extra props are ignored. */}
       <Component {...(injected as any)} />
     </>
@@ -130,12 +88,7 @@ const ArticleRoute: React.FC = () => {
   const { openWaitlist } = useWaitlist();
   return (
     <>
-      <Seo
-        title={ARTICLE_META.title}
-        description={ARTICLE_META.description}
-        path={ARTICLE_META.path}
-        type="article"
-      />
+      <Seo title={ARTICLE_META.title} description={ARTICLE_META.description} path={ARTICLE_META.path} type="article" />
       <BreadcrumbSchema
         trail={[
           { name: 'Blog', path: '/blog' },
@@ -157,16 +110,26 @@ const SecurityRoute: React.FC = () => {
   const { openWaitlist } = useWaitlist();
   return (
     <>
-      <Seo
-        title={SECURITY_META.title}
-        description={SECURITY_META.description}
-        path={SECURITY_META.path}
-      />
+      <Seo title={SECURITY_META.title} description={SECURITY_META.description} path={SECURITY_META.path} />
       <BreadcrumbSchema trail={[{ name: 'Security', path: SECURITY_META.path }]} />
       <Security onOpenWaitlist={() => openWaitlist({ source: 'CTA: Security' })} />
     </>
   );
 };
+
+const PrivacyRoute: React.FC = () => (
+  <>
+    <Seo title="Privacy policy | ImmiStack" description="ImmiStack's privacy policy." path="/privacy" noindex />
+    <Privacy />
+  </>
+);
+
+const TermsRoute: React.FC = () => (
+  <>
+    <Seo title="Terms of service | ImmiStack" description="ImmiStack's terms of service." path="/terms" noindex />
+    <Terms />
+  </>
+);
 
 const NotFoundRoute: React.FC = () => (
   <>
@@ -177,9 +140,7 @@ const NotFoundRoute: React.FC = () => (
 
 const pageChildren: RouteRecord[] = PAGES.map((meta) => ({
   // react-router child paths are relative (no leading slash); home is the index.
-  ...(meta.path === '/'
-    ? { index: true }
-    : { path: meta.path.replace(/^\//, '') }),
+  ...(meta.path === '/' ? { index: true } : { path: meta.path.replace(/^\//, '') }),
   element: <PageShell meta={meta} />,
 }));
 
@@ -187,11 +148,8 @@ export const routes: RouteRecord[] = [
   {
     path: '/',
     element: <App />,
-    // Without this, react-router renders its raw default screen. The case that actually
-    // fires here is a stale deploy: vite-react-ssg's loader-data manifest is keyed by a
-    // per-build hash, so a tab holding the previous HTML requests a manifest that no longer
-    // exists, Vercel answers 404 with an HTML body, and `.json()` throws. The boundary
-    // reloads once to pick up the new build. See components/RouteErrorBoundary.tsx.
+    // Without this, react-router renders its raw default screen. See
+    // components/RouteErrorBoundary.tsx for the stale-deploy case this exists for.
     errorElement: <RouteErrorBoundary />,
     children: [
       ...pageChildren,
@@ -199,6 +157,12 @@ export const routes: RouteRecord[] = [
       { path: ARTICLE_META.path.replace(/^\//, ''), element: <ArticleRoute /> },
       // Param fallback so any /blog/<slug> resolves client-side.
       { path: 'blog/:slug', element: <ArticleRoute /> },
+      ...(LEGAL_PAGES_READY
+        ? [
+            { path: 'privacy', element: <PrivacyRoute /> },
+            { path: 'terms', element: <TermsRoute /> },
+          ]
+        : []),
       // Concrete path so vite-react-ssg prerenders dist/404.html for hosting.
       { path: '404', element: <NotFoundRoute /> },
       { path: '*', element: <NotFoundRoute /> },

@@ -9,37 +9,39 @@ const REGULATORS = [
 ];
 
 /**
- * Integration status strip. Replaces a "Directly integrated with government
- * portals" banner that named integrations which do not exist. All adapters are
- * sandbox until accreditation; say so in the strip itself.
+ * Regulator integrations row — recovered from the live site (git HEAD
+ * `components/TrustedBy.tsx`), ported onto Tailwind 4 tokens. Already honest:
+ * every adapter is tagged sandbox in the row itself, not in a legend
+ * elsewhere on the page.
  */
-export const TrustedBy: React.FC = () => {
-  return (
-    <section className="py-8 sm:py-10 border-b border-gray-100 bg-white" aria-labelledby="integrations-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p id="integrations-heading" className="text-center text-sm font-semibold text-gray-600 uppercase tracking-widest mb-2">
-          Regulator integrations
-        </p>
-        <p className="text-center text-sm text-gray-600 mb-8 max-w-2xl mx-auto">
-          Sandbox adapters for eight regulators, including the four immigration authorities below. Production wiring
-          is pending accreditation with each regulator.
-        </p>
-        <ul className="flex flex-wrap justify-center items-center gap-x-6 gap-y-5 sm:gap-8 md:gap-14">
-          {REGULATORS.map((r) => (
-            <li key={r.code} className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 shrink-0 rounded-full border-2 border-navy flex items-center justify-center font-serif font-bold text-navy text-sm">
-                {r.code}
+export const TrustedBy: React.FC = () => (
+  <section className="py-8 sm:py-10" style={{ borderBottom: '1px solid var(--s-line)' }} aria-labelledby="integrations-heading">
+    <div className="wrap">
+      <p id="integrations-heading" className="kicker text-center" style={{ marginBottom: '0.5rem' }}>
+        Regulator integrations
+      </p>
+      <p className="text-sm text-center mb-8 mx-auto" style={{ color: 'var(--s-muted)', maxWidth: '46rem' }}>
+        Sandbox adapters for eight regulators, including the four immigration authorities below.
+        Production wiring is pending accreditation with each regulator.
+      </p>
+      <ul className="flex flex-wrap justify-center items-center gap-x-6 gap-y-5 sm:gap-8 md:gap-14" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+        {REGULATORS.map((r) => (
+          <li key={r.code} className="flex items-center gap-3 min-w-0">
+            <div
+              className="w-9 h-9 shrink-0 rounded-full flex items-center justify-center font-bold text-sm"
+              style={{ border: '2px solid var(--s-ink)', color: 'var(--s-ink)', fontFamily: 'var(--font-serif)' }}
+            >
+              {r.code}
+            </div>
+            <div className="text-start leading-tight">
+              <div className="font-bold text-sm" style={{ color: 'var(--s-ink)' }}>{r.name}</div>
+              <div className="text-[10px] uppercase tracking-wider flex items-center gap-1" style={{ color: 'var(--s-muted)' }}>
+                <FlaskConical className="h-3 w-3 shrink-0" style={{ color: 'var(--s-warning)' }} aria-hidden="true" /> Sandbox · {r.country}
               </div>
-              <div className="text-left leading-tight">
-                <div className="font-bold text-navy text-sm">{r.name}</div>
-                <div className="text-[10px] text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                  <FlaskConical className="h-3 w-3 shrink-0 text-amber-700" aria-hidden="true" /> Sandbox · {r.country}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-};
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+);

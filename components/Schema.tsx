@@ -9,7 +9,29 @@ const JsonLd: React.FC<{ data: Record<string, unknown> }> = ({ data }) => (
   </Head>
 );
 
-/** Organization + SoftwareApplication. Rendered once site-wide in the layout. */
+/**
+ * Model B pricing, operator-accepted 2026-09-06 — same figures as
+ * `components/PricingCards.tsx`'s `annual` column. Schema price must equal a
+ * visible on-page price exactly; do not let this drift from the component.
+ */
+const OFFERS: { name: string; price: number }[] = [
+  { name: 'Practice', price: 129 },
+  { name: 'Practice Pro', price: 209 },
+  { name: 'Firm', price: 319 },
+];
+
+/**
+ * Organization + SoftwareApplication. Rendered once site-wide in App.tsx.
+ *
+ * Per Nadia's GEO brief: no `award`, `foundingDate`, `numberOfEmployees` or
+ * `sameAs` until the underlying data exists — an invented value in structured
+ * data is a claim too, and worse than an absent field. No `aggregateRating`/
+ * `review` — none exist. `offers` carries the three real, operator-accepted
+ * tier prices (see `OFFERS` above); each `price` is the annual-billed figure,
+ * matching the number `/pricing` shows with the Annual toggle selected — the
+ * defect this schema must never repeat is a hidden price with no visible
+ * match.
+ */
 export const OrganizationSchema: React.FC = () => {
   const data = {
     '@context': 'https://schema.org',
@@ -17,34 +39,30 @@ export const OrganizationSchema: React.FC = () => {
       {
         '@type': 'Organization',
         '@id': `${SITE_ORIGIN}/#organization`,
-        name: 'Immistack',
+        name: 'ImmiStack',
         url: SITE_ORIGIN,
         logo: `${SITE_ORIGIN}/logo.png`,
-        email: 'hello@immistack.com',
-        description:
-          'Immistack is the all-in-one immigration CRM and case management platform for migration agents, education consultants and corporate HR teams across AU, CA, UK and NZ.',
+        description: 'Immigration CRM and case management for registered migration agents.',
         areaServed: ['AU', 'CA', 'GB', 'NZ'],
-        sameAs: [
-          'https://www.linkedin.com/company/immistack',
-          'https://x.com/immistack',
-        ],
       },
       {
         '@type': 'SoftwareApplication',
         '@id': `${SITE_ORIGIN}/#software`,
-        name: 'Immistack',
+        name: 'ImmiStack',
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         url: SITE_ORIGIN,
         publisher: { '@id': `${SITE_ORIGIN}/#organization` },
         description:
-          'Immigration CRM and case management software with per-subclass document checklists, client intake, workflow automation and a hash-chained audit log.',
-        offers: {
+          'Immigration CRM and case management software with per-subclass document checklists, client intake, payment-gated workflow and a hash-chained audit log.',
+        offers: OFFERS.map((o) => ({
           '@type': 'Offer',
-          price: '0',
+          name: o.name,
+          price: String(o.price),
           priceCurrency: 'AUD',
-          description: 'Start free — founding member pricing at launch.',
-        },
+          url: `${SITE_ORIGIN}/pricing`,
+          description: 'Per registered agent, per month, billed annually, ex GST. Monthly billing is also available at a higher rate — see /pricing.',
+        })),
       },
     ],
   };
@@ -56,8 +74,9 @@ export interface FaqItem {
   answer: string;
 }
 
-/** FAQPage schema — use on pricing / feature pages with a visible FAQ. */
+/** FAQPage schema — pass the same items rendered by <ObjectionAccordion>. */
 export const FaqSchema: React.FC<{ items: FaqItem[] }> = ({ items }) => {
+  if (items.length === 0) return null;
   const data = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

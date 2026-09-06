@@ -1,59 +1,114 @@
-# DESIGN.md — Immistack Design System
+# DESIGN.md — ImmiStack Design System
 
-The visual language for the Immistack marketing site. Source of truth for tokens is the inlined Tailwind config in `index.html` (there is no `tailwind.config.js`). Add or change tokens there.
+**Replaced 2026-09-05** with Elena's rebuild brief, as implemented by Mira in the Tailwind 4
+migration. Source of truth for tokens is `styles/globals.css`'s `@theme` block plus the `--s-*`
+semantic surface variables — there is no `tailwind.config.js` (deleted in the migration). Add
+or change a token there, not in this file. Conventions (price-slot pattern, `claims-ok:`
+waivers) live in `CLAUDE.md`, not here — this file is visual language only.
 
-## Brand
-
-- **Product**: Immistack — "the operating system for modern global mobility. Built by migration lawyers for migration lawyers."
-- **Logo**: an ascending three-bar "stack" mark — two navy bars and one taller gold bar (see `components/Logo.tsx`, the footer in `App.tsx`, and the SVG favicon in `index.html`).
-- **Tone**: premium, trustworthy, professional-fintech. Navy authority + gold accent + green for growth/success.
-
-## Color tokens
-
-| Token | Hex | Use |
-| --- | --- | --- |
-| `navy` | `#0B1120` | Primary dark — headings, primary buttons, dark sections |
-| `navyLight` | `#1E293B` | Hover/gradient partner for navy |
-| `techBlue` | `#3B82F6` | Secondary accent, links, secondary buttons |
-| `gold` | `#FBBF24` | Primary accent / CTA highlight (Amber 400) |
-| `goldLight` | `#FEF3C7` | Soft gold backgrounds (Amber 100) |
-| `goldDark` | `#D97706` | Gold text / hover, icon accents (Amber 600) |
-| `goldVivid` | `#FFD700` | Rich gold highlights |
-| `slate` | `#F8FAFC` | Default page background |
-| `growth` | `#10B981` | Success, money, positive states |
-
-Common roles: page bg `bg-slate`; cards `bg-white border border-gray-200 shadow-sm` (or `shadow-xl` for hero cards); body copy `text-gray-600`; muted `text-gray-500/400`; dark CTA sections `bg-navy` with `text-white`.
+Audience: Australian registered migration agents (MARN holders), 1–10 person firms, buying a
+tool their OMARA file depends on. Trained to distrust a claim — the design's job is to read as
+precise and checkable, not as premium-fintech decoration.
 
 ## Typography
 
-- **Headings** — `font-heading` → **Inter** (`400–800`). Use `font-bold`, `text-navy`.
-- **Body** — `font-sans` → **Source Sans 3** (`300–600`). Default `#0F172A`.
-- Scale in use: hero `text-4xl md:text-5xl`, section `text-3xl`, card title `text-lg font-bold`, body `text-xl` (hero lede) / base / `text-sm` (cards) / `text-xs`–`text-[10px]` (meta).
-- Eyebrows: `text-xs font-bold uppercase tracking-wide` inside a pill `inline-flex items-center gap-2 px-3 py-1 rounded-full bg-<accent>/10 border border-<accent>/20`.
+- **Headings — Fraunces** (variable, optical-size axis, self-hosted, SIL OFL). Ship weights
+  400/500 at `opsz 72`, 600 at `opsz 144` (headline only). Never below `opsz 36` or above `144`.
+- **Body, UI, nav, buttons, labels — IBM Plex Sans** (400/500/600, self-hosted). Never Plex
+  Serif.
+- **Data, IDs, timestamps, hashes, MARNs — IBM Plex Mono** (400/500). Used only where the
+  content genuinely is a code value — never decorative.
+- **Scale**, ratio 1.25, base 17px: `text-xs` 13px (meta) · `text-sm` 15px (captions, table
+  cells) · `text-base` 17px (body) · `text-lg` 21px (lede) · `text-xl` 27px (h3/h4) ·
+  `text-2xl` 34px (h2) · `text-3xl` 42px (inner-page h1) · `text-hero`
+  `clamp(34px, 3.4rem + 2vw, 53px)` (home hero h1 only).
+- **Measure:** body copy max `66ch`, ledes max `58ch`. Never let a paragraph run the full
+  content width.
+- **AU-English, enforced in every string:** single quotes for speech; en dash for ranges
+  (`1–10`, `A$129–319`), hyphen for compound modifiers (`36-month lock-in`); `A$` prefix, no
+  decimal unless cents matter, `ex GST` on the same line as any price; `-ise`/`-our` spelling
+  (CSS custom-property names stay `color` — that's code, not copy); dates as `DD Month YYYY`.
 
-## Components
+## Colour
 
-- **Button** (`components/Button.tsx`) — variants `primary` (navy), `secondary` (techBlue), `gold`, `outline`; `fullWidth`. Base includes `hover:scale-105 active:scale-95`, rounded-md, focus ring.
-- **Input** (`components/Input.tsx`) — labelled text input; focus ring `focus:ring-gold/50 focus:border-gold`. `<select>` elements reuse the same class string for visual consistency (see `WaitlistForm`/`AffiliateForm`).
-- **Cards** — `bg-white p-8 rounded-xl border border-gray-200 shadow-sm`; icon (lucide, `h-8 w-8`, accent color) → `font-bold text-navy text-lg` title → `text-gray-600 text-sm` body.
-- **Forms** — white panel `rounded-2xl shadow-xl border border-gray-200 p-8 md:p-10`, centered heading + sub, `space-y-4` fields, full-width primary submit, tiny reassurance line beneath. Submit shows a `Loader2` spinner while submitting and a `CheckCircle` success state. All forms POST to `/api/create-lead` (see `CLAUDE.md`).
+Ink + warm paper + a rust/terracotta accent — deliberately not navy/gold (too close to generic
+"fintech premium") and not GovX's blue/teal (the two products should read as siblings on one
+platform, not reskins of one template). Light is default; dark is an independently designed
+second palette, not `invert()`.
 
-## Layout
+### Light
+| Token | Hex | Contrast on `--bg` | Use |
+|---|---|---|---|
+| `--ink` | `#171B21` | 17.3:1 | headings, high-emphasis text |
+| `--body` | `#38414D` | 10.4:1 | body copy |
+| `--muted` | `#5B6472` | 6.0:1 | captions, meta |
+| `--line` | `#DCE1E7` | — | borders, dividers (non-text) |
+| `--bg` | `#FFFFFF` | — | page background |
+| `--soft` | `#F5F2EE` | — | warm paper — section backgrounds, cards |
+| `--accent` | `#A63D26` | 6.3:1 | links, primary CTA fill, active states |
+| `--success` | `#1E7A46` | 5.3:1 | verified / live / paid states |
+| `--warning` | `#8A5A00` on `#FBF2DF` | 5.3:1 | non-blocking caution |
+| `--danger` | `#A6291F` | 7.1:1 | blocked / error / overdue |
+| `--sandbox-amber` | same as `--warning`/`#FBF2DF` | 5.3:1 | mandatory on every regulator-adapter mockup |
 
-- Page wrapper: `<div className="pt-24 pb-24 animate-fade-in bg-slate">` — `pt-24` clears the fixed navbar.
-- Content width: `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`.
-- Heroes: `grid md:grid-cols-2` (or `lg:grid-cols-2`) with copy on the left, a visual/form card on the right.
-- Sections separated by `mb-16`/`mb-20`; feature grids `grid md:grid-cols-3 gap-8` (or `lg:grid-cols-4`).
-- Breadcrumb row at the top of inner pages: `flex items-center gap-2 text-sm text-gray-500`.
+### Dark (independently designed)
+| Token | Hex | Contrast on dark `--bg` |
+|---|---|---|
+| `--bg` | `#14171C` | — |
+| `--soft` | `#1B1F26` | — |
+| `--ink` | `#EDEEEF` | ~16.7:1 |
+| `--body` | `#C7CBD1` | ~11.0:1 |
+| `--muted` | `#8C939D` | ~5.4:1 |
+| `--line` | `#2B3038` | structural |
+| `--accent` | `#E2896B` | ~6.9:1 |
+| `--success` | `#6BC48F` | ~7.8:1 |
+| `--sandbox-amber` | `#E5B968` on `#2B2113` | ~5.9:1 — same hex GovX ships, so the badge reads identically across both sites |
+| `--danger` | `#F2949A` | ~8.5:1 |
 
-## Effects & motion
+Ratios computed by WCAG relative luminance, same method as `govx-marketing`. `prefers-color-scheme:
+dark` is respected; a manual toggle lives in the footer, not the nav. **The marketing site never
+reads a tenant's brand colour** — this is ImmiStack's own site selling to firms who have not
+signed up yet; the only palette on `immistack.com` is the one in this section.
 
-- Animations (defined in `index.html`): `animate-float`, `animate-float-delayed`, `animate-pulse-slow`, `animate-shimmer`, `animate-fade-in` (default page entrance).
-- Utility classes: `.text-gold-gradient` (shimmering gold text), `.glass-panel` (glassmorphism), `.perspective-1000` + `.rotate-y-12` (3D tilt), `.no-scrollbar`.
-- Shadows are tinted to the element color, e.g. `shadow-xl shadow-navy/20`, `shadow-gold/20`.
-- Rounding: inputs/small `rounded-lg`, cards `rounded-xl`, panels/CTA blocks `rounded-2xl`, buttons `rounded-md`.
+## Layout and motion
+
+8px base unit; spacing scale `4 8 12 16 24 32 48 64 96 128`. Content width `max-w-7xl`
+(`px-4 sm:px-6 lg:px-8`). Vertical rhythm `py-24` desktop / `py-16` mobile, consistently.
+
+Single CSS-only reveal on the hero (`fadeInUp`, staggered `.reveal-1`…`.reveal-5` at
+0/80/160/240/320ms); nothing else animates on load. Primary CTA: `translateY(-1px)` + shadow
+deepen on hover, flatten on `:active`. Pricing toggle: slide the selection indicator via
+`transform`, never fade the labels. Accordion: chevron rotates 180° over 150ms,
+`grid-template-rows: 0fr → 1fr`, no `height: auto` snap. `prefers-reduced-motion: reduce` zeroes
+every duration — same rule as `govx-marketing/styles/globals.css`.
+
+## Component states (five each, per no-slop.md)
+
+- **Capability table** ("What's built today") reuses GovX's exact `.tag` colour values
+  (`t-live`, `t-pack`, `t-code`, `t-block`, `t-cont`, `t-neutral`) — do not reinvent them.
+  Empty state: `"Capability data unavailable"`, never a blank table shell. Every regulator-row
+  carries its sandbox tag inline, not in a legend.
+- **Pricing cards:** price always **in A$, `ex GST` on the same line**; "Recommended" tier is a
+  border colour change, not a floating badge that clips at narrow viewports; hover deepens the
+  border, never scales the card.
+- **Hero screenshot:** explicit skeleton while loading (aspect-ratio locked), a labelled
+  `Screenshot unavailable` fallback on error — never a broken-image icon and never a fabricated
+  dashboard mockup (see kill list below).
+- **Proof block:** a named, attributed customer quote, or the section is omitted entirely for
+  that page — never a placeholder testimonial.
+
+## What was killed in the rebuild
+
+The fake hero dashboard (`$142,390` "Monthly Revenue", invented client names "TechCorp Inc." /
+"Sarah Connor" dressed as records), the wrong per-user price ladder, OMARA/OISC/CICC
+accreditation badges, an "AES-256" trust bar, "Start Free Trial" (no self-serve trial flow
+exists), a dead "Watch Demo" button, decorative gradients and glassmorphism. Replaced with a
+real screenshot of the document-checklist screen, labelled `Illustrative — sample checklist,
+not a live regulator response`, and copy that leads with `Book a demo`.
 
 ## Accessibility & SEO
 
-- `selection:bg-gold/30`; focus rings on interactive elements; `aria-label` on icon-only links/buttons.
-- hreflang locales: `en-AU`, `en-CA`, `en-GB`, `en-NZ`. Canonical origin `https://immistack.com`. Per-page titles ~55–60 chars, descriptions ~150–160 chars (managed in `seo/site.ts`).
+Focus rings on every interactive element; `aria-label` on icon-only controls; axe-core WCAG
+2.x A/AA via `tools/sweep/a11y.mjs`. hreflang `en-AU en-CA en-GB en-NZ`; canonical origin
+`https://www.immistack.com`. Per-page titles/descriptions come from `seo/site.ts`, never a page
+component.
