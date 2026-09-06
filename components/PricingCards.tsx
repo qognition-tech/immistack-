@@ -17,16 +17,17 @@ const TIERS: Tier[] = [
 ];
 
 /**
- * Model B, per registered agent per month, ex GST — operator-accepted
- * pricing decision (2026-09-06). `annual` is the price when billed annually
- * (two months free); `monthly` is that figure + 20% (12/10, the arithmetic
- * of "two months free" over a year), rounded to the nearest dollar the
- * operator confirmed: A$155/251/383. Do not compute a different rounding.
+ * Model B, per registered agent per month, ex GST — the recommended tiers in
+ * `immistack/BUSINESS.md` §5.3. `annual` is the price when billed annually
+ * (two months free); `monthly` is the published month-to-month figure —
+ * A$155/249/379. These are BUSINESS.md's own numbers, not +20% arithmetic on
+ * the annual price (that computation was wrong and has been retired). Do not
+ * derive a different rounding — read §5.3 again if the tiers ever change.
  */
 const PRICES: Record<Tier['id'], { annual: number; monthly: number }> = {
   practice: { annual: 129, monthly: 155 },
-  pro: { annual: 209, monthly: 251 },
-  firm: { annual: 319, monthly: 383 },
+  pro: { annual: 209, monthly: 249 },
+  firm: { annual: 319, monthly: 379 },
 };
 
 /** Row order and cell values are the memo's entitlement mapping, exactly —
@@ -61,10 +62,10 @@ export const PricingCards: React.FC = () => {
         <div className="toggle-track" role="group" aria-label="Billing period">
           <div className="toggle-thumb" style={{ width: '50%', transform: annual ? 'translateX(100%)' : 'translateX(0%)' }} aria-hidden="true" />
           <button type="button" className="toggle-option" aria-pressed={!annual} onClick={() => setAnnual(false)}>
-            Monthly
+            Billed monthly
           </button>
           <button type="button" className="toggle-option" aria-pressed={annual} onClick={() => setAnnual(true)}>
-            Annual — 2 months free
+            Billed annually — 2 months free
           </button>
         </div>
       </div>
@@ -88,7 +89,9 @@ export const PricingCards: React.FC = () => {
               </span>
               <span style={{ color: 'var(--s-muted)' }}> / registered agent / mo ex GST</span>
             </p>
-            {annual && <p className="text-sm mb-4" style={{ color: 'var(--s-muted)' }}>Billed annually — 2 months free</p>}
+            <p className="text-sm mb-4" style={{ color: 'var(--s-muted)' }}>
+              {annual ? 'Billed annually — 2 months free' : 'Billed monthly'}
+            </p>
             <ul className="mb-6" style={{ listStyle: 'none', padding: 0, flexGrow: 1 }}>
               {ROWS.filter((r) => r[tier.id] !== false).map((r) => (
                 <li key={r.label} className="flex items-start gap-2 mb-2 text-sm">

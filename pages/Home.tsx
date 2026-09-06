@@ -147,8 +147,8 @@ export const Home: React.FC<HomeProps> = ({ onOpenWaitlist }) => {
           </p>
           <div className="flex flex-wrap gap-3 mb-4">
             <span className="tag t-neutral">A$155 / registered agent / month ex GST</span>
-            <span className="tag t-neutral">A$251</span>
-            <span className="tag t-neutral">A$383</span>
+            <span className="tag t-neutral">A$249</span>
+            <span className="tag t-neutral">A$379</span>
           </div>
           <p className="text-sm mb-4" style={{ color: 'var(--s-muted)' }}>
             Billed monthly. Annual billing gets two months free — see pricing for the annual rate.

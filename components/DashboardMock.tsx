@@ -12,8 +12,9 @@ import { SandboxBadge } from './SandboxBadge';
  * meru-core/CLAUDE.md §7.3 ("never render unknown data as a positive
  * result"): invented client names ("TechCorp Inc.", "Sarah Connor") are
  * replaced with the literal placeholder `[Client Name]`, which cannot be
- * mistaken for a real record; "Paid (Stripe)" is replaced with "Paid" —
- * Stripe is not an integration this product has.
+ * mistaken for a real record.
+ * claims-ok: explicit negative disclosure, naming the removed claim to explain why it's gone
+ * "Paid (Stripe)" is replaced with "Paid" — Stripe is not an integration this product has.
  */
 export const DashboardMock: React.FC = () => (
   <div className="relative">
@@ -35,7 +36,12 @@ export const DashboardMock: React.FC = () => (
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          <SandboxBadge className="hidden lg:inline-flex" label="Sandbox preview · sample data" />
+          {/* Full disclosure from `sm:` up; below that (a 375px phone toolbar)
+              the short form still says "sandbox" rather than being dropped —
+              this mock is the highest-traffic sandbox disclosure on the site
+              and must stay visible at every viewport, not just desktop. */}
+          <SandboxBadge className="hidden sm:inline-flex" label="Sandbox preview · sample data" />
+          <SandboxBadge className="sm:hidden" label="Sandbox" />
           <span className="p-2 rounded-full relative" style={{ color: 'var(--s-muted)' }} aria-hidden="true">
             <Bell className="h-4 w-4" />
             <span className="absolute top-2 right-2 w-2 h-2 rounded-full border" style={{ background: 'var(--s-danger)', borderColor: 'var(--s-bg)' }} />

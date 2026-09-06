@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type ButtonVariant = 'primary' | 'secondary' | 'gold' | 'outline';
+
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
   fullWidth?: boolean;
