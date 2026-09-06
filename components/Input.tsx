@@ -1,27 +1,19 @@
-import React, { useId } from 'react';
+import React from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  hint?: string;
-  error?: string;
 }
 
-/** Visible `<label>`, never placeholder-as-label (Elena's waitlist-form spec). */
-export const Input: React.FC<InputProps> = ({ label, hint, error, id, className = '', ...props }) => {
-  const autoId = useId();
-  const inputId = id ?? autoId;
+export const Input: React.FC<InputProps> = ({ label, className = '', ...props }) => {
   return (
-    <div className="field">
-      <label htmlFor={inputId}>{label}</label>
+    <div className="w-full">
+      <label className="block text-sm font-medium text-navy/70 mb-1 pl-1">
+        {label}
+      </label>
       <input
-        id={inputId}
-        className={`input ${className}`}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={error ? `${inputId}-err` : hint ? `${inputId}-hint` : undefined}
+        className={`appearance-none block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold sm:text-sm bg-white/50 backdrop-blur-sm ${className}`}
         {...props}
       />
-      {hint && !error && <span id={`${inputId}-hint`} className="hint">{hint}</span>}
-      {error && <span id={`${inputId}-err`} className="err" role="alert">{error}</span>}
     </div>
   );
 };

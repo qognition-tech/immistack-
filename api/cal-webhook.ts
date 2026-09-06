@@ -14,7 +14,7 @@
  * computed over, so `config.api.bodyParser` is disabled below and we read the raw stream.
  */
 import crypto from 'node:crypto';
-import { upsertLead, isTwentyConfigured, redactForLog } from './_twenty.js';
+import { upsertLead, isTwentyConfigured } from './_twenty.js';
 
 export const config = {
   api: {
@@ -144,11 +144,7 @@ export default async function handler(req: any, res: any) {
     );
     return res.status(200).json({ message: 'Booking recorded', created: result.created });
   } catch (error) {
-    // Same _twenty.ts error path create-lead.ts redacts before logging — a
-    // failed findPersonByEmail() lookup embeds the attendee's email in the
-    // thrown message's query string. Never log it raw.
-    const message = error instanceof Error ? error.message : String(error);
-    console.error('[cal-webhook] failed:', redactForLog(message));
+    console.error('[cal-webhook] failed:', error instanceof Error ? error.message : error);
     // 500 so Cal.com retries — a dropped booking is worth retrying for.
     return res.status(500).json({ message: 'Failed to record booking' });
   }

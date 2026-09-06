@@ -85,7 +85,7 @@ export const RouteErrorBoundary: React.FC = () => {
   if (recovering) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center px-4">
-        <p style={{ color: 'var(--s-muted)' }}>Updating to the latest version…</p>
+        <p className="text-gray-500">Updating to the latest version…</p>
       </div>
     );
   }
@@ -95,24 +95,36 @@ export const RouteErrorBoundary: React.FC = () => {
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4 py-16">
-      <div className="text-center" style={{ maxWidth: '32rem' }}>
-        <h1 style={{ marginTop: 0 }}>Something went wrong on our side</h1>
-        <p className="lede mx-auto mb-8">
+      <div className="max-w-lg text-center">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-navy mb-4">
+          Something went wrong on our side
+        </h1>
+        <p className="text-gray-600 leading-relaxed mb-8">
           This page failed to load. Reloading usually fixes it. If it keeps happening we would
           genuinely like to know — email{' '}
-          <a href="mailto:hello@immistack.com">hello@immistack.com</a> and tell us what you were doing.
+          <a className="text-goldDark underline" href="mailto:hello@immistack.com">
+            hello@immistack.com
+          </a>{' '}
+          and tell us what you were doing.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button type="button" onClick={() => window.location.reload()} className="btn btn-primary">
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-navy px-6 font-bold text-white transition-colors hover:bg-navy/90"
+          >
             Reload the page
           </button>
-          <Link to="/" className="btn btn-secondary">
+          <Link
+            to="/"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-md border border-gray-200 px-6 font-bold text-navy transition-colors hover:bg-gray-50"
+          >
             Go to the homepage
           </Link>
         </div>
         {message ? (
           // Shown, not hidden: a visitor reporting a fault should be able to quote it.
-          <p className="u-mono mt-8 break-words text-xs" style={{ color: 'var(--s-muted)' }}>{message}</p>
+          <p className="mt-8 break-words font-mono text-xs text-gray-400">{message}</p>
         ) : null}
       </div>
     </div>

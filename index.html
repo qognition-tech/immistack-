@@ -3,21 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#171B21" />
+    <meta name="theme-color" content="#0B1120" />
     <!-- Per-page title, description, canonical, Open Graph and schema are injected per route via the Seo component. -->
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
-    <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Immistack Favicon (SVG Data URI) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='18' width='6' height='12' rx='1' fill='%230B1120' opacity='0.8'/%3E%3Crect x='13' y='10' width='6' height='20' rx='1' fill='%230B1120' opacity='0.9'/%3E%3Crect x='22' y='2' width='6' height='28' rx='1' fill='%23B45309'/%3E%3C/svg%3E" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/logo.png" />
     <!--
-      Tailwind v4 is compiled at build time via @tailwindcss/vite
-      (styles/globals.css), imported from index.tsx. Fonts are self-hosted in
-      public/fonts (fonts.css, imported from globals.css) — replaces the
-      fonts.googleapis.com/fonts.gstatic.com render-blocking request this used
-      to make. Preload the two above-the-fold faces only.
+      Tailwind is compiled at build time (tailwind.config.js + styles/index.css),
+      imported from index.tsx. It used to load from cdn.tailwindcss.com, which
+      shipped the whole JIT compiler to the browser on every page load,
+      render-blocking and unpurged.
     -->
-    <link rel="preload" href="/fonts/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Sans+3:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>

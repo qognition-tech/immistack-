@@ -1,99 +1,155 @@
-import React, { useEffect, useState } from 'react';
-import { Loader2, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from './Button';
 import { Input } from './Input';
 import { WaitlistFormData, CRMStatus } from '../types';
-import { CONTACT_EMAIL } from '../seo/site';
-import { fetchFormToken, submitLead } from '../lib/leadForm';
+
+interface AffiliateFormProps {
+  /** Lead source passed through to Zoho. */
+  source?: string;
+}
+
+const AUDIENCE_OPTIONS = [
+  'Migration agents / lawyers',
+  'Education agents / consultants',
+  'Corporate HR / global mobility',
+  'Content / blog / newsletter',
+  'Social media / community',
+  'Other',
+];
 
 /**
- * Affiliate referral form. Fields per Theo's copy: firm name, work email,
- * referring firm/individual name, hidden honeypot. Submits to the same
- * `/api/create-lead` endpoint as every other form on the site, tagged
- * `affiliate`. No commission figure is shown anywhere on this form —
- * `[NEEDS DATA: commission structure/terms]`, per the site rule that an
- * unconfirmed number renders as nothing, never a placeholder.
- *
- * Fetches a min-time HMAC token from `/api/form-token` on mount, same as
- * `WaitlistForm.tsx` — see `lib/leadForm.ts`.
+ * Affiliate Program sign-up form. Submits to the same Zoho CRM endpoint
+ * (`/api/create-lead`) as the waitlist and lead-magnet forms, tagged with
+ * source "Affiliate Program" for segmentation.
  */
-export const AffiliateForm: React.FC = () => {
-  const [firmName, setFirmName] = useState('');
+export const AffiliateForm: React.FC<AffiliateFormProps> = ({ source = 'Affiliate Program' }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [referredBy, setReferredBy] = useState('');
-  const [honeypot, setHoneypot] = useState('');
-  const [token, setToken] = useState('');
+  const [website, setWebsite] = useState('');
+  const [audience, setAudience] = useState(AUDIENCE_OPTIONS[0]);
   const [status, setStatus] = useState<CRMStatus>(CRMStatus.IDLE);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchFormToken().then(setToken);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus(CRMStatus.SUBMITTING);
-    setErrorMessage(null);
 
-    const payload: WaitlistFormData & { referralSource?: string; token: string } = {
+    const payload: WaitlistFormData = {
       email,
-      firmName,
+      firmName: name,
       firmSize: 'Solo',
-      source: 'affiliate',
-      referralSource: referredBy || undefined,
-      company_website: honeypot || undefined,
-      token,
+      persona: 'Professional',
+      source,
+      website: website || undefined,
+      audience,
     };
 
-    const result = await submitLead(payload, CONTACT_EMAIL);
-    if (result.ok === false) {
-      setErrorMessage(result.message);
+    try {
+      const response = await fetch('/api/create-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to create lead');
+      }
+      setStatus(CRMStatus.SUCCESS);
+    } catch (error) {
+      console.error('Affiliate form submission failed:', error);
       setStatus(CRMStatus.ERROR);
-      return;
     }
-    setStatus(CRMStatus.SUCCESS);
   };
 
   if (status === CRMStatus.SUCCESS) {
     return (
-      <div className="panel text-center">
-        <CheckCircle2 className="mx-auto mb-4 h-10 w-10" style={{ color: 'var(--s-success)' }} aria-hidden="true" />
-        <h3 style={{ marginTop: 0 }}>Referral received</h3>
-        <p className="mb-0" style={{ color: 'var(--s-muted)' }}>
-          We'll follow up with <strong>{firmName}</strong> and confirm terms with you at <strong>{email}</strong>.
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8 md:p-10 text-center flex flex-col items-center justify-center min-h-[320px] sm:min-h-[420px]">
+        <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-growth/10 mb-5">
+          <CheckCircle className="h-9 w-9 text-growth" />
+        </div>
+        <h3 className="text-xl sm:text-2xl font-heading font-bold text-navy mb-2">Application received!</h3>
+        <p className="text-gray-500 max-w-sm mx-auto text-sm">
+          Thanks for applying to the Immistack Partner Program. We’ll review your application and email{' '}
+          <span className="font-semibold text-navy">{email}</span> with your affiliate dashboard and
+          referral links shortly.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="panel">
-      <form onSubmit={handleSubmit}>
-        <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
-          <label htmlFor="affiliate-company_website">Leave this field blank</label>
-          <input id="affiliate-company_website" name="company_website" type="text" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8 md:p-10">
+      <div className="text-center mb-6">
+        <h3 className="text-xl sm:text-2xl font-heading font-bold text-navy mb-2">Become an Affiliate</h3>
+        <p className="text-gray-500 text-sm">
+          Earn <span className="font-semibold text-navy">30% recurring commission</span> for every firm you refer.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          label="Full Name"
+          type="text"
+          required
+          placeholder="Alex Nguyen"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          label="Work Email"
+          type="email"
+          required
+          placeholder="name@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          label="Website / Social Profile"
+          type="text"
+          placeholder="https://yoursite.com or @handle"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
+        <div className="w-full">
+          <label className="block text-sm font-medium text-navy/70 mb-1 pl-1">How will you promote Immistack?</label>
+          <select
+            className="block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold sm:text-sm bg-white"
+            value={audience}
+            onChange={(e) => setAudience(e.target.value)}
+          >
+            {AUDIENCE_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <Input label="Firm name" type="text" required value={firmName} onChange={(e) => setFirmName(e.target.value)} />
-        <Input label="Work email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <Input label="Referring firm or individual" type="text" value={referredBy} onChange={(e) => setReferredBy(e.target.value)} />
-
-        {status === CRMStatus.ERROR && errorMessage && (
-          <p className="err" role="alert">
-            {errorMessage}
-          </p>
+        {status === CRMStatus.ERROR && (
+          <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
         )}
 
-        <Button type="submit" variant="primary" fullWidth disabled={status === CRMStatus.SUBMITTING}>
+        <Button
+          type="submit"
+          variant="primary"
+          fullWidth
+          disabled={status === CRMStatus.SUBMITTING}
+          className="mt-2 shadow-xl shadow-navy/20"
+        >
           {status === CRMStatus.SUBMITTING ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Submitting…
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting…
             </>
           ) : (
-            'Submit referral'
+            <>
+              Apply to Join <ArrowRight className="ml-2 h-5 w-5" />
+            </>
           )}
         </Button>
       </form>
+      <div className="text-center mt-4 text-[10px] text-gray-400">
+        Free to join • Paid monthly • Real-time tracking
+      </div>
     </div>
   );
 };

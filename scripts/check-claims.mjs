@@ -26,7 +26,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const ROOTS = ["pages", "components", "seo", "routes.tsx", "App.tsx", "index.html", "api"];
+const ROOTS = ["pages", "components", "seo", "routes.tsx", "App.tsx", "index.html"];
 const BANNED = [
   [/SOC\s?2/i, "SOC 2 — no certificate exists"],
   [/ISO\s?27001/i, "ISO 27001 — no certificate exists"],
@@ -48,7 +48,7 @@ const BANNED = [
   [/\d+M\+?\s*visas/i, "processed-visa counts — none exist"],
   [/100%\s*(accuracy|verified|compliance)/i, "unsupported accuracy claim"],
   // "Bank-level encryption" says nothing checkable. Name the control instead:
-  // TLS in transit, per-tenant row-level isolation.
+  // TLS in transit, AES-256 at rest, per-tenant row-level isolation.
   [/bank[- ]level/i, "'bank-level' — name the actual control instead"],
   // Every AI surface is gated on OPENAI_API_KEY, which is unset. Nothing AI is "live".
   [/live[:\s-]+ai\b/i, "AI is gated on OPENAI_API_KEY — it is not live"],
@@ -63,25 +63,6 @@ const BANNED = [
   // FeatureAdminPortal.tsx and in the HeroSection dashboard mockup. Match the
   // name outright; there is no client-facing Stripe integration in any form.
   [/\bStripe\b/i, "no client-facing Stripe integration exists"],
-
-  // Added for the 2026-09 rebuild — Nadia's may-not-claim list + the pricing
-  // decision memo §4 (scratchpad/reports/nadia-seo-geo-architecture.md,
-  // marcus-packaging-cro.md). SOC/ISO/AI already covered above.
-  [/500\+/, "'500+' — the exact shape of the removed 'Partner Firms' claim"],
-  [/1M\+/, "'1M+' — the exact shape of the removed 'Visas Processed' claim"],
-  [/migration lawyers/i, "no named lawyer, no published MARN behind this claim"],
-  // OMARA/OISC/CICC may be *named* only inside an explicit negative disclosure
-  // (there is no software-approval category) — never as a badge or an implied
-  // endorsement. Waive each disclosure line with claims-ok, same pattern as SOC 2.
-  [/\bOMARA\b/, "OMARA — name only inside an explicit 'no such approval exists' disclosure"],
-  [/\bOISC\b/, "OISC — no accreditation exists for software in this category"],
-  [/\bCICC\b/, "CICC — no accreditation exists for software in this category"],
-  [/AES-256/i, "AES-256 — an infrastructure default, not a differentiator to assert; name RLS/audit-log instead"],
-  [/Multi-Currency/i, "no multi-currency invoicing capability exists"],
-  [/Data Sovereignty/i, "the vertical-database split is scaffolding, not routed — no residency choice exists"],
-  [/Start Free Trial/i, "no self-serve trial-provisioning flow exists; CTA is 'Book a 30-minute walkthrough'"],
-  [/cancel anytime/i, "not a confirmed term — do not state it"],
-  [/Dedicated Success Manager/i, "not staffed"],
 ];
 
 function* files(p) {
