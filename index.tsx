@@ -1,6 +1,6 @@
 import { ViteReactSSG } from 'vite-react-ssg';
 import { routes } from './routes';
-import './styles/index.css';
+import './styles/globals.css';
 
 /**
  * Disable vite-react-ssg's static-loader-data fetching. It is dead weight here, and it
