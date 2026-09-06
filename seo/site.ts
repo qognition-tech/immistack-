@@ -1,10 +1,24 @@
 import { Page } from '../types';
 
-// Canonical production origin. Used for canonical tags, OG urls and the sitemap.
-export const SITE_ORIGIN = 'https://immistack.com';
+/**
+ * Single source of truth for routes + per-page SEO metadata.
+ *
+ * Everything that needs the route list reads it from here: routes.tsx (React
+ * Router records), vite.config.ts (sitemap.xml, robots.txt, prerender
+ * manifest), components/Seo.tsx (canonical), scripts/verify-prerender.mjs
+ * (post-build gate). Adding a page anywhere else is a bug.
+ *
+ * This file must stay free of React/JSX: it is imported by vite.config.ts.
+ */
 
-// Markets the product serves (used for hreflang alternates).
-export const HREFLANG_LOCALES = ['en-AU', 'en-CA', 'en-GB', 'en-NZ'];
+/** Canonical production origin. Confirmed live: the apex 307s to `www` — the
+ *  canonical must point at the resolved URL, not the redirecting one. */
+export const SITE_ORIGIN = 'https://www.immistack.com';
+export const SITE_NAME = 'ImmiStack';
+export const CONTACT_EMAIL = 'hello@immistack.com';
+
+/** ISO date stamped into <lastmod>. Bump when content changes materially. */
+export const CONTENT_UPDATED = '2026-09-05';
 
 export interface PageMeta {
   /** Internal Page identifier (kept for backwards-compat with the old useState router). */
@@ -18,169 +32,128 @@ export interface PageMeta {
 }
 
 /**
- * Single source of truth for routing + on-page SEO.
- * Titles are trimmed to ~55-60 chars and descriptions to ~150-160 chars,
- * following the meta recommendations from the SEO audit.
+ * The rebuilt route set — see `scratchpad/reports/nadia-seo-geo-architecture.md`
+ * §1. 22 routes collapsed to these 15 (+ the security route, + one article
+ * template), each with a distinct query and full internal-link weight.
+ *
+ * Killed with no redirect target (never had a `PAGES[]` entry to begin with):
+ * the two legal/finance-feature slugs `check:claims`' banned-term list already covers.
+ *
+ * Merged into /features, 301'd in vercel.json: /ai-automation,
+ * /task-management, /form-automation, /multi-office, /staff-portal,
+ * /admin-portal.
  */
 export const PAGES: PageMeta[] = [
   {
     page: 'HOME',
     path: '/',
-    title: 'Immistack | Immigration CRM & Case Management Software',
+    title: 'ImmiStack — Immigration CRM for Registered Migration Agents',
     description:
-      'Streamline your immigration practice with Immistack: the all-in-one CRM for document checklists, client intake, and compliance across AU, CA, UK & NZ.',
+      'One system of record for leads, clients, visa matters, documents, payments and compliance — built for registered migration agents.',
     keyword: 'immigration CRM software',
   },
   {
     page: 'FEATURES',
     path: '/features',
-    title: 'Features | Immigration CRM & Automation – Immistack',
+    title: 'Features | ImmiStack Immigration Case Management',
     description:
-      "Explore Immistack's features: per-subclass document checklists, smart client intake, workflow automation, expiry alerts and global case management.",
+      "Every capability in ImmiStack's case-management platform, what's live today and what's still sandbox, in one table.",
     keyword: 'immigration case management features',
   },
   {
     page: 'PRICING',
     path: '/pricing',
-    title: 'Pricing Plans | Immistack Immigration Software',
+    title: 'Pricing | ImmiStack Immigration Case Management',
     description:
-      'Flexible pricing for immigration professionals. From solo practitioners to large agencies, choose a plan that fits your team size and workflow.',
+      'Three tiers, priced per registered agent, ex GST. Staff and clients are unlimited and free in every tier. No setup fee, no lock-in.',
     keyword: 'immigration software pricing',
   },
   {
     page: 'ABOUT',
     path: '/about',
-    title: 'About Immistack | Built for Immigration Professionals',
+    title: 'About ImmiStack',
     description:
-      'Why Immistack exists, and what actually backs it: database-enforced tenant isolation, a hash-chained audit log and per-subclass checklists from a versioned pack.',
+      'ImmiStack is the immigration vertical of Meru, a regulatory operating system. Sandbox regulator integrations, honestly labelled.',
     keyword: 'about immistack immigration',
   },
   {
     page: 'RESOURCES',
     path: '/blog',
-    title: 'Immigration Practice Resources & Guides | Immistack Blog',
+    title: 'Blog | ImmiStack — Immigration Practice Guides',
     description:
-      'Expert guides, tips and updates on immigration case management, compliance, record-keeping and practice growth from the Immistack team.',
+      'Guides on running a migration practice: compliance, case management and the regulations that changed this year.',
     keyword: 'immigration practice guides',
   },
   {
     page: 'FEATURE_COMPLIANCE',
     path: '/compliance-vevo',
-    title: 'Compliance, Checklists & Audit Trail | Immistack',
+    title: 'Migration Agents Regulations 2026 — Compliance Software',
     description:
-      'Per-subclass document checklists, visa expiry alerts, CPD and insurance records and a tamper-evident audit log for migration agents. Built for the 2026 Regulations.',
+      'CPD, PI insurance and file records for the Migration Agents Regulations 2026 (deadline 31 Mar 2027), tracked against one matter record.',
     keyword: 'migration agent compliance software Australia',
   },
   {
     page: 'FEATURE_CRM',
     path: '/crm-intake',
-    title: 'Immigration CRM & Client Intake Software | Immistack',
+    title: 'Client Intake & CRM for Migration Agents | ImmiStack',
     description:
-      'Capture, qualify and onboard clients faster with Immistack’s immigration CRM and smart intake forms. Turn enquiries into matters automatically.',
+      'Capture a lead once, convert it to a matter without re-entering the file, and keep the checklist attached from day one.',
     keyword: 'client intake forms immigration',
-  },
-  {
-    page: 'FEATURE_AI',
-    path: '/ai-automation',
-    title: 'AI Immigration Workflow Automation | Immistack',
-    description:
-      'Automate document parsing, data entry and case workflows with Immistack AI. Cut admin time and focus on advising clients, not paperwork.',
-    keyword: 'immigration workflow automation',
   },
   {
     page: 'FEATURE_PORTAL',
     path: '/client-portal',
-    title: 'Secure Client Portal for Immigration Firms | Immistack',
+    title: 'Client Portal for Immigration Firms | ImmiStack',
     description:
-      'Give clients a branded, secure portal to upload documents, track case progress and message your team — reducing back-and-forth email.',
+      "Clients see their own matter, documents and message thread — nothing that belongs to another client, ever.",
     keyword: 'immigration client portal',
-  },
-  {
-    page: 'FEATURE_TASKS',
-    path: '/task-management',
-    title: 'Immigration Case & Task Management | Immistack',
-    description:
-      'Keep every matter on track with deadlines, reminders and team task management built for immigration caseloads. Never miss a lodgement date.',
-    keyword: 'immigration case management software',
-  },
-  {
-    page: 'FEATURE_FORMS',
-    path: '/form-automation',
-    title: 'Immigration Form Automation Software | Immistack',
-    description:
-      'Auto-populate visa forms from client data, eliminate re-keying and reduce errors with Immistack’s immigration form automation.',
-    keyword: 'immigration form automation',
   },
   {
     page: 'FEATURE_BILLING',
     path: '/billings-and-invoicing',
-    title: 'Billing & Invoicing for Migration Agents | Immistack',
+    title: 'Billing & Invoicing for Migration Agents | ImmiStack',
     description:
-      'Create invoices, take payments and track receivables without leaving your case files. Billing built for immigration and migration practices.',
+      'Invoice against a matter and gate the next stage on payment — no chasing an overdue invoice by hand.',
     keyword: 'migration agent billing software',
-  },
-  {
-    page: 'FEATURE_MULTIOFFICE',
-    path: '/multi-office',
-    title: 'Multi-Office Immigration Practice Software | Immistack',
-    description:
-      'Run multiple offices and countries from one platform with shared workflows, role-based access and consolidated reporting across locations.',
-    keyword: 'multi office immigration software',
-  },
-  {
-    page: 'FEATURE_STAFF_PORTAL',
-    path: '/staff-portal',
-    title: 'Staff Portal for Immigration Teams | Immistack',
-    description:
-      'Give caseworkers a focused workspace for their matters, tasks and clients, with permissions that keep sensitive data secure.',
-    keyword: 'immigration staff portal',
-  },
-  {
-    page: 'FEATURE_ADMIN_PORTAL',
-    path: '/admin-portal',
-    title: 'Admin Portal & Practice Oversight | Immistack',
-    description:
-      'Oversee your whole practice from one admin portal: users, compliance, billing and performance reporting for immigration firms.',
-    keyword: 'immigration practice admin software',
   },
   {
     page: 'INDUSTRIES',
     path: '/solution',
-    title: 'Immigration Software Solutions by Industry | Immistack',
+    title: 'Solutions by Practice Type | ImmiStack',
     description:
-      'Tailored workflows for migration agents, education consultants and corporate HR teams. See how Immistack fits your immigration practice.',
+      'ImmiStack for registered migration agents, education consultants and corporate HR — three practices, one config-pack platform.',
     keyword: 'immigration software solutions',
   },
   {
     page: 'INDUSTRY_AGENTS',
     path: '/migration-agents',
-    title: 'Software for Migration Agents (AU/CA/UK/NZ) | Immistack',
+    title: 'Software for Registered Migration Agents | ImmiStack',
     description:
-      'Purpose-built immigration software for migration agents and registered consultants across Australia, Canada, the UK and New Zealand.',
+      "Built for 1–10 person migration practices: one record of leads, matters, documents and payments, with an audit trail Migration Manager doesn't keep.",
     keyword: 'migration agent software',
   },
   {
     page: 'INDUSTRY_EDUCATION',
     path: '/education-consultants',
-    title: 'Software for Education Agents & Consultants | Immistack',
+    title: 'Software for Education Consultants | ImmiStack',
     description:
-      'Manage student enquiries, applications, commissions and visa support in one platform built for education agents and consultants.',
+      "Case management for education agents, built on the same config-pack platform as ImmiStack's migration-agent product.",
     keyword: 'education agent software',
   },
   {
     page: 'INDUSTRY_CORPORATE',
     path: '/corporate-hr',
-    title: 'Global Mobility Software for Corporate HR | Immistack',
+    title: 'Global Mobility Software for Corporate HR | ImmiStack',
     description:
-      'Coordinate visas, compliance and relocations for your workforce with Immistack’s global mobility platform built for corporate HR teams.',
+      "Case management for corporate HR teams managing sponsored visas, built on ImmiStack's config-pack platform.",
     keyword: 'global mobility platform',
   },
   {
     page: 'AFFILIATE',
     path: '/affiliate',
-    title: 'Affiliate Program | Earn 30% Recurring – Immistack',
+    title: 'Affiliate Program | ImmiStack',
     description:
-      'Join the Immistack Affiliate Program and earn 30% recurring commission for every immigration firm you refer. Free to join, monthly payouts.',
+      'Refer a firm to ImmiStack. Commission structure and terms to be confirmed.',
     keyword: 'immigration software affiliate program',
   },
 ];
@@ -190,9 +163,9 @@ export const ARTICLE_SLUG = 'state-of-immigration-tech-2026';
 
 export const ARTICLE_META = {
   path: `/blog/${ARTICLE_SLUG}`,
-  title: 'The State of Immigration Tech 2026 | Immistack',
-  // claims-ok: editorial description of industry AI adoption — explicitly frames "what is hype";
-  // this describes the market, not a capability of this product
+  title: 'The State of Immigration Tech 2026 | ImmiStack',
+  // claims-ok: editorial description of industry-wide adoption, explicitly framing "what is
+  // hype" — this describes the market, not a capability of this product
   description: 'How migration practices are adopting AI-driven compliance and automation in 2026 — what is changing, what is hype, and what it means for your firm.',
 };
 
@@ -200,19 +173,17 @@ export const ARTICLE_META = {
  * /security is a standalone route (not a PAGES entry) because the `Page` union
  * lives in types.ts, which this change does not own. It is registered directly
  * in routes.tsx and prerendered from there.
- *
- * NOTE: public/sitemap.xml is hand-maintained and does NOT yet list /security.
  */
 export const SECURITY_META = {
   path: '/security',
-  title: 'Security & Data Protection | Immistack',
+  title: 'Security & Data Isolation | ImmiStack',
   description:
-    'How Immistack protects immigration data: Postgres row-level security per tenant, a hash-chained append-only audit log, TLS and AES-256 — and what we do not have yet.',
+    "Row-level tenant isolation, a hash-chained audit log, and a screening engine that won't bluff — stated with the exact mechanism, not a badge.",
 };
 
 export const NOT_FOUND_META = {
-  title: 'Page Not Found | Immistack',
-  description: 'The page you are looking for could not be found. Explore Immistack’s immigration CRM and case management platform.',
+  title: 'Page Not Found | ImmiStack',
+  description: 'The page you are looking for could not be found.',
 };
 
 // Lookup helpers ------------------------------------------------------------
@@ -229,7 +200,31 @@ export function pathForPage(page: Page): string {
   return PAGE_TO_PATH[page] ?? '/';
 }
 
-/** All concrete paths to prerender (real pages + the demo article). */
+export function absUrl(path: string): string {
+  return `${SITE_ORIGIN}${path === '/' ? '' : path}`;
+}
+
+/** All concrete paths to prerender (real pages + the security route + the demo article). */
 export function allStaticPaths(): string[] {
   return [...PAGES.map((p) => p.path), SECURITY_META.path, ARTICLE_META.path];
+}
+
+/**
+ * Sitemap rows. No hreflang alternates: Nadia's audit found all four
+ * HREFLANG_LOCALES pointing at the identical canonical (no locale-routed
+ * content exists behind any of them, unlike govx's real `/ar` mirror) — the
+ * documented pattern needs distinct per-locale paths, which this site does
+ * not have. Multi-market relevance is signalled instead through on-page copy
+ * and `Organization.areaServed`.
+ */
+export function sitemapEntries() {
+  return allStaticPaths().map((path) => ({
+    path,
+    loc: absUrl(path),
+    lastmod: CONTENT_UPDATED,
+  }));
+}
+
+export function robotsTxt(): string {
+  return ['User-agent: *', 'Allow: /', 'Disallow: /api/', '', `Sitemap: ${SITE_ORIGIN}/sitemap.xml`, ''].join('\n');
 }
