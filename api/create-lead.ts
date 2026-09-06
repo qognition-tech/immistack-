@@ -17,7 +17,10 @@ import {
   isTwentyConfigured,
   TwentyNotConfiguredError,
   SOURCE_TAGS,
+  redactForLog,
 } from './_twenty.js';
+import { sendEmail, LEAD_NOTIFY_TO } from './_email.js';
+import { leadConfirmationEmail, leadNotificationEmail } from './_lead-email-copy.js';
 
 /** Only this site may post here. An open CORS policy on a lead endpoint invites junk. */
 const ALLOWED_ORIGINS = [
@@ -130,31 +133,76 @@ export default async function handler(req: any, res: any) {
       `\n_Recorded automatically from immistack.com. Tags are applied by the site, not by a human._`,
     ].filter(Boolean) as string[];
 
-    const result = await upsertLead({
-      email,
-      name,
-      companyName: firmName,
-      phone,
-      websiteUrl: website,
-      source,
-      noteTitle: `ImmiStack — ${rawSource || source} submission`,
-      noteLines,
+    // The CRM write is the durable record; attempt it and remember whether it
+    // worked, but don't let its outcome block the email leg below — a lead
+    // worth emailing about is worth emailing about even if Twenty rejected it,
+    // and the team notification is then the only trace of the submission.
+    let result: Awaited<ReturnType<typeof upsertLead>> | null = null;
+    let crmError: unknown = null;
+    try {
+      result = await upsertLead({
+        email,
+        name,
+        companyName: firmName,
+        phone,
+        websiteUrl: website,
+        source,
+        noteTitle: `ImmiStack — ${rawSource || source} submission`,
+        noteLines,
+      });
+      // Never log the email itself; the id is enough to find the record.
+      console.log(
+        `[create-lead] ok personId=${result.personId} created=${result.created} tags=${result.tags.join('+')} note=${result.noteAttached}`,
+      );
+    } catch (err) {
+      crmError = err;
+      console.error(
+        '[create-lead] CRM upsert failed:',
+        err instanceof Error ? redactForLog(err.message) : err,
+      );
+    }
+
+    // Email leg. Runs after the CRM attempt regardless of its outcome; a
+    // failure here (unconfigured, timeout, Resend down) never changes the
+    // response below — see api/_email.ts.
+    const confirmation = leadConfirmationEmail({ name, firmName, kind: 'form' });
+    const confirmationResult = await sendEmail({
+      to: email,
+      subject: confirmation.subject,
+      text: confirmation.text,
     });
 
-    // Never log the email itself; the id is enough to find the record.
-    console.log(
-      `[create-lead] ok personId=${result.personId} created=${result.created} tags=${result.tags.join('+')} note=${result.noteAttached}`,
-    );
+    const notification = leadNotificationEmail({
+      email,
+      name,
+      firmName,
+      phone,
+      source: rawSource || source,
+      extra: { Persona: persona, Website: website, Audience: audience, Referral: referralSource, Message: message },
+    });
+    await sendEmail({ to: LEAD_NOTIFY_TO, subject: notification.subject, text: notification.text });
+
+    if (crmError) {
+      if (crmError instanceof TwentyNotConfiguredError) {
+        return res.status(503).json({
+          message: 'CRM is not configured on this deployment.',
+          emailSent: confirmationResult.sent,
+        });
+      }
+      return res.status(500).json({
+        message:
+          'Something went wrong recording your details. Please email hello@immistack.com and we will sort it out.',
+        emailSent: confirmationResult.sent,
+      });
+    }
 
     return res.status(200).json({
       message: 'Thanks — you are on the list.',
-      created: result.created,
+      created: result!.created,
+      emailSent: confirmationResult.sent,
     });
   } catch (error) {
-    if (error instanceof TwentyNotConfiguredError) {
-      return res.status(503).json({ message: 'CRM is not configured on this deployment.' });
-    }
-    console.error('[create-lead] failed:', error instanceof Error ? error.message : error);
+    console.error('[create-lead] failed:', error instanceof Error ? redactForLog(error.message) : error);
     return res.status(500).json({
       message:
         'Something went wrong recording your details. Please email hello@immistack.com and we will sort it out.',
