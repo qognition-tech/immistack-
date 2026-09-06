@@ -48,6 +48,21 @@ export function isTwentyConfigured(): boolean {
   return Boolean(TWENTY_API_KEY);
 }
 
+/**
+ * Every error `twenty()` throws below embeds the request path in its message,
+ * and a person lookup's path is `/rest/people?filter=emails.primaryEmail[eq]:<email>`
+ * — so the raw message carries the visitor's email (URL-encoded, no literal
+ * `:` left to stop a naive redaction at, hence matching up to the next
+ * whitespace instead). Fine wherever the caller already holds the email in a
+ * plain field on purpose (a durable store write, a fallback-email body);
+ * never fine in a console.error, which lands in Vercel's function logs.
+ * Every call site that logs one of these errors — `create-lead.ts`,
+ * `cal-webhook.ts` — must redact through this first.
+ */
+export function redactForLog(message: string): string {
+  return message.replace(/\?[^\s:]*/g, '?<redacted>');
+}
+
 async function twenty<T = any>(pathname: string, init: RequestInit = {}): Promise<T> {
   if (!TWENTY_API_KEY) throw new TwentyNotConfiguredError();
 

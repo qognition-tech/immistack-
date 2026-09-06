@@ -1,34 +1,43 @@
 /**
  * POST /api/create-lead — the single inbound capture endpoint for this site.
  *
- * Every form (waitlist, lead magnet, affiliate, contact) posts here. Segmentation comes
- * from `source`, which maps to a tag; it does not come from separate endpoints.
+ * Every form (waitlist, affiliate) posts here. Segmentation comes from
+ * `source`, which maps to a tag; it does not come from separate endpoints.
  *
- * Replaces an earlier Zoho implementation. That version never worked in production —
- * its `ZOHO_*` values were placeholder strings — and it hard-required `firmName` and
- * `firmSize`, so affiliate submissions (which send neither) would have 400'd regardless.
- * Both problems are fixed here.
+ * Records land in Twenty CRM tagged `IMMISTACK` + `IMMISTACK_MARKETING` + a
+ * capture-point tag. See api/_twenty.ts — unchanged by this pass, same CRM
+ * destination and tags.
  *
- * Records land in Twenty CRM tagged `IMMISTACK` + `IMMISTACK_MARKETING` + a capture-point
- * tag. See api/_twenty.ts.
+ * Order is deliberate and must not be reordered (matches
+ * ../govx-marketing/api/lead.ts):
+ *   1. CORS + method + rate limit — cheap rejects first
+ *   2. zod strict            — reject anything that is not exactly a lead shape
+ *   3. honeypot              — filled ⇒ pretend success, do nothing
+ *   4. min-time HMAC token   — too fast ⇒ 425, invalid/expired ⇒ 400
+ *   5. durable write         — the lead exists in Upstash before any CRM call
+ *   6. Twenty push           — upsert by email; company dedupe is Twenty's own
+ *                              domain-matching (never create companies — see
+ *                              api/_twenty.ts and CLAUDE.md rule #2)
+ *   7. Resend fallback email — only when the Twenty push failed or is unconfigured
+ *
+ * Once a lead has a durable copy (step 5) or a fallback email has been
+ * attempted (step 7), the visitor sees success — an infrastructure problem on
+ * our side is not their failure to recover from. Only steps 1-4 can produce
+ * `{ ok: false }`.
  */
+import { randomUUID } from 'node:crypto';
 import {
   upsertLead,
   isTwentyConfigured,
   TwentyNotConfiguredError,
   SOURCE_TAGS,
+  redactForLog,
 } from './_twenty.js';
-
-/** Only this site may post here. An open CORS policy on a lead endpoint invites junk. */
-const ALLOWED_ORIGINS = [
-  'https://immistack.com',
-  'https://www.immistack.com',
-  'https://immistack-marketing.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:4173',
-];
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { applyCors, pickOrigin } from './_cors.js';
+import { checkFormToken } from './_hmac.js';
+import { leadStore, leadKey, LEAD_TTL_SECONDS } from './_store.js';
+import { sendFallbackEmail } from './_email.js';
+import { LeadSchema } from './_lead-schema.js';
 
 /** Crude in-memory throttle. Serverless instances are short-lived, so this only blunts
  *  a burst from one warm instance — it is a speed bump, not a security control. */
@@ -45,93 +54,127 @@ function rateLimited(key: string): boolean {
   return hits.length > MAX_PER_WINDOW;
 }
 
-function pickOrigin(req: any): string | null {
-  const origin = req.headers?.origin;
-  if (!origin) return null;
-  return ALLOWED_ORIGINS.includes(origin) ? origin : null;
-}
-
-function str(v: unknown, max = 500): string | undefined {
-  if (typeof v !== 'string') return undefined;
-  const t = v.trim();
-  if (!t) return undefined;
-  return t.slice(0, max);
+/** Empty string → undefined. zod already trims/caps length; this just matches the
+ *  original handler's "blank means not provided" behaviour. */
+function orUndef(v: string | undefined): string | undefined {
+  return v && v.length > 0 ? v : undefined;
 }
 
 export default async function handler(req: any, res: any) {
-  const origin = pickOrigin(req);
-  if (origin) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Vary', 'Origin');
-  }
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
+  applyCors(req, res);
   if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
+  if (req.method !== 'POST') return res.status(405).json({ ok: false, reason: 'method_not_allowed' });
+
+  // A request from an origin not on the allowlist is refused outright — the old
+  // behaviour only skipped setting CORS headers, which a non-browser client would
+  // not notice. See CLAUDE.md rule #3.
+  if (!pickOrigin(req) && req.headers?.origin) {
+    return res.status(403).json({ ok: false, reason: 'origin_not_allowed' });
+  }
+
+  const ip =
+    (req.headers?.['x-forwarded-for'] || '').toString().split(',')[0].trim() ||
+    req.socket?.remoteAddress ||
+    'unknown';
+  if (rateLimited(ip)) {
+    return res.status(429).json({ ok: false, reason: 'rate_limited' });
+  }
+
+  let raw: unknown;
+  try {
+    raw = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+  } catch {
+    return res.status(400).json({ ok: false, reason: 'invalid_json' });
+  }
+
+  const parsed = LeadSchema.safeParse(raw);
+  if (!parsed.success) {
+    return res.status(400).json({ ok: false, reason: 'invalid' });
+  }
+  const lead = parsed.data;
+
+  // Honeypot: a real person never fills a field they cannot see. Answer as if
+  // accepted so a bot learns nothing from the response.
+  if (lead.company_website || lead.hp) {
+    return res.status(200).json({ ok: true });
+  }
+
+  const secret = process.env.LEAD_FORM_SECRET;
+  if (secret) {
+    const check = checkFormToken(secret, lead.token);
+    if (check === 'too-fast') return res.status(425).json({ ok: false, reason: 'too_fast' });
+    if (check === 'invalid' || check === 'expired') {
+      return res.status(400).json({ ok: false, reason: 'invalid_token' });
+    }
+  } else {
+    // Same fail-open-on-honeypot-only posture as before this change existed —
+    // but say so loudly, since api/form-token.ts refuses to issue a token in
+    // this state and a form built against it will never send a valid one.
+    console.error('[create-lead] LEAD_FORM_SECRET is not set — min-time token check skipped');
+  }
+
+  const id = randomUUID();
+  const key = leadKey(id);
+
+  const name = orUndef(lead.name) || orUndef(lead.fullName);
+  const firmName = orUndef(lead.firmName) || orUndef(lead.company);
+  const firmSize = orUndef(lead.firmSize);
+  const persona = orUndef(lead.persona);
+  const website = orUndef(lead.website);
+  const audience = orUndef(lead.audience);
+  const referralSource = orUndef(lead.referralSource);
+  const message = orUndef(lead.message);
+  const phone = orUndef(lead.phone);
+
+  const rawSource = orUndef(lead.source) || '';
+  const sourceKey = rawSource.toLowerCase().replace(/[\s-]+/g, '_');
+  const source = sourceKey in SOURCE_TAGS ? sourceKey : (website || audience) ? 'affiliate' : 'waitlist';
+
+  // Never log the email or name themselves — the store key is enough to find the record.
+  const record = {
+    email: lead.email,
+    name,
+    firmName,
+    firmSize,
+    persona,
+    website,
+    audience,
+    referralSource,
+    message,
+    phone,
+    source,
+    rawSource: rawSource || source,
+  };
+
+  const stored = await leadStore.put(key, { ...record, receivedAt: new Date().toISOString(), crm: 'pending' }, LEAD_TTL_SECONDS);
+
+  const noteLines = [
+    `**Captured:** ${new Date().toISOString()}`,
+    `**Capture point:** ${rawSource || source}`,
+    persona ? `**Persona:** ${persona}` : null,
+    firmName ? `**Firm:** ${firmName}` : null,
+    firmSize ? `**Firm size:** ${firmSize}` : null,
+    website ? `**Website / profile:** ${website}` : null,
+    audience ? `**Audience / channel:** ${audience}` : null,
+    referralSource ? `**Referred by:** ${referralSource}` : null,
+    message ? `\n**Message:**\n${message}` : null,
+    `\n_Recorded automatically from immistack.com. Tags are applied by the site, not by a human._`,
+  ].filter(Boolean) as string[];
+
+  if (!isTwentyConfigured()) {
+    console.error('[create-lead] TWENTY_API_KEY is not set on this deployment — lead kept in store only', key);
+    await sendFallbackEmail({
+      reason: 'CRM unconfigured',
+      storeKey: key,
+      text: `A lead arrived but TWENTY_API_KEY is not set on this deployment.\n\nEmail: ${lead.email}\nName: ${name || '—'}\nFirm: ${firmName || '—'}\nStore key: ${key}\n\n${noteLines.join('\n')}`,
+    });
+    await leadStore.put(key, { ...record, receivedAt: new Date().toISOString(), crm: 'unconfigured' }, LEAD_TTL_SECONDS);
+    return res.status(200).json({ ok: true, id });
+  }
 
   try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-
-    // Honeypot: a real person never fills a field they cannot see. Answer 200 so a bot
-    // learns nothing from the response.
-    if (str(body.company_website) || str(body.hp)) {
-      return res.status(200).json({ message: 'Thanks — you are on the list.' });
-    }
-
-    const email = str(body.email, 320)?.toLowerCase();
-    if (!email || !EMAIL_RE.test(email)) {
-      return res.status(400).json({ message: 'A valid email address is required.' });
-    }
-
-    const ip =
-      (req.headers?.['x-forwarded-for'] || '').toString().split(',')[0].trim() ||
-      req.socket?.remoteAddress ||
-      'unknown';
-    if (rateLimited(ip)) {
-      return res.status(429).json({ message: 'Too many submissions. Please try again shortly.' });
-    }
-
-    if (!isTwentyConfigured()) {
-      // Say what is actually wrong rather than pretending it worked.
-      console.error('[create-lead] TWENTY_API_KEY is not set on this deployment');
-      return res.status(503).json({
-        message:
-          'We could not record your details right now. Please email hello@immistack.com and we will add you by hand.',
-      });
-    }
-
-    // Accept both shapes: the waitlist form sends firmName/firmSize, the affiliate form
-    // sends name/website/audience. Neither is required beyond the email.
-    const name = str(body.name) || str(body.fullName);
-    const firmName = str(body.firmName) || str(body.company);
-    const firmSize = str(body.firmSize, 80);
-    const persona = str(body.persona, 80);
-    const website = str(body.website, 500);
-    const audience = str(body.audience, 500);
-    const referralSource = str(body.referralSource, 200);
-    const message = str(body.message, 4000);
-    const phone = str(body.phone, 60);
-
-    const rawSource = str(body.source, 80) || '';
-    const key = rawSource.toLowerCase().replace(/[\s-]+/g, '_');
-    const source = key in SOURCE_TAGS ? key : (website || audience) ? 'affiliate' : 'waitlist';
-
-    const noteLines = [
-      `**Captured:** ${new Date().toISOString()}`,
-      `**Capture point:** ${rawSource || source}`,
-      persona ? `**Persona:** ${persona}` : null,
-      firmName ? `**Firm:** ${firmName}` : null,
-      firmSize ? `**Firm size:** ${firmSize}` : null,
-      website ? `**Website / profile:** ${website}` : null,
-      audience ? `**Audience / channel:** ${audience}` : null,
-      referralSource ? `**Referred by:** ${referralSource}` : null,
-      message ? `\n**Message:**\n${message}` : null,
-      `\n_Recorded automatically from immistack.com. Tags are applied by the site, not by a human._`,
-    ].filter(Boolean) as string[];
-
     const result = await upsertLead({
-      email,
+      email: lead.email,
       name,
       companyName: firmName,
       phone,
@@ -141,23 +184,33 @@ export default async function handler(req: any, res: any) {
       noteLines,
     });
 
-    // Never log the email itself; the id is enough to find the record.
     console.log(
-      `[create-lead] ok personId=${result.personId} created=${result.created} tags=${result.tags.join('+')} note=${result.noteAttached}`,
+      `[create-lead] ok key=${key} personId=${result.personId} created=${result.created} tags=${result.tags.join('+')} note=${result.noteAttached}`,
     );
+    await leadStore.put(key, { ...record, receivedAt: new Date().toISOString(), crm: 'ok', personId: result.personId }, LEAD_TTL_SECONDS);
 
-    return res.status(200).json({
-      message: 'Thanks — you are on the list.',
-      created: result.created,
-    });
+    return res.status(200).json({ ok: true, id });
   } catch (error) {
     if (error instanceof TwentyNotConfiguredError) {
-      return res.status(503).json({ message: 'CRM is not configured on this deployment.' });
+      // Raced with isTwentyConfigured() above (env changed mid-request) — same handling.
+      await leadStore.put(key, { ...record, receivedAt: new Date().toISOString(), crm: 'unconfigured' }, LEAD_TTL_SECONDS);
+      await sendFallbackEmail({
+        reason: 'CRM unconfigured',
+        storeKey: key,
+        text: `A lead arrived but Twenty is not configured.\n\nEmail: ${lead.email}\nName: ${name || '—'}\nFirm: ${firmName || '—'}\nStore key: ${key}`,
+      });
+      return res.status(200).json({ ok: true, id });
     }
-    console.error('[create-lead] failed:', error instanceof Error ? error.message : error);
-    return res.status(500).json({
-      message:
-        'Something went wrong recording your details. Please email hello@immistack.com and we will sort it out.',
+
+    const message2 = error instanceof Error ? error.message : String(error);
+    console.error('[create-lead] Twenty push failed:', key, redactForLog(message2));
+    await leadStore.put(key, { ...record, receivedAt: new Date().toISOString(), crm: 'failed', error: message2 }, LEAD_TTL_SECONDS);
+    await sendFallbackEmail({
+      reason: 'CRM push failed',
+      storeKey: key,
+      text: `The Twenty push failed for this lead.\n\nEmail: ${lead.email}\nName: ${name || '—'}\nFirm: ${firmName || '—'}\nStore key: ${key}\nError: ${message2}\n\n${noteLines.join('\n')}`,
     });
+    // The lead is safe (store and/or fallback email) — the visitor should not see a failure.
+    return res.status(200).json({ ok: true, id, stored });
   }
 }
