@@ -47,6 +47,11 @@ export function leadConfirmationEmail({ name, firmName, kind }: LeadConfirmation
       ? "This confirms we've received your booking for a walkthrough call."
       : "This confirms we've received your early-access request.";
 
+  const recordedInCrm =
+    kind === 'booking'
+      ? "We've recorded your booking details in our CRM to arrange this."
+      : "We've recorded the details above in our CRM to arrange your walkthrough.";
+
   const text = [
     greeting,
     '',
@@ -56,6 +61,8 @@ export function leadConfirmationEmail({ name, firmName, kind }: LeadConfirmation
     whatHappensNext,
     '',
     'ImmiStack is in early access. Regulator integrations run against sandbox environments today, not live government systems.',
+    '',
+    recordedInCrm,
     '',
     'Questions in the meantime? Reply to this email or write to hello@immistack.com.',
     '',
