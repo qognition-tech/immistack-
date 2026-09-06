@@ -81,7 +81,7 @@ export const FeaturePillars: React.FC = () => {
                 </div>
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-navy mb-6">Give your clients the premium experience they pay for.</h3>
                 <p className="text-base sm:text-lg text-gray-600 mb-6">
-                   Reduce "update me" emails by 80%. Give your clients a secure, branded portal to track their application status, upload documents, and pay invoices.
+                   Give your clients a secure, branded portal to track their application status, upload documents, and pay invoices.
                 </p>
                 <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
                    <div className="p-4 bg-white rounded-xl border border-gray-200 shadow-sm">

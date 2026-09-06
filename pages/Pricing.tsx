@@ -136,9 +136,9 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
               <div className="text-left space-y-4">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Professional Plus:</p>
                 {[
-                  'Full API access',
+                  'API access',
                   'Single Sign-On (SSO)',
-                  'Advanced security controls',
+                  'SSO and role-based access controls',
                   'Branch-scoped access across countries (RLS-enforced)'
                 ].map((feature, i) => (
                   <div key={i} className="flex gap-3 text-sm text-navy/80">
