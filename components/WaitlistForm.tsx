@@ -30,6 +30,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
   const [status, setStatus] = useState<CRMStatus>(CRMStatus.IDLE);
   const [referralSource, setReferralSource] = useState<string | undefined>(undefined);
   const [copied, setCopied] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
     if (defaultPersona) setPersona(defaultPersona);
@@ -45,16 +46,17 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
     }
   }, []);
 
-  const submitToCRM = async (data: WaitlistFormData) => {
+  const submitToCRM = async (data: WaitlistFormData): Promise<boolean> => {
     const response = await fetch('/api/create-lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
+    const body = await response.json().catch(() => ({}));
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Failed to create lead');
+      throw new Error(body.message || 'Failed to create lead');
     }
+    return body.emailSent === true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,7 +74,8 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
     };
 
     try {
-      await submitToCRM(payload);
+      const sent = await submitToCRM(payload);
+      setEmailSent(sent);
       setStatus(CRMStatus.SUCCESS);
     } catch (error) {
       console.error('Form submission failed:', error);
@@ -106,8 +109,9 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({ source = 'Website', 
         </div>
         <h3 className="text-xl sm:text-2xl font-heading font-bold text-navy mb-2">You’re on the list!</h3>
         <p className="text-gray-500 mb-6 max-w-sm mx-auto text-sm">
-          We’ll email <span className="font-semibold text-navy">{formData.email}</span> with your founding-member
-          access and 50%-off launch offer.
+          {emailSent
+            ? <>We’ve recorded your details and emailed <span className="font-semibold text-navy">{formData.email}</span> a confirmation.</>
+            : 'We’ve recorded your details — a person will be in touch within one business day.'}
         </p>
 
         <div className="w-full min-w-0 bg-slate rounded-xl p-4 sm:p-5 border border-gray-100">

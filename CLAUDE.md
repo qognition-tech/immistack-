@@ -103,6 +103,35 @@ additive; it never edits or deletes existing data.
 When adding a form field, add it to the `WaitlistFormData` type (`types.ts`), the handler's
 destructuring in `api/create-lead.ts`, and the note lines — otherwise it is silently dropped.
 
+### The email leg (Resend)
+
+Alongside the Twenty CRM write, both `api/create-lead.ts` and the Cal.com `BOOKING_CREATED`
+path in `api/cal-webhook.ts` send two emails via `api/_email.ts`'s `sendEmail()` (a Resend
+REST call, 5s timeout):
+
+1. **A confirmation to the lead** — what they submitted, that a person replies within one
+   business day (or, for a Cal.com booking, that the team will meet them at the time
+   booked), that ImmiStack is in early access with sandbox regulator integrations, and a
+   contact address + unsubscribe line. Copy lives in `api/_lead-email-copy.ts`, deliberately
+   separate from the request handlers so wording can change without a logic review. No
+   numbers, no superlatives, no certifications — same bar as `scripts/check-claims.mjs`
+   even though `api/` is outside its scan roots.
+2. **A notification to `LEAD_NOTIFY_TO`** (default `hello@immistack.com`) — the lead's fields
+   and its source tag.
+
+**The CRM write happens first and its outcome never blocks the email leg** — both emails are
+attempted whether the Twenty upsert succeeded or threw, so a CRM hiccup does not also cost
+the team the notification. Conversely, **an email failure (Resend unconfigured, timeout, or a
+non-2xx response) never changes the HTTP response returned to the visitor** — `sendEmail()`
+never throws; see `api/_email.ts`. The response carries `emailSent: boolean`, and
+`WaitlistForm.tsx` / `AffiliateForm.tsx` read it to show an honest success message: "we
+emailed you a confirmation" only when `emailSent` is true, otherwise "a person will be in
+touch within one business day".
+
+`api/_twenty.ts`'s `redactForLog()` strips the query string (where a person-lookup path
+carries the visitor's email) out of any Twenty error message before it reaches
+`console.error` — every call site that logs a caught Twenty error must go through it.
+
 ### Env vars
 
 Server-side only, set in `.env` locally (gitignored) and in the Vercel project. **The Twenty
@@ -115,6 +144,9 @@ exposes `VITE_*` to the client.
 | `TWENTY_API_URL` | optional | defaults to `https://api.twenty.com` |
 | `CALCOM_WEBHOOK_SECRET` | booking webhook | webhook returns 503 and records nothing rather than accepting unsigned writes |
 | `VITE_CALCOM_LINK` | Book-a-call embed | the CTA falls back to a mailto link |
+| `RESEND_API_KEY` | email leg (confirmation + notification) | `sendEmail()` returns `{sent:false, reason:'unconfigured'}`, logs one warning, CRM write and visitor response unaffected |
+| `RESEND_FROM` | email leg | same as above — must be a verified sender on the Resend account |
+| `LEAD_NOTIFY_TO` | optional | defaults to `hello@immistack.com` |
 
 See `.env.example`. The `ZOHO_*` vars are dead and can be removed from the Vercel project.
 

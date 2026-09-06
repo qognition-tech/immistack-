@@ -14,7 +14,9 @@
  * computed over, so `config.api.bodyParser` is disabled below and we read the raw stream.
  */
 import crypto from 'node:crypto';
-import { upsertLead, isTwentyConfigured } from './_twenty.js';
+import { upsertLead, isTwentyConfigured, redactForLog } from './_twenty.js';
+import { sendEmail, LEAD_NOTIFY_TO } from './_email.js';
+import { leadConfirmationEmail, leadNotificationEmail } from './_lead-email-copy.js';
 
 export const config = {
   api: {
@@ -116,21 +118,27 @@ export default async function handler(req: any, res: any) {
     return res.status(503).json({ message: 'CRM not configured' });
   }
 
-  try {
-    const when = payload.startTime || payload.startsAt;
-    const noteLines = [
-      `**Booking:** ${payload.title || 'Intro call'}`,
-      `**Trigger:** ${trigger}`,
-      when ? `**Starts:** ${when}` : null,
-      payload.endTime ? `**Ends:** ${payload.endTime}` : null,
-      payload.location ? `**Location:** ${payload.location}` : null,
-      payload.uid ? `**Cal.com UID:** ${payload.uid}` : null,
-      attendee.phone ? `**Phone:** ${attendee.phone}` : null,
-      payload.additionalNotes ? `\n**Notes from attendee:**\n${payload.additionalNotes}` : null,
-      `\n_Recorded automatically from a Cal.com booking._`,
-    ].filter(Boolean) as string[];
+  const when = payload.startTime || payload.startsAt;
+  const noteLines = [
+    `**Booking:** ${payload.title || 'Intro call'}`,
+    `**Trigger:** ${trigger}`,
+    when ? `**Starts:** ${when}` : null,
+    payload.endTime ? `**Ends:** ${payload.endTime}` : null,
+    payload.location ? `**Location:** ${payload.location}` : null,
+    payload.uid ? `**Cal.com UID:** ${payload.uid}` : null,
+    attendee.phone ? `**Phone:** ${attendee.phone}` : null,
+    payload.additionalNotes ? `\n**Notes from attendee:**\n${payload.additionalNotes}` : null,
+    `\n_Recorded automatically from a Cal.com booking._`,
+  ].filter(Boolean) as string[];
 
-    const result = await upsertLead({
+  // Same rule as create-lead.ts: attempt the CRM write, remember whether it
+  // worked, but send the email leg regardless — the durable Twenty record
+  // and the team-notification email are independent trails on the same
+  // booking, and a CRM hiccup should not also lose the notification.
+  let result: Awaited<ReturnType<typeof upsertLead>> | null = null;
+  let crmError: unknown = null;
+  try {
+    result = await upsertLead({
       email,
       name: attendee.name,
       phone: attendee.phone,
@@ -138,14 +146,29 @@ export default async function handler(req: any, res: any) {
       noteTitle: `ImmiStack — call booked (${payload.title || 'intro'})`,
       noteLines,
     });
-
     console.log(
       `[cal-webhook] ok personId=${result.personId} created=${result.created} trigger=${trigger}`,
     );
-    return res.status(200).json({ message: 'Booking recorded', created: result.created });
-  } catch (error) {
-    console.error('[cal-webhook] failed:', error instanceof Error ? error.message : error);
+  } catch (err) {
+    crmError = err;
+    console.error('[cal-webhook] CRM upsert failed:', err instanceof Error ? redactForLog(err.message) : err);
+  }
+
+  const confirmation = leadConfirmationEmail({ name: attendee.name, kind: 'booking' });
+  await sendEmail({ to: email, subject: confirmation.subject, text: confirmation.text });
+
+  const notification = leadNotificationEmail({
+    email,
+    name: attendee.name,
+    phone: attendee.phone,
+    source: 'book_call',
+    extra: { Trigger: trigger, Starts: when, Title: payload.title },
+  });
+  await sendEmail({ to: LEAD_NOTIFY_TO, subject: notification.subject, text: notification.text });
+
+  if (crmError) {
     // 500 so Cal.com retries — a dropped booking is worth retrying for.
     return res.status(500).json({ message: 'Failed to record booking' });
   }
+  return res.status(200).json({ message: 'Booking recorded', created: result!.created });
 }

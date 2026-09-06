@@ -29,6 +29,7 @@ export const AffiliateForm: React.FC<AffiliateFormProps> = ({ source = 'Affiliat
   const [website, setWebsite] = useState('');
   const [audience, setAudience] = useState(AUDIENCE_OPTIONS[0]);
   const [status, setStatus] = useState<CRMStatus>(CRMStatus.IDLE);
+  const [emailSent, setEmailSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,10 +51,11 @@ export const AffiliateForm: React.FC<AffiliateFormProps> = ({ source = 'Affiliat
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      const body = await response.json().catch(() => ({}));
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to create lead');
+        throw new Error(body.message || 'Failed to create lead');
       }
+      setEmailSent(body.emailSent === true);
       setStatus(CRMStatus.SUCCESS);
     } catch (error) {
       console.error('Affiliate form submission failed:', error);
@@ -69,9 +71,9 @@ export const AffiliateForm: React.FC<AffiliateFormProps> = ({ source = 'Affiliat
         </div>
         <h3 className="text-xl sm:text-2xl font-heading font-bold text-navy mb-2">Application received!</h3>
         <p className="text-gray-500 max-w-sm mx-auto text-sm">
-          Thanks for applying to the Immistack Partner Program. We’ll review your application and email{' '}
-          <span className="font-semibold text-navy">{email}</span> with your affiliate dashboard and
-          referral links shortly.
+          {emailSent
+            ? <>We’ve recorded your details and emailed <span className="font-semibold text-navy">{email}</span> a confirmation.</>
+            : 'We’ve recorded your details — a person will be in touch within one business day.'}
         </p>
       </div>
     );
