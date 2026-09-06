@@ -7,20 +7,12 @@ import { FlaskConical } from 'lucide-react';
  * inside mockups are sample data — this badge says so in-frame so a screenshot
  * can never be mistaken for live regulator data.
  */
-export const SandboxBadge: React.FC<{ className?: string; dark?: boolean }> = ({ className = '', dark = false }) => (
-  <span
-    className={`inline-flex max-w-full items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-      dark ? 'border-amber-400/40 bg-amber-400/10 text-amber-300' : 'border-amber-300 bg-amber-50 text-amber-800'
-    } ${className}`}
-  >
+export const SandboxBadge: React.FC<{ className?: string; label?: string }> = ({
+  className = '',
+  label = 'Illustrative — sample checklist, not a live regulator response',
+}) => (
+  <span className={`sandbox-badge ${className}`}>
     <FlaskConical className="h-3 w-3 shrink-0" aria-hidden="true" />
-    Sandbox preview · sample data
-  </span>
-);
-
-/** Non-interactive stand-in for a button inside a mockup (nothing to click). */
-export const MockButton: React.FC<{ className?: string; children: React.ReactNode }> = ({ className = '', children }) => (
-  <span aria-hidden="true" className={`inline-flex items-center justify-center select-none ${className}`}>
-    {children}
+    {label}
   </span>
 );

@@ -1,81 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { CalendarClock, Mail } from 'lucide-react';
+import React from 'react';
+import { BookCallButton } from './BookCallButton';
 
 /**
- * "Book a call" via the official Cal.com embed (@calcom/embed-react).
- *
- * - Only the PUBLIC booking link (e.g. "immistack/intro") reaches the browser,
- *   via VITE_CALCOM_LINK. No API key is ever shipped client-side; CALCOM_API_KEY
- *   and CALCOM_WEBHOOK_SECRET are read only by api/cal-webhook.ts.
- * - When a booking completes, Cal.com calls /api/cal-webhook (BOOKING_CREATED),
- *   which upserts the lead into Twenty CRM tagged `immistack`.
- * - The embed script is loaded lazily on mount (client only) so prerendering
- *   and LCP are unaffected.
+ * Full-width "book a call" section for the bottom of a page. Five states:
+ * default (the button below, which Cal.com's own script turns into its
+ * popup), link-unset (BookCallButton's own mailto fallback), loading (Cal's
+ * popup shows its own loading state once opened — nothing to build here),
+ * submitted (Cal's own confirmation, not a custom one), and error (Cal.com's
+ * embed failing to load degrades to the same mailto link, since the trigger
+ * element still renders even if the popup script never attaches).
  */
-const CAL_LINK = import.meta.env.VITE_CALCOM_LINK as string | undefined;
-const NAMESPACE = 'immistack';
-
-export const BookCall: React.FC<{ compact?: boolean }> = ({ compact = false }) => {
-  const [booked, setBooked] = useState(false);
-
-  useEffect(() => {
-    if (!CAL_LINK) return;
-    let cancelled = false;
-    (async () => {
-      const { getCalApi } = await import('@calcom/embed-react');
-      const cal = await getCalApi({ namespace: NAMESPACE });
-      if (cancelled) return;
-      cal('ui', {
-        theme: 'light',
-        hideEventTypeDetails: false,
-        layout: 'month_view',
-        cssVarsPerTheme: { light: { 'cal-brand': '#0B1120' }, dark: { 'cal-brand': '#FBBF24' } },
-      });
-      cal('on', { action: 'bookingSuccessful', callback: () => setBooked(true) });
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const trigger = CAL_LINK ? (
-    <a
-      href={`https://cal.com/${CAL_LINK}`}
-      data-cal-namespace={NAMESPACE}
-      data-cal-link={CAL_LINK}
-      data-cal-config='{"layout":"month_view"}'
-      className="inline-flex max-w-full items-center justify-center gap-2 min-h-[48px] px-5 sm:px-7 py-3 text-center rounded-md bg-gold text-navy font-bold shadow-lg shadow-gold/20 hover:bg-yellow-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2"
-    >
-      <CalendarClock className="h-5 w-5 shrink-0" aria-hidden="true" /> Book a call
-    </a>
-  ) : (
-    <a
-      href="mailto:hello@immistack.com?subject=Immistack%20intro%20call"
-      className="inline-flex max-w-full items-center justify-center gap-2 min-h-[48px] px-5 sm:px-7 py-3 text-center rounded-md bg-gold text-navy font-bold shadow-lg shadow-gold/20 hover:bg-yellow-600 transition-colors"
-    >
-      <Mail className="h-5 w-5 shrink-0" aria-hidden="true" /> Email us to book a call
-    </a>
-  );
-
-  if (compact) return trigger;
-
-  return (
-    <section className="py-14 sm:py-16 lg:py-20 bg-white border-t border-gray-100" aria-labelledby="book-heading">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-        <h2 id="book-heading" className="text-2xl sm:text-3xl font-heading font-bold text-navy mb-4">
-          Talk to the people building it
-        </h2>
-        <p className="text-gray-600 mb-8">
-          A 30-minute walkthrough of the sandbox, what is live today, and what is gated behind regulator accreditation.
-        </p>
-        {booked ? (
-          <p role="status" className="text-growth font-semibold">
-            Booked. A calendar invite is on its way.
-          </p>
-        ) : (
-          trigger
-        )}
+export const BookCall: React.FC<{ heading?: string; body?: string }> = ({
+  heading = 'Talk to the people building it',
+  body = "A 30-minute walkthrough against your own subclass mix — what's live today, and what's sandbox.",
+}) => (
+  <section className="wrap py-16 lg:py-24 text-center" style={{ borderTop: '1px solid var(--s-line)' }}>
+    <div className="mx-auto" style={{ maxWidth: '46rem' }}>
+      <h2 style={{ marginTop: 0 }}>{heading}</h2>
+      <p className="lede mx-auto mb-8">{body}</p>
+      <div className="flex justify-center">
+        <BookCallButton position="final-cta" />
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);

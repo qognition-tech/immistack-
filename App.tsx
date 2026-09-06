@@ -1,137 +1,93 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
+import { Logo } from './components/Logo';
 import { WaitlistProvider } from './context/WaitlistContext';
 import { OrganizationSchema } from './components/Schema';
-import { Shield, MapPin, Mail } from 'lucide-react';
-import { Page } from './types';
-import { pathForPage } from './seo/site';
+import { GtmScript, GtmNoscript } from './components/Gtm';
 
-/** Footer link that routes via react-router. */
-const FooterLink: React.FC<{ page: Page; className?: string; children: React.ReactNode }> = ({
-  page,
-  className,
-  children,
-}) => (
-  <Link to={pathForPage(page)} className={className}>
-    {children}
-  </Link>
-);
-
+/**
+ * Root layout. Footer link groups and the standing regulator-status line are
+ * Theo's copy verbatim (§1, Global elements) — do not add a partner-firm
+ * count, visa-processed count, badge row or newsletter signup here; all four
+ * are on Elena's kill list.
+ */
 const App: React.FC = () => {
   const location = useLocation();
 
-  // Scroll to top on route change.
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return (
     <WaitlistProvider>
-      <div className="min-h-screen flex flex-col font-sans text-navy overflow-x-hidden bg-slate selection:bg-gold/30">
-        {/* Site-wide structured data */}
+      <GtmScript />
+      <GtmNoscript />
+      <div className="min-h-screen flex flex-col" style={{ background: 'var(--s-bg)' }}>
         <OrganizationSchema />
-
         <Navbar />
 
-        <main className="flex-grow">
+        <main id="main" className="flex-grow" style={{ paddingTop: '5.5rem' }}>
           <Outlet />
         </main>
 
-        {/* Comprehensive Sitemap Footer */}
-        <footer className="bg-white border-t border-gray-100 py-12 sm:py-16 text-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-5 gap-8 sm:gap-10 mb-12 sm:mb-16">
-              <div className="xs:col-span-2 md:pr-8">
-                <Link to="/" className="flex items-center gap-2 mb-6">
-                  <div className="relative w-6 h-6 flex items-end justify-between">
-                    <div className="w-1.5 bg-navy rounded-t-sm h-[40%]"></div>
-                    <div className="w-1.5 bg-navy rounded-t-sm h-[70%]"></div>
-                    <div className="w-1.5 bg-gold rounded-t-sm h-[100%]"></div>
-                  </div>
-                  <span className="font-heading font-bold text-lg text-navy">Immistack</span>
+        <footer style={{ borderTop: '1px solid var(--s-line)', background: 'var(--s-soft)' }}>
+          <div className="wrap py-12 sm:py-16 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 sm:gap-10 mb-10">
+              <div className="md:col-span-1">
+                <Link to="/" className="inline-block mb-4">
+                  <Logo variant="mark" size="medium" />
                 </Link>
-                <p className="text-gray-500 mb-6 leading-relaxed">
-                  The operating system for modern global mobility. Multi-tenant by
-                  design, with row-level data isolation and a hash-chained audit trail.
+                <p style={{ color: 'var(--s-muted)', maxWidth: '28ch' }}>
+                  Immigration CRM and case management for registered migration agents.
                 </p>
-                <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-2 text-gray-500">
-                    <MapPin className="h-4 w-4" /> Sydney • London • Toronto
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-500">
-                    <Mail className="h-4 w-4" /> hello@immistack.com
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <a
-                    href="https://www.linkedin.com/company/immistack"
-                    aria-label="Immistack on LinkedIn"
-                    className="w-11 h-11 shrink-0 rounded-full bg-gray-100 hover:bg-gold hover:text-navy transition-colors flex items-center justify-center"
-                  >
-                    in
-                  </a>
-                  <a
-                    href="https://x.com/immistack"
-                    aria-label="Immistack on X"
-                    className="w-11 h-11 shrink-0 rounded-full bg-gray-100 hover:bg-gold hover:text-navy transition-colors flex items-center justify-center"
-                  >
-                    X
-                  </a>
-                </div>
               </div>
 
               <div>
-                <h5 className="font-bold text-navy mb-5 tracking-wide">Solutions</h5>
-                <ul className="space-y-1 text-gray-500">
-                  <li><FooterLink page="INDUSTRY_AGENTS" className="hover:text-goldDark transition-all inline-flex min-h-[36px] items-center">Migration Agents</FooterLink></li>
-                  <li><FooterLink page="INDUSTRY_EDUCATION" className="hover:text-techBlue transition-all inline-flex min-h-[36px] items-center">Education Consultants</FooterLink></li>
-                  <li><FooterLink page="INDUSTRY_CORPORATE" className="hover:text-navy transition-all inline-flex min-h-[36px] items-center">Corporate HR</FooterLink></li>
-                  <li className="pt-2"><FooterLink page="INDUSTRIES" className="font-bold text-navy hover:underline">View All Industries</FooterLink></li>
+                <h2 className="kicker" style={{ marginTop: 0 }}>Product</h2>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  <li><Link to="/features" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Features</Link></li>
+                  <li><Link to="/pricing" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Pricing</Link></li>
+                  <li><Link to="/security" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Security</Link></li>
+                  <li><Link to="/client-portal" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Client portal</Link></li>
                 </ul>
               </div>
 
               <div>
-                <h5 className="font-bold text-navy mb-5 tracking-wide">Platform</h5>
-                <ul className="space-y-1 text-gray-500">
-                  <li><FooterLink page="FEATURE_CRM" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">CRM &amp; Intake</FooterLink></li>
-                  <li><FooterLink page="FEATURE_COMPLIANCE" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">Compliance &amp; Audit Trail</FooterLink></li>
-                  <li><FooterLink page="FEATURE_AI" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">AI Automation</FooterLink></li>
-                  <li><FooterLink page="FEATURE_PORTAL" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">Client Portal</FooterLink></li>
-                  <li><FooterLink page="FEATURE_TASKS" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">Task Management</FooterLink></li>
-                  <li><FooterLink page="FEATURE_FORMS" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">Form Automation</FooterLink></li>
+                <h2 className="kicker" style={{ marginTop: 0 }}>Solutions</h2>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  <li><Link to="/migration-agents" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Migration agents</Link></li>
+                  <li><Link to="/education-consultants" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Education consultants</Link></li>
+                  <li><Link to="/corporate-hr" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Corporate HR</Link></li>
                 </ul>
               </div>
 
               <div>
-                <h5 className="font-bold text-navy mb-5 tracking-wide">Advanced Modules</h5>
-                <ul className="space-y-1 text-gray-500">
-                  <li><FooterLink page="FEATURE_BILLING" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">Billing &amp; Invoicing</FooterLink></li>
-                  <li><FooterLink page="FEATURE_MULTIOFFICE" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">Multi-Office</FooterLink></li>
-                  <li><FooterLink page="FEATURE_STAFF_PORTAL" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">Staff Portal</FooterLink></li>
-                  <li><FooterLink page="FEATURE_ADMIN_PORTAL" className="hover:text-goldDark transition-colors inline-flex min-h-[36px] items-center">Admin Portal</FooterLink></li>
+                <h2 className="kicker" style={{ marginTop: 0 }}>Company</h2>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  <li><Link to="/about" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>About</Link></li>
+                  <li><Link to="/affiliate" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Affiliate program</Link></li>
+                  <li><Link to="/blog" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Blog</Link></li>
+                </ul>
+              </div>
+
+              <div>
+                <h2 className="kicker" style={{ marginTop: 0 }}>Legal</h2>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  <li><Link to="/privacy" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Privacy</Link></li>
+                  <li><Link to="/terms" className="inline-flex min-h-[36px] items-center" style={{ color: 'var(--s-body)' }}>Terms</Link></li>
                 </ul>
               </div>
             </div>
 
-            <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2">
-                <FooterLink page="AFFILIATE" className="text-gray-400 hover:text-goldDark">Affiliate Program</FooterLink>
-                <Link to="/security" className="text-gray-400 hover:text-navy">Security</Link>
-                <span className="text-gray-400">Privacy Policy</span>
-                <span className="text-gray-400">Terms of Service</span>
-                <a href="/sitemap.xml" className="text-gray-400 hover:text-navy">Sitemap</a>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-400">
-                <Shield className="h-4 w-4 text-growth" />
-                <span className="text-xs font-semibold">Sandbox integrations for eight regulators &middot; production wiring pending accreditation</span>
-              </div>
-              <p className="text-gray-400">© {new Date().getFullYear()} Immistack Inc.</p>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4" style={{ borderTop: '1px solid var(--s-line)', paddingTop: '1.5rem' }}>
+              <p className="mb-0" style={{ color: 'var(--s-muted)' }}>
+                Sandbox integrations for eight regulators, production wiring pending accreditation.
+              </p>
+              <p className="mb-0" style={{ color: 'var(--s-muted)' }}>© {new Date().getFullYear()} ImmiStack</p>
             </div>
           </div>
         </footer>
-
-        {/* Exit-intent + weekly countdown promo */}
       </div>
     </WaitlistProvider>
   );

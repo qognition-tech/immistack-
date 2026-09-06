@@ -1,153 +1,86 @@
 import React from 'react';
-import { ShieldCheck, ListChecks, Link2, Calendar, AlertTriangle, GraduationCap, FileSearch } from 'lucide-react';
-import { Button } from '../components/Button';
-import { MockButton, SandboxBadge } from '../components/SandboxBadge';
+import { Hero } from '../components/Hero';
+import { CapabilityTable } from '../components/CapabilityTable';
+import { ObjectionAccordion } from '../components/ObjectionAccordion';
+import { BookCall } from '../components/BookCall';
+import type { CapabilityRow } from '../types';
 
-export const FeatureCompliance: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWaitlist}) => {
-  return (
-    <div className="pt-24 pb-24 animate-fade-in bg-slate">
+const CAPABILITIES: CapabilityRow[] = [
+  { capability: 'Per-subclass document checklist', status: 'pack', detail: 'Resolves from the config pack, per subclass' },
+  // RUTH: was a literal '[NEEDS DATA: ...]' bracket in a visible table cell —
+  // replaced with an honest status word instead of a leaked internal note.
+  { capability: 'CPD and PI insurance record-keeping', status: 'caution', detail: 'Mechanism not yet confirmed for this page — ask in the walkthrough' },
+  // claims-ok: descriptive, not a certification claim — names what a regulator file inspection would check, asserts no endorsement
+  { capability: 'Hash-chained audit log', status: 'live', detail: 'The record an OMARA file inspection would ask for' },
+  { capability: 'Visa expiry alerts', status: 'caution', detail: 'Computed from pack rules; needs practitioner sign-off before relying on the date' },
+  // claims-ok: explicit negative disclosure — not a live ImmiStack integration
+  { capability: 'VEVO', status: 'not-integrated', detail: 'Reachable only via a commercial gateway with recorded consent — not a live ImmiStack integration' },
+];
 
-      {/* Hero */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-         <div className="bg-navy rounded-3xl p-8 md:p-16 border border-gray-700 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-            <div className="absolute bottom-0 left-0 w-1/2 h-full bg-growth/10 rounded-full blur-[100px]"></div>
+const COMPLIANCE_FAQ = [
+  {
+    // claims-ok: explicit negative disclosure — no such approval category exists
+    question: 'Is ImmiStack OMARA-approved?',
+    // claims-ok: explicit negative disclosure — no such approval category exists
+    answer: "No such approval exists for software. OMARA's remit doesn't extend to case-management tools.",
+  },
+  {
+    question: 'What happens on 31 March 2027?',
+    // RUTH: was a literal '[NEEDS DATA: ...]' bracket shipping into both the
+    // visible accordion and the FAQPage JSON-LD — replaced with an honest
+    // sentence; still no invented consequence.
+    answer: "We haven't published a specific answer yet — ask us in the walkthrough.",
+  },
+  {
+    // claims-ok: explicit negative disclosure — no live regulator-gateway integration
+    question: 'Does ImmiStack connect to VEVO?',
+    // claims-ok: explicit negative disclosure — no live regulator-gateway integration
+    answer: 'No. VEVO is reachable only through a commercial gateway with recorded consent — ImmiStack does not hold a live VEVO integration.',
+  },
+  {
+    question: 'Can I trust the visa-expiry alerts without checking them myself?',
+    answer: "No. The alert is computed from config-pack rules and needs a registered practitioner's sign-off before a firm relies on the date.",
+  },
+];
 
-            <div className="relative z-10 max-w-2xl text-white">
-               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-growth/10 border border-growth/20 mb-6">
-                 <ShieldCheck className="h-4 w-4 text-growth" />
-                 <span className="text-xs font-bold uppercase tracking-wide text-growth">Compliance &amp; Audit Trail</span>
-               </div>
-               <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading font-bold mb-6">
-                 Never miss a visa expiry again.
-               </h1>
-               <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-                 Protect your registration and your clients. Per-subclass document checklists, expiry alerts from configurable rules, and an audit log that cannot be edited after the fact.
-               </p>
-               <Button onClick={onOpenWaitlist} variant="gold" className="px-8 py-4">
-                  Join the Waitlist
-               </Button>
-            </div>
-         </div>
-      </div>
+export const FeatureCompliance: React.FC = () => (
+  <div>
+    <Hero
+      eyebrow="Migration Agents Regulations 2026 — deadline 31 Mar 2027"
+      h1="The compliance deadline is real. The paperwork doesn't have to be manual."
+      subhead="CPD hours and PI insurance record-keeping are now mandated. ImmiStack tracks both against the same matter record everything else lives in."
+      primaryPosition="compliance-hero"
+    />
 
-      {/* Feature Breakdown */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+    <section className="wrap pb-16 lg:pb-20">
+      <CapabilityTable rows={CAPABILITIES} />
+    </section>
 
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-               <div className="w-12 h-12 bg-growth/10 rounded-xl flex items-center justify-center mb-6">
-                  <ListChecks className="h-6 w-6 text-growth" />
-               </div>
-               <h3 className="text-xl font-bold text-navy mb-3">Checklists per Subclass</h3>
-               <p className="text-gray-600 text-sm">
-                  Every matter resolves its document checklist from a versioned config pack for its visa subclass. When the pack changes, you can see which version a matter was assessed against.
-               </p>
-            </div>
+    <section className="wrap pb-16 lg:pb-20">
+      <p style={{ fontWeight: 600, color: 'var(--s-ink)' }}>
+        {/* claims-ok: explicit negative disclosure — no such regulatory approval exists for software */}
+        OMARA does not approve software.
+      </p>
+      <p>
+        {/* claims-ok: explicit negative disclosure — no such regulatory approval exists for software */}
+        No case-management tool — ImmiStack included — holds an OMARA approval, because the
+        category doesn't exist. What ImmiStack does hold: a per-subclass checklist that resolves
+        from the same config pack the Migration Agents Regulations 2026 changes will update, and
+        an audit log that doesn't depend on anyone remembering to file something.
+      </p>
+      <p style={{ fontWeight: 600, color: 'var(--s-ink)' }}>The alert isn't the sign-off.</p>
+      <p>
+        A visa-expiry alert is computed from pack rules. No firm should rely on a deadline this
+        product computes until a registered practitioner has checked it. ImmiStack states this on
+        the alert itself, not only in this paragraph.
+      </p>
+    </section>
 
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-               <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-6">
-                  <AlertTriangle className="h-6 w-6 text-red-500" />
-               </div>
-               <h3 className="text-xl font-bold text-navy mb-3">Expiry Alerts from Rules</h3>
-               <p className="text-gray-600 text-sm">
-                  Alert rules fire on visa expiry, passport expiry and checklist gaps at the thresholds you set. Thresholds live in the same config pack, per country.
-               </p>
-            </div>
+    <section className="wrap pb-16 lg:pb-20">
+      <h2 style={{ marginTop: 0 }}>Questions</h2>
+      <ObjectionAccordion items={COMPLIANCE_FAQ} />
+    </section>
 
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-               <div className="w-12 h-12 bg-navy/10 rounded-xl flex items-center justify-center mb-6">
-                  <Link2 className="h-6 w-6 text-navy" />
-               </div>
-               <h3 className="text-xl font-bold text-navy mb-3">Hash-Chained Audit Log</h3>
-               <p className="text-gray-600 text-sm">
-                  Audit entries are written by database triggers and chained by hash. They cannot be edited or deleted after the fact, not even by the application.
-               </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-               <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-6">
-                  <GraduationCap className="h-6 w-6 text-orange-500" />
-               </div>
-               <h3 className="text-xl font-bold text-navy mb-3">CPD &amp; PI Insurance Records</h3>
-               <p className="text-gray-600 text-sm">
-                  Record-keeping for the Migration Agents Regulations 2026: CPD points and professional indemnity cover logged per agent, with renewal dates on the same alert rules.
-               </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-               <div className="w-12 h-12 bg-techBlue/10 rounded-xl flex items-center justify-center mb-6">
-                  <Calendar className="h-6 w-6 text-techBlue" />
-               </div>
-               <h3 className="text-xl font-bold text-navy mb-3">Deadline Calculator</h3>
-               <p className="text-gray-600 text-sm">
-                  Calculates review and bridging-visa deadlines from the decision date so the dates on the matter are the dates that count.
-               </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-               <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-6">
-                  <FileSearch className="h-6 w-6 text-amber-600" />
-               </div>
-               <h3 className="text-xl font-bold text-navy mb-3">Regulator Integrations</h3>
-               <p className="text-gray-600 text-sm">
-                  Sandbox integrations for eight regulators, production wiring pending accreditation. Every response carries its adapter, request id, timestamp and a sandbox flag. Visa entitlement checks in Australia are reachable via a commercial gateway provider with the visa holder's recorded consent; that wiring is not yet live.
-               </p>
-            </div>
-
-         </div>
-
-         {/* Visual Section */}
-         <div className="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
-            <div className="bg-gray-50 border-b border-gray-200 px-4 sm:px-8 py-4 flex flex-wrap gap-3 justify-between items-center">
-               <div className="flex items-center gap-3">
-                  <h3 className="font-bold text-navy">Compliance Dashboard</h3>
-                  <SandboxBadge />
-               </div>
-               <div className="flex gap-2">
-                  <div className="h-3 w-3 rounded-full bg-red-400"></div>
-                  <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
-                  <div className="h-3 w-3 rounded-full bg-green-400"></div>
-               </div>
-            </div>
-            <div className="p-4 sm:p-8 overflow-x-auto">
-               <table className="w-full text-left min-w-[640px]">
-                  <thead>
-                     <tr className="border-b border-gray-100 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                        <th className="pb-4">Client</th>
-                        <th className="pb-4">Visa Subclass</th>
-                        <th className="pb-4">Expiry Date</th>
-                        <th className="pb-4">Checklist</th>
-                        <th className="pb-4 text-right">Action</th>
-                     </tr>
-                  </thead>
-                  <tbody className="text-sm">
-                     <tr className="border-b border-gray-50">
-                        <td className="py-4 font-bold text-navy">Sarah Connor</td>
-                        <td className="py-4 text-gray-600">482 TSS</td>
-                        <td className="py-4 text-red-500 font-bold">14 Days Left</td>
-                        <td className="py-4"><span className="bg-green-100 text-growth px-2 py-1 rounded text-xs font-bold">12 / 12 · pack v4</span></td>
-                        <td className="py-4 text-right"><MockButton className="text-techBlue font-bold">Extend</MockButton></td>
-                     </tr>
-                     <tr className="border-b border-gray-50">
-                        <td className="py-4 font-bold text-navy">Kyle Reese</td>
-                        <td className="py-4 text-gray-600">820 Partner</td>
-                        <td className="py-4 text-gray-600">12 Nov 2025</td>
-                        <td className="py-4"><span className="bg-green-100 text-growth px-2 py-1 rounded text-xs font-bold">9 / 9 · pack v4</span></td>
-                        <td className="py-4 text-right"><MockButton className="text-gray-400">View</MockButton></td>
-                     </tr>
-                     <tr>
-                        <td className="py-4 font-bold text-navy">T-800 Systems</td>
-                        <td className="py-4 text-gray-600">Standard Business Sponsorship</td>
-                        <td className="py-4 text-orange-500 font-bold">3 Months Left</td>
-                        <td className="py-4"><span className="bg-yellow-100 text-yellow-600 px-2 py-1 rounded text-xs font-bold">7 / 10 · 3 missing</span></td>
-                        <td className="py-4 text-right"><MockButton className="text-gray-400">View</MockButton></td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </div>
-      </div>
-    </div>
-  );
-};
+    <BookCall heading="See the checklist against the 2026 changes." />
+  </div>
+);

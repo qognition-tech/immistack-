@@ -1,6 +1,6 @@
 import React from 'react';
 import { Head } from 'vite-react-ssg';
-import { SITE_ORIGIN, HREFLANG_LOCALES } from '../seo/site';
+import { SITE_ORIGIN } from '../seo/site';
 
 interface SeoProps {
   title: string;
@@ -21,6 +21,12 @@ const DEFAULT_IMAGE = `${SITE_ORIGIN}/og-default.png`;
 /**
  * Renders per-page <head> tags via vite-react-ssg's <Head> so they are
  * baked into the prerendered HTML and updated on client navigation.
+ *
+ * No hreflang: Nadia's audit found all four locale tags pointing at the
+ * identical canonical URL (no locale-routed content exists behind any of
+ * them, unlike govx's real `/ar` mirror) — a like-for-like audit decision,
+ * not an oversight. Multi-market relevance is signalled through on-page copy
+ * and `Organization.areaServed` instead.
  */
 export const Seo: React.FC<SeoProps> = ({
   title,
@@ -45,14 +51,8 @@ export const Seo: React.FC<SeoProps> = ({
       <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
       <link rel="canonical" href={canonical} />
 
-      {/* hreflang alternates for the AU/CA/UK/NZ markets */}
-      {HREFLANG_LOCALES.map((locale) => (
-        <link key={locale} rel="alternate" hrefLang={locale} href={canonical} />
-      ))}
-      <link rel="alternate" hrefLang="x-default" href={canonical} />
-
       {/* Open Graph */}
-      <meta property="og:site_name" content="Immistack" />
+      <meta property="og:site_name" content="ImmiStack" />
       <meta property="og:type" content={type} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
