@@ -213,6 +213,20 @@ export const SECURITY_META = {
     'How Immistack protects immigration data: Postgres row-level security per tenant, a hash-chained append-only audit log, encryption in transit and at rest — and what we do not have yet.',
 };
 
+export const PRIVACY_META = {
+  path: '/privacy',
+  title: 'Privacy Policy | Immistack',
+  description:
+    'How Immistack collects, uses and discloses personal information under the Australian Privacy Principles, and which service providers receive it.',
+};
+
+export const TERMS_META = {
+  path: '/terms',
+  title: 'Terms of Service | Immistack',
+  description:
+    'The terms governing use of the Immistack website and product, including what the software is not: not immigration assistance, and not an electronic signature.',
+};
+
 export const NOT_FOUND_META = {
   title: 'Page Not Found | Immistack',
   description: 'The page you are looking for could not be found. Explore Immistack’s immigration CRM and case management platform.',
@@ -234,5 +248,11 @@ export function pathForPage(page: Page): string {
 
 /** All concrete paths to prerender (real pages + the demo article). */
 export function allStaticPaths(): string[] {
-  return [...PAGES.map((p) => p.path), SECURITY_META.path, ARTICLE_META.path];
+  return [
+    ...PAGES.map((p) => p.path),
+    SECURITY_META.path,
+    ARTICLE_META.path,
+    PRIVACY_META.path,
+    TERMS_META.path,
+  ];
 }

@@ -7,10 +7,12 @@ import { RouteErrorBoundary } from './components/RouteErrorBoundary';
 import { BreadcrumbSchema, FaqSchema, FaqItem } from './components/Schema';
 import { useWaitlist } from './context/WaitlistContext';
 import { Page } from './types';
-import { PAGES, PageMeta, ARTICLE_META, SECURITY_META, NOT_FOUND_META, pathForPage } from './seo/site';
+import { PAGES, PageMeta, ARTICLE_META, SECURITY_META, NOT_FOUND_META, PRIVACY_META, TERMS_META, pathForPage } from './seo/site';
 
 // Pages
 import { Home } from './pages/Home';
+import { Privacy } from './pages/Privacy';
+import { Terms } from './pages/Terms';
 import { Features } from './pages/Features';
 import { FeatureCRM } from './pages/FeatureCRM';
 import { FeatureCompliance } from './pages/FeatureCompliance';
@@ -168,6 +170,29 @@ const SecurityRoute: React.FC = () => {
   );
 };
 
+/**
+ * Legal pages. Static, no CTA and no waitlist hook — someone reading a privacy
+ * policy is checking whether to trust us, not being sold to, and a conversion
+ * prompt in the middle of one reads badly. `scripts/check-legal.mjs` blocks the
+ * build while the entity behind them is unfilled, so these routes cannot ship
+ * naming a blank company.
+ */
+const PrivacyRoute: React.FC = () => (
+  <>
+    <Seo title={PRIVACY_META.title} description={PRIVACY_META.description} path={PRIVACY_META.path} />
+    <BreadcrumbSchema trail={[{ name: 'Privacy', path: PRIVACY_META.path }]} />
+    <Privacy />
+  </>
+);
+
+const TermsRoute: React.FC = () => (
+  <>
+    <Seo title={TERMS_META.title} description={TERMS_META.description} path={TERMS_META.path} />
+    <BreadcrumbSchema trail={[{ name: 'Terms', path: TERMS_META.path }]} />
+    <Terms />
+  </>
+);
+
 const NotFoundRoute: React.FC = () => (
   <>
     <Seo title={NOT_FOUND_META.title} description={NOT_FOUND_META.description} path="/404" noindex />
@@ -197,6 +222,8 @@ export const routes: RouteRecord[] = [
       ...pageChildren,
       { path: SECURITY_META.path.replace(/^\//, ''), element: <SecurityRoute /> },
       { path: ARTICLE_META.path.replace(/^\//, ''), element: <ArticleRoute /> },
+      { path: PRIVACY_META.path.replace(/^\//, ''), element: <PrivacyRoute /> },
+      { path: TERMS_META.path.replace(/^\//, ''), element: <TermsRoute /> },
       // Param fallback so any /blog/<slug> resolves client-side.
       { path: 'blog/:slug', element: <ArticleRoute /> },
       // Concrete path so vite-react-ssg prerenders dist/404.html for hosting.
