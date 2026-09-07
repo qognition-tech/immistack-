@@ -10,7 +10,12 @@ const navItems = [
   { label: 'Pricing', to: '/pricing' },
   { label: 'About', to: '/about' },
   { label: 'Resources', to: '/blog' },
-  { label: 'Affiliates', to: '/affiliate' },
+  // 'Affiliates' → `/affiliate` was removed along with the route itself: the
+  // page made a revenue-share offer to registered migration agents with no s.34
+  // conflict artifact and nothing built behind it. The footer link and the route
+  // went in that commit; this entry was missed, so the primary nav has been
+  // pointing at an unregistered route ever since. See the block comment in
+  // `seo/site.ts` and the footer note in `App.tsx`.
 ];
 
 export const Navbar: React.FC = () => {
