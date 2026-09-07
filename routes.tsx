@@ -32,7 +32,6 @@ import { IndustryEducation } from './pages/IndustryEducation';
 import { IndustryCorporate } from './pages/IndustryCorporate';
 import { Resources } from './pages/Resources';
 import { ResourceArticle } from './pages/ResourceArticle';
-import { Affiliate } from './pages/Affiliate';
 import { Security } from './pages/Security';
 import { NotFound } from './pages/NotFound';
 
@@ -57,14 +56,21 @@ const PAGE_COMPONENTS: Record<Page, React.ComponentType<any>> = {
   FEATURE_TASKS: FeatureTasks,
   FEATURE_FORMS: FeatureForms,
   FEATURE_MULTIOFFICE: FeatureMultiOffice,
-  AFFILIATE: Affiliate,
 };
 
+// These render as FAQPage JSON-LD, so they reach Google rich results. A claim
+// in structured data is still a claim — `check:claims` scans this file for that
+// reason, but three entries below slipped past its patterns on wording alone.
+// The patterns have since been widened to match the claim, not the phrasing.
 const PRICING_FAQ: FaqItem[] = [
   {
-    question: 'Is there a free trial of Immistack?',
+    question: 'Can I try Immistack before committing?',
+    // The old answer promised a launch discount and extended access. Neither
+    // exists, and there is no self-serve path to either: `RESEND_API_KEY` is
+    // unset so an invite never arrives, and `STRIPE_SECRET_KEY` is unset so
+    // `/billing/checkout` answers 503.
     answer:
-      'Yes. You can join the early-access waitlist for free and founding members receive a launch discount plus extended trial access.',
+      'Not yet — there is no self-serve trial. You can join the early-access waitlist, and we will walk you through the product directly.',
   },
   {
     question: 'Which countries does Immistack support?',
@@ -73,8 +79,10 @@ const PRICING_FAQ: FaqItem[] = [
   },
   {
     question: 'Can I change plans as my firm grows?',
+    // Was "Plans scale by team size", which contradicts per-registered-agent
+    // billing stated on the same page — support staff seats are free.
     answer:
-      'Yes. Plans scale by team size and module, so solo practitioners through to multi-office networks can upgrade at any time.',
+      'Yes. Pricing is per registered agent, so you add or remove agent seats as the practice changes. Support and admin staff are unlimited and free on every plan.',
   },
 ];
 
@@ -86,8 +94,14 @@ const FEATURES_FAQ: FaqItem[] = [
   },
   {
     question: 'Does Immistack automate immigration forms?',
+    // Was an unqualified "Yes. Client and case data flows into immigration
+    // forms automatically." BUSINESS.md §1 names that "the one claim to stop
+    // making now", and §2 puts AI form pre-fill under "not safe to claim".
+    // What actually ships is PDF generation from config-pack templates —
+    // real, but narrower than the sentence it replaced. Departmental forms
+    // (956, 956A) are not generated at all.
     answer:
-      'Yes. Client and case data flows into immigration forms automatically, reducing re-keying and errors across your matters.',
+      'Partly. Immistack generates documents from your firm’s own templates with case data merged in — cost agreements today, more as templates are added. It does not yet fill Department of Home Affairs forms such as 956 or 956A, and it does not lodge on your behalf.',
   },
 ];
 

@@ -58,8 +58,21 @@ const BANNED = [
   [/1M\+/, "1M+ — no processed-visa count exists"],
   [/migration lawyers/i, "the persona is registered migration agents, not lawyers — see DESIGN.md"],
   [/\bDocuSign\b/i, "no e-signature integration exists; acceptance records are not signatures"],
-  [/start free trial/i, "no self-serve trial exists — CTAs route to demo booking"],
-  [/cancel anytime/i, "no self-serve subscription to cancel — CTAs route to demo booking"],
+  // These two were written narrowly and both were evaded in shipped copy, in
+  // FAQPage JSON-LD that reaches Google rich results. "extended trial access"
+  // sailed past `start free trial`; "cancel, at any time" sailed past
+  // `cancel anytime` on a comma. Widened to the claim, not the phrasing —
+  // guardrails.md is explicit that a claim inside JSON-LD is still a claim.
+  [/free trial|trial access|start.{0,12}trial/i, "no self-serve trial exists — Resend and Stripe are both unset, so there is nothing to start"],
+  [/cancel[,\s]+at any time|cancel anytime|cancel at any time/i, "no self-serve subscription to cancel — there is no billing portal"],
+  // Sold to registered migration agents, whose Code of Conduct s.34 makes
+  // commission disclosure two-sided. Nothing is built and /affiliate is
+  // unregistered; the old ban was `commission[- ]track`, which "30% recurring
+  // commission" walked straight past.
+  [/recurring commission|% commission|commission for (every|each)/i, "no affiliate ledger, attribution or payout exists, and no s.34 conflict artifact — see seo/site.ts"],
+  // Claimed on /agents with nothing behind either.
+  [/conflict of interest (checker|check)/i, "no conflict-of-interest feature exists"],
+  [/CPD (point )?(logbook|tracker|register)/i, "no CPD register exists — it is mandated by the 2026 Regulations and is on the backlog"],
   // AES-256 is a specific, checkable claim nobody has verified against the
   // actual managed database/storage provider. "Encryption at rest" (no cipher
   // named) is the honest version until someone confirms the cipher in use.

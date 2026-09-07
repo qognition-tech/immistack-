@@ -20,8 +20,10 @@ export type Page =
   | 'FEATURE_BILLING'
   | 'FEATURE_TASKS'
   | 'FEATURE_FORMS'
-  | 'FEATURE_MULTIOFFICE'
-  | 'AFFILIATE';
+  | 'FEATURE_MULTIOFFICE';
+// 'AFFILIATE' was removed with the route — see the block comment in
+// `seo/site.ts`. `PAGE_COMPONENTS` is typed `Record<Page, …>`, so leaving the
+// member here would have kept the page mandatory and the build red.
 
 export type Persona = 'Individual' | 'Professional';
 

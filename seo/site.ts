@@ -178,14 +178,30 @@ export const PAGES: PageMeta[] = [
       'Coordinate visas, compliance and relocations for your workforce with Immistack’s global mobility platform built for corporate HR teams.',
     keyword: 'global mobility platform',
   },
-  {
-    page: 'AFFILIATE',
-    path: '/affiliate',
-    title: 'Affiliate Program | Earn 30% Recurring – Immistack',
-    description:
-      'Join the Immistack Affiliate Program and earn 30% recurring commission for every immigration firm you refer. Free to join, monthly payouts.',
-    keyword: 'immigration software affiliate program',
-  },
+  // ── /affiliate is UNREGISTERED, deliberately ────────────────────────────
+  // The page advertised a 30% lifetime revenue share, a 90-day cookie, a
+  // real-time partner dashboard and monthly payouts. Three problems, any one
+  // of which is disqualifying:
+  //
+  // 1. NOTHING IS BUILT. `affiliate`, `partner`, `commission`, `s.34` and
+  //    `conflict of interest` all return zero matches across `meru-core/src`
+  //    and `packages/`. There is no ledger, no attribution, no payout.
+  // 2. NO s.34 ARTIFACT. The audience is registered migration agents, whose
+  //    Code of Conduct s.34 makes commission disclosure TWO-SIDED: written
+  //    notice to the client AND a written statement back from them. An
+  //    *actual* conflict cannot be cured by consent at all (s.34(4)), and it
+  //    extends to relatives (s.34(5)). The page carried no conflict language.
+  // 3. THE RATE WAS THE CEILING. BUSINESS.md §6.1 sets ~25% as the line that
+  //    keeps the conflict merely *potential*, and reserves 30% for partners
+  //    with 25+ active referrals. 30% was published as the entry rate.
+  //
+  // `check:claims` did not catch it: the pattern only covered tracking.
+  //
+  // `pages/Affiliate.tsx` and `components/AffiliateForm.tsx` were deleted
+  // rather than left unreachable — the gate says remove, do not soften, and
+  // git history keeps them. Rebuild from history when the ledger and the s.34
+  // artifact exist AND the rate is agreed. Note the old title and description
+  // put the figure into search results, not just onto the page.
 ];
 
 // Article route is dynamic; provide one concrete slug for prerendering.

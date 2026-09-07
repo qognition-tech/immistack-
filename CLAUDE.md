@@ -35,7 +35,7 @@ Requires a `.env` with `GEMINI_API_KEY` (AI features) and the Zoho vars below.
 | `routes.tsx` | Central route table; `PageShell` injects SEO + `onOpenWaitlist`/`onNavigate` into pages |
 | `seo/site.ts` | **Single source of truth** for routes + per-page SEO metadata (`PAGES[]`) |
 | `pages/` | One component per route (plain presentational React) |
-| `components/` | Shared UI — `Button`, `Input`, `Navbar`, `Logo`, `Seo`, `Schema`, `WaitlistForm`, `AffiliateForm`, `LeadMagnet`, `ExitIntentPopup`, etc. |
+| `components/` | Shared UI — `Button`, `Input`, `Navbar`, `Logo`, `Seo`, `Schema`, `WaitlistForm`, `LeadMagnet`, `ExitIntentPopup`, etc. |
 | `context/WaitlistContext.tsx` | Global waitlist-modal state (`useWaitlist().openWaitlist({ source, persona })`) |
 | `api/create-lead.ts` | **The only backend** — Vercel serverless fn that creates a Zoho Lead |
 | `public/robots.txt`, `public/sitemap.xml` | Hand-maintained SEO files |
@@ -59,7 +59,6 @@ field — never a second endpoint per form:
 
 - `components/WaitlistForm.tsx` — main early-access form (modal via `WaitlistContext`)
 - `components/LeadMagnet.tsx` — inline email-only capture
-- `components/AffiliateForm.tsx` — Affiliate Program sign-up (`/affiliate`)
 - `components/BookCall.tsx` — Cal.com embed; the booking arrives at `/api/cal-webhook`
 
 ### Where records land
@@ -124,7 +123,7 @@ attempted whether the Twenty upsert succeeded or threw, so a CRM hiccup does not
 the team the notification. Conversely, **an email failure (Resend unconfigured, timeout, or a
 non-2xx response) never changes the HTTP response returned to the visitor** — `sendEmail()`
 never throws; see `api/_email.ts`. The response carries `emailSent: boolean`, and
-`WaitlistForm.tsx` / `AffiliateForm.tsx` read it to show an honest success message: "we
+`WaitlistForm.tsx` reads it to show an honest success message: "we
 emailed you a confirmation" only when `emailSent` is true, otherwise "a person will be in
 touch within one business day".
 
@@ -150,7 +149,28 @@ exposes `VITE_*` to the client.
 
 See `.env.example`. The `ZOHO_*` vars are dead and can be removed from the Vercel project.
 
-## Conventions## Conventions
+## The `/affiliate` route is deliberately absent
+
+`pages/Affiliate.tsx` and `components/AffiliateForm.tsx` were **deleted** on
+2026-09-07, and the `PAGES[]` entry and `Page` union member with them. The page
+offered registered migration agents a 30% lifetime revenue share with a 90-day
+cookie, a live partner dashboard and monthly payouts.
+
+Nothing was built — no ledger, no attribution, no payout — and, more seriously,
+there was no s.34 artifact. The Code of Conduct makes commission disclosure
+**two-sided**: written notice to the client *and* a written statement back from
+them; an *actual* conflict cannot be cured by consent at all. The page carried
+no conflict language, and the published rate was the ceiling that
+`BUSINESS.md` §6.1 reserves for partners with 25+ active referrals.
+
+`check:claims` missed it because its pattern only covered commission
+*tracking*. It has been widened, along with the free-trial and cancellation
+patterns, which had both been evaded on wording alone in FAQPage JSON-LD.
+
+Rebuild from git history when the ledger and the s.34 artifact exist and the
+rate is agreed. Do not restore the page alone.
+
+## Conventions
 
 - Components are `export const Name: React.FC<Props>` (named exports), Tailwind utility classes only, no CSS modules / component library.
 - Brand tokens and the full design system are documented in `DESIGN.md`.

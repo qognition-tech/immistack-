@@ -17,7 +17,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
     },
     {
       question: "Is there a setup fee, or a lock-in term?",
-      answer: "No setup fee, and no lock-in term, on any plan. Pricing is billed monthly per registered agent — you can add or remove agent seats, or cancel, at any time. For Enterprise clients requiring custom integration work, a one-time implementation fee may apply."
+      answer: "No setup fee and no lock-in term on any plan. Pricing is per registered agent, and you can add or remove agent seats or end your subscription by contacting us — there is no self-serve billing portal yet. For Enterprise clients requiring custom integration work, a one-time implementation fee may apply."
     },
     {
       question: "Do admin and support staff cost extra?",
@@ -54,7 +54,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
                 <span className="text-4xl font-bold text-navy tracking-tight">A$129</span>
                 <span className="text-gray-500 text-sm font-medium">/ agent / mo</span>
               </div>
-              <p className="text-xs text-gray-400 mb-8 text-left">+ GST. Support staff free, unlimited.</p>
+              <p className="text-xs text-gray-400 mb-8 text-left">+ GST, billed annually. Month-to-month is A$155 / agent / mo. Support staff free, unlimited.</p>
 
               <BookCallTrigger variant="outline" fullWidth className="mb-8 border-gray-300 hover:border-navy hover:bg-navy hover:text-white transition-all">
                 Talk to Sales
@@ -95,7 +95,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
                 <span className="text-5xl font-bold text-white tracking-tight">A$209</span>
                 <span className="text-slate-400 text-sm font-medium">/ agent / mo</span>
               </div>
-              <p className="text-xs text-slate-400 mb-8 text-left">+ GST. Support staff free, unlimited.</p>
+              <p className="text-xs text-slate-400 mb-8 text-left">+ GST, billed annually. Month-to-month is A$249 / agent / mo. Support staff free, unlimited.</p>
 
               <BookCallTrigger variant="gold" fullWidth className="mb-8 font-bold shadow-xl shadow-gold/20">
                 Book a Demo
@@ -127,7 +127,7 @@ export const Pricing: React.FC<{onOpenWaitlist: () => void}> = () => {
                 <span className="text-4xl font-bold text-navy tracking-tight">A$319</span>
                 <span className="text-gray-500 text-sm font-medium">/ agent / mo</span>
               </div>
-              <p className="text-xs text-gray-400 mb-8 text-left">+ GST. Support staff free, unlimited.</p>
+              <p className="text-xs text-gray-400 mb-8 text-left">+ GST, billed annually. Month-to-month is A$379 / agent / mo. Support staff free, unlimited.</p>
 
               <BookCallTrigger variant="outline" fullWidth className="mb-8 border-gray-300 hover:border-navy hover:bg-navy hover:text-white transition-all">
                 Book a Demo
