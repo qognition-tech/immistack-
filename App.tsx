@@ -116,10 +116,16 @@ const App: React.FC = () => {
 
             <div className="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2">
-                <FooterLink page="AFFILIATE" className="text-gray-400 hover:text-goldDark">Affiliate Program</FooterLink>
+                {/* The Affiliate Program link is gone while `/affiliate` is
+                    unregistered — see the block comment in `seo/site.ts`. The
+                    page made a revenue-share offer to registered migration
+                    agents with no s.34 conflict artifact and nothing built
+                    behind it. */}
                 <Link to="/security" className="text-gray-400 hover:text-navy">Security</Link>
-                <span className="text-gray-400">Privacy Policy</span>
-                <span className="text-gray-400">Terms of Service</span>
+                {/* These were dead `<span>`s — footer text styled like links
+                    that went nowhere, on a site collecting lead PII. */}
+                <Link to="/privacy" className="text-gray-400 hover:text-navy">Privacy Policy</Link>
+                <Link to="/terms" className="text-gray-400 hover:text-navy">Terms of Service</Link>
                 <a href="/sitemap.xml" className="text-gray-400 hover:text-navy">Sitemap</a>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-400">

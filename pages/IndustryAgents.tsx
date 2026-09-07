@@ -30,11 +30,21 @@ export const IndustryAgents: React.FC<{onOpenWaitlist: () => void}> = ({onOpenWa
              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
                 <h3 className="font-bold text-navy mb-6 border-b border-gray-100 pb-2">Agent Toolkit</h3>
                 <div className="space-y-4">
+                   {/* Two entries were removed here because neither feature
+                       exists — greps across meru-core/src, packages/ and the
+                       product app return nothing for either. Both sit on the
+                       R3 backlog, and one of them is mandated by the 2026
+                       Regulations, so a firm reading this list would
+                       reasonably have bought on them.
+
+                       The visa-expiry line now carries the same caveat the
+                       pricing page already carries: the AU pack's `alertRules`
+                       are unsigned by a registered practitioner (dependency
+                       D-6), and until they are signed no firm may rely on a
+                       deadline this product computes. */}
                    {[
                       "Automated Code of Conduct delivery to client",
-                      "Visa expiry alerts driven by configurable alert rules",
-                      "Conflict of Interest checker",
-                      "CPD Point logbook",
+                      "Visa expiry alerts driven by configurable alert rules (awaiting practitioner sign-off)",
                       "Secure file note timestamping"
                    ].map((item, i) => (
                       <div key={i} className="flex gap-3">
